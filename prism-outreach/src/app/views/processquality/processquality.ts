@@ -73,6 +73,7 @@ export class Processquality {
 
       if (JSON.stringify(headers) !== JSON.stringify(expectedHeaders)) {
         alert('File header mismatch.');
+        this.isUpload = false;
         return;
       }
 

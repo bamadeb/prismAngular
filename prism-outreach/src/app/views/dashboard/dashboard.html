@@ -1075,7 +1075,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-
+                                                        <div *ngIf="riskGapsList.length === 0">No Risk Gaps Found</div>
                                                     </div>
                                                 </div>
 
@@ -1217,6 +1217,7 @@
 
                                                             </div>
                                                         </div>
+                                                        <div *ngIf="qualityGapsList.length === 0">No Quality Gaps Found</div>
                                                     </div>
                                                 </div>
                                             </div>

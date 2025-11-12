@@ -103,6 +103,7 @@ export class Processmember implements OnInit {
       if (!headerMatch) {
         alert('File header mismatch.');
         this.resetFileInput();
+        this.isUpload = false;
         return;
       }
 

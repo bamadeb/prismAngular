@@ -20,7 +20,8 @@
             "tsConfig": "tsconfig.app.json",
              "assets": [
                 "src/assets",
-                "src/uploads"
+                "src/uploads",
+                "src/sample_file"
             ],
             "styles": [
               "node_modules/datatables.net/css/jquery.dataTables.min.css",

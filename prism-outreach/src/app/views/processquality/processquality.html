@@ -1,0 +1,43 @@
+
+<main id="main" class="main" style="margin-top:50px!important;min-height:550px;">
+    <section class="section dashboard">
+        <div class="row">
+         <!-- Left side columns -->
+         <div class="col-lg-12">
+           <div class="card">
+                     <div class="card-body">
+
+                         <div class="row align-items-center">
+                            <!-- Upload form -->
+                            <div class="col-lg-6">
+                                <form method="post" action="/processquality/" enctype="multipart/form-data" id="process_quality_action" onsubmit="show_loder();">
+                                        <input type="hidden" name="csrfmiddlewaretoken" value="TCq6VPksX46FhuXccNr4jiXr9bG9XGNhLyMeb9XvvFLhjATH4FlByNbpNeQyZcfB">
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-lg-4 text-uppercase">
+                                            Select Quality Gap File
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <input type="file" name="file" accept=".csv" class="form-control" required>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <button type="submit" class="btn btn-primary w-100 text-uppercase">Upload</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            
+                            <div class="col-lg-6">
+                                <a href="/static/sample_file/Qualitygaps_sample_file.csv" target="_blank">QUALITY GAPS SAMPLE FILE</a>
+                            </div>
+                            
+                           
+                        </div>
+
+                     </div>
+           </div>
+         </div>
+               
+       
+        </div>
+    </section>
+</main>

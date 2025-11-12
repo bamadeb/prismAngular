@@ -1,0 +1,1497 @@
+<main id="main" class="main" style="margin-top:50px!important;min-height:550px;">
+    <section class="section dashboard">
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-2">
+                    <div class="card-body py-1">
+                        <div id="accordion" class=" mb-0">
+                            <div class="row">
+                                <div class="col-xl-4 col-sm-4 text-right">
+                                    <h3 class="mb-0 mt-0">
+                                        <button style="    font-size: 18px; color:#000;" class="btn btn-link collapsed"
+                                            (click)="isCollapseThreeOpen = !isCollapseThreeOpen" >
+                                            PROJECT OVERVIEW
+                                        </button>
+                                    </h3>
+                                </div>
+                                <div class="col-xl-4 col-sm-4"></div>
+                                <div class="col-xl-4 col-sm-4">
+
+                                    <form action="/mywork/" name="navigatorForm" id="navigatorForm"
+                                        enctype="multipart/form-data" method="post">
+                                        <input type="hidden" name="csrfmiddlewaretoken"
+                                            value="HIF6WtPdMCNb3aH3u1j3yS9vbRbVCqagzE1ecNsgkdsN5gDymTdANnntPUlkEWCA">
+                                        <select class="text-uppercase mt-2" name="selected_navigator"
+                                            id="selected_navigator" (change)="onNavigatorChange($event)">
+                                            <option value="0">ALL NEVIGATOR</option>
+                                            <option value="{{nav.ID}}" *ngFor="let nav of navigatorList; let i = index" [selected]="nav.ID === userId">{{nav.FistName}} {{nav.LastName}}</option> 
+                                        </select>
+                                    </form>
+                                </div>
+                            </div>
+                            <div id="collapseThree" class="row " [class.collapse]="!isCollapseThreeOpen"
+  [class.show]="isCollapseThreeOpen">
+                                <div class="col-xl-6 col-sm-6 mb-xl-0">
+                                    <div class="row">
+                                        <div class="col-xl-12 col-sm-12 mb-xl-0">
+                                            <div class="row">
+                                                <div class="col-xl-12 col-sm-12 mb-xl-0">
+                                                    <table class="table text-uppercase">
+                                                        <!-- ===== RISK SECTION ===== -->
+                                                        <tr class="table-header-color">
+                                                            <th>
+                                                                <h4 class="text-uppercase"
+                                                                    style="text-decoration: underline; font-weight: bold;">
+                                                                    RISK</h4>
+                                                            </th>
+                                                            <th>
+                                                                <h5 class="text-uppercase">Gaps</h5>
+                                                            </th>
+                                                            <th>
+                                                                <h5 class="text-uppercase">Completed</h5>
+                                                            </th>
+                                                            <th>
+                                                                <h5 class="text-uppercase">Performance</h5>
+                                                            </th>
+                                                        </tr>
+
+                                                        <!-- Overall (PRIORITY) -->
+                                                        <tr>
+                                                            <td>Overall (PRIORITY)</td>
+                                                            <td width="20%">{{ overallSummary?.priority_risk_count }}
+                                                            </td>
+                                                            <td width="20%">{{ overallSummary?.priority_risk_comp_count
+                                                                }}</td>
+                                                            <td width="20%"
+                                                                [style.color]="overallSummary?.priority_risk_perf_color">
+                                                                {{ overallSummary?.priority_risk_perf | number:'1.0-0'
+                                                                }}%
+                                                            </td>
+                                                        </tr>
+
+                                                        <!-- Overall (OTHERS) -->
+                                                        <tr>
+                                                            <td>Overall (OTHERS)</td>
+                                                            <td>{{ overallSummary?.other_risk_count }}</td>
+                                                            <td>{{ overallSummary?.other_risk_comp_count }}</td>
+                                                            <td [style.color]="overallSummary?.other_risk_perf_color">
+                                                                {{ overallSummary?.other_risk_perf | number:'1.0-0' }}%
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td colspan="4" style="border-top: 2px solid #000;"></td>
+                                                        </tr>
+
+                                                        <!-- My Own (PRIORITY) -->
+                                                        <tr>
+                                                            <td>My Own (PRIORITY)</td>
+                                                            <td width="20%">{{ ownSummary?.priority_risk_count }}</td>
+                                                            <td width="20%">{{ ownSummary?.priority_risk_comp_count }}
+                                                            </td>
+                                                            <td width="20%"
+                                                                [style.color]="ownSummary?.priority_risk_perf_color">
+                                                                {{ ownSummary?.priority_risk_perf | number:'1.0-0' }}%
+                                                            </td>
+                                                        </tr>
+
+                                                        <!-- My Own (OTHERS) -->
+                                                        <tr>
+                                                            <td>My Own (OTHERS)</td>
+                                                            <td>{{ ownSummary?.other_risk_count }}</td>
+                                                            <td>{{ ownSummary?.other_risk_comp_count }}</td>
+                                                            <td [style.color]="ownSummary?.other_risk_perf_color">
+                                                                {{ ownSummary?.other_risk_perf | number:'1.0-0' }}%
+                                                            </td>
+                                                        </tr>
+
+                                                        <!-- ===== QUALITY SECTION ===== -->
+                                                        <tr class="table-header-color">
+                                                            <th>
+                                                                <h4 class="text-uppercase"
+                                                                    style="text-decoration: underline; font-weight: bold;">
+                                                                    QUALITY</h4>
+                                                            </th>
+                                                            <th>
+                                                                <h5 class="text-uppercase">Gaps</h5>
+                                                            </th>
+                                                            <th>
+                                                                <h5 class="text-uppercase">Completed</h5>
+                                                            </th>
+                                                            <th>
+                                                                <h5 class="text-uppercase">Performance</h5>
+                                                            </th>
+                                                        </tr>
+
+                                                        <!-- Overall (PRIORITY) -->
+                                                        <tr>
+                                                            <td>Overall (PRIORITY)</td>
+                                                            <td width="20%">{{ overallSummary?.priority_quality_count }}
+                                                            </td>
+                                                            <td width="20%">{{
+                                                                overallSummary?.priority_quality_comp_count }}</td>
+                                                            <td width="20%"
+                                                                [style.color]="overallSummary?.priority_quality_perf_color">
+                                                                {{ overallSummary?.priority_quality_perf |
+                                                                number:'1.0-0' }}%
+                                                            </td>
+                                                        </tr>
+
+                                                        <!-- Overall (OTHERS) -->
+                                                        <tr>
+                                                            <td>Overall (OTHERS)</td>
+                                                            <td>{{ overallSummary?.other_quality_count }}</td>
+                                                            <td>{{ overallSummary?.other_quality_comp_count }}</td>
+                                                            <td
+                                                                [style.color]="overallSummary?.other_quality_perf_color">
+                                                                {{ overallSummary?.other_quality_perf | number:'1.0-0'
+                                                                }}%
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td colspan="4" style="border-top: 2px solid #000;"></td>
+                                                        </tr>
+
+                                                        <!-- My Own (PRIORITY) -->
+                                                        <tr>
+                                                            <td>My Own (PRIORITY)</td>
+                                                            <td width="20%">{{ ownSummary?.priority_quality_count }}
+                                                            </td>
+                                                            <td width="20%">{{ ownSummary?.priority_quality_comp_count
+                                                                }}</td>
+                                                            <td width="20%"
+                                                                [style.color]="ownSummary?.priority_quality_perf_color">
+                                                                {{ ownSummary?.priority_quality_perf | number:'1.0-0'
+                                                                }}%
+                                                            </td>
+                                                        </tr>
+
+                                                        <!-- My Own (OTHERS) -->
+                                                        <tr>
+                                                            <td>My Own (OTHERS)</td>
+                                                            <td width="20%">{{ ownSummary?.other_quality_count }}</td>
+                                                            <td width="20%">{{ ownSummary?.other_quality_comp_count }}
+                                                            </td>
+                                                            <td width="20%"
+                                                                [style.color]="ownSummary?.other_quality_perf_color">
+                                                                {{ ownSummary?.other_quality_perf | number:'1.0-0' }}%
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-sm-6 mb-xl-0">
+                                    <div class="row">
+                                        <div class="col-xl-12 col-sm-12 mb-xl-0">
+                                            <table class="table text-uppercase">
+                                                <tr class="table-header-color">
+                                                    <th>
+                                                        <h4 class="text-uppercase"
+                                                            style="text-decoration: underline; font-weight: bold !important;">
+                                                            WORK OVERVIEW</h4>
+                                                    </th>
+
+                                                    <ng-container *ngFor="let item of performanceArray">
+                                                        <ng-container *ngFor="let entry of (item | keyvalue)">
+                                                            <th>
+                                                                <h5 class="text-uppercase"
+                                                                    [title]="entry.value.provider_name">
+                                                                    {{ entry.value.provider_name?.slice(0, 5) }}..
+                                                                </h5>
+                                                            </th>
+                                                        </ng-container>
+                                                    </ng-container>
+
+                                                    <th>
+                                                        <h5>TOTAL</h5>
+                                                    </th>
+                                                </tr>
+
+                                                <!-- CONTACTED (PRIORITY) -->
+                                                <tr>
+                                                    <td>CONTACTED (PRIORITY)</td>
+                                                    <ng-container *ngFor="let item of performanceArray">
+                                                        <ng-container *ngFor="let entry of (item | keyvalue)">
+                                                            <td>
+                                                                {{ entry.value.call_count }}/{{ entry.value.priority_count }}
+                                                                (<span [style.color]="entry.value.priority_color" style="padding: 0;">{{ entry.value.priority_percentage | number:'1.0-0'}}%</span>)
+                                                            </td>
+                                                        </ng-container>
+                                                    </ng-container>
+                                                    <td>
+                                                        {{ totalArray.total_call_count }}/{{
+                                                        totalArray.total_priority_count }}
+                                                        (<span [style.color]="totalArray.priority_call_color" style="padding: 0;">{{ totalArray.priority_call_percentage | number:'1.0-0' }}%</span>)
+                                                    </td>
+                                                </tr>
+
+                                                <!-- CONTACTED (OTHERS) -->
+                                                <tr>
+                                                    <td>CONTACTED (OTHERS)</td>
+                                                    <ng-container *ngFor="let item of performanceArray">
+                                                        <ng-container *ngFor="let entry of (item | keyvalue)">
+                                                            <td>
+                                                                {{ entry.value.other_call_count }}/{{
+                                                                entry.value.other_count }}
+                                                                (<span [style.color]="entry.value.other_call_color" style="padding: 0;">{{ entry.value.other_call_percentage | number:'1.0-0' }}%</span>)
+                                                            </td>
+                                                        </ng-container>
+                                                    </ng-container>
+                                                    <td>
+                                                        {{ totalArray.total_other_call_count }}/{{
+                                                        totalArray.total_other_count }}
+                                                        (<span [style.color]="totalArray.other_call_color" style="padding: 0;">{{ totalArray.other_call_percentage | number:'1.0-0' }}%</span>)
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td [attr.colspan]="performanceArray.length + 2"
+                                                        style="border-top: 2px solid #000; padding: 0; margin: 0; line-height: 0;">
+                                                    </td>
+                                                </tr>
+
+
+                                                <!-- RISK GAPS (PRIORITY) -->
+                                                <tr>
+                                                    <td>RISK GAPS (PRIORITY)</td>
+                                                    <ng-container *ngFor="let item of performanceArray">
+                                                        <ng-container *ngFor="let entry of (item | keyvalue)">
+                                                            <td>
+                                                                {{ entry.value.priority_complete_gaps_count }}/{{
+                                                                entry.value.priority_gaps_count }}
+                                                                (<span [style.color]="entry.value.priority_gaps_color" style="padding: 0;">{{ entry.value.priority_gaps_percentage | number:'1.0-0' }}%</span>)
+                                                            </td>
+                                                        </ng-container>
+                                                    </ng-container>
+                                                    <td>
+                                                        {{ totalArray.total_priority_complete_gaps_count }}/{{
+                                                        totalArray.total_priority_gaps_count }}
+                                                        (<span [style.color]="totalArray.priority_gaps_color" style="padding: 0;">{{ totalArray.priority_gaps_percentage | number:'1.0-0' }}%</span>)
+                                                    </td>
+                                                </tr>
+
+                                                <!-- RISK GAPS (OTHERS) -->
+                                                <tr>
+                                                    <td>RISK GAPS (OTHERS)</td>
+                                                    <ng-container *ngFor="let item of performanceArray">
+                                                        <ng-container *ngFor="let entry of (item | keyvalue)">
+                                                            <td>
+                                                                {{ entry.value.other_complete_gaps_count }}/{{
+                                                                entry.value.other_gaps_count }}
+                                                                (<span [style.color]="entry.value.other_gaps_color" style="padding: 0;">{{ entry.value.other_gaps_percentage | number:'1.0-0' }}%</span>)
+                                                            </td>
+                                                        </ng-container>
+                                                    </ng-container>
+                                                    <td>
+                                                        {{ totalArray.total_other_complete_gaps_count }}/{{
+                                                        totalArray.total_other_gaps_count }}
+                                                        (<span [style.color]="totalArray.other_gaps_color" style="padding: 0;">{{ totalArray.other_gaps_percentage | number:'1.0-0' }}%</span>)
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td [attr.colspan]="performanceArray.length + 2"
+                                                        style="border-top: 2px solid #000; padding: 0; margin: 0; line-height: 0;">
+                                                    </td>
+                                                </tr>
+
+                                                <!-- QUALITY GAPS (PRIORITY) -->
+                                                <tr>
+                                                    <td>QUALITY GAPS (PRIORITY)</td>
+                                                    <ng-container *ngFor="let item of performanceArray">
+                                                        <ng-container *ngFor="let entry of (item | keyvalue)">
+                                                            <td>
+                                                                {{ entry.value.priority_complete_quality_gaps_count
+                                                                }}/{{ entry.value.priority_quality_gaps_count }}
+                                                                (<span [style.color]="entry.value.priority_quality_gaps_color" style="padding: 0;">{{ entry.value.priority_quality_gaps_percentage | number:'1.0-0' }}%</span>)
+                                                            </td>
+                                                        </ng-container>
+                                                    </ng-container>
+                                                    <td>
+                                                        {{ totalArray.total_priority_complete_quality_gaps_count }}/{{
+                                                        totalArray.total_priority_quality_gaps_count }}
+                                                        (<span [style.color]="totalArray.priority_quality_gaps_color" style="padding: 0;">{{ totalArray.priority_quality_gaps_percentage | number:'1.0-0' }}%</span>)
+                                                    </td>
+                                                </tr>
+
+                                                <!-- QUALITY GAPS (OTHERS) -->
+                                                <tr>
+                                                    <td>QUALITY GAPS (OTHERS)</td>
+                                                    <ng-container *ngFor="let item of performanceArray">
+                                                        <ng-container *ngFor="let entry of (item | keyvalue)">
+                                                            <td>
+                                                                {{ entry.value.other_complete_quality_gaps_count }}/{{
+                                                                entry.value.other_quality_gaps_count }}
+                                                                (<span [style.color]="entry.value.other_quality_gaps_color" style="padding: 0;">{{ entry.value.other_quality_gaps_percentage | number:'1.0-0' }}%</span>)
+                                                            </td>
+                                                        </ng-container>
+                                                    </ng-container>
+                                                    <td>
+                                                        {{ totalArray.total_other_complete_quality_gaps_count }}/{{
+                                                        totalArray.total_other_quality_gaps_count }}
+                                                        (<span [style.color]="totalArray.other_quality_gaps_color" style="padding: 0;">{{ totalArray.other_quality_gaps_percentage | number:'1.0-0'}}%</span>)
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td [attr.colspan]="performanceArray.length + 2"
+                                                        style="border-top: 2px solid #000; padding: 0; margin: 0; line-height: 0;">
+                                                    </td>
+                                                </tr>
+
+                                                <!-- PCP VISIT (PRIORITY) -->
+                                                <tr>
+                                                    <td>PCP VISIT (PRIORITY)</td>
+                                                    <ng-container *ngFor="let item of performanceArray">
+                                                        <ng-container *ngFor="let entry of (item | keyvalue)">
+                                                            <td>
+                                                                {{ entry.value.priority_pcp_visit_count }}/{{
+                                                                entry.value.priority_count }}
+                                                                (<span
+                                                                    [style.color]="entry.value.priority_pcp_visit_color" style="padding: 0;">{{ entry.value.priority_pcp_visit_percentage | number:'1.0-0' }}%</span>)
+                                                            </td>
+                                                        </ng-container>
+                                                    </ng-container>
+                                                    <td>
+                                                        {{ totalArray.priority_pcp_visit_count ?? 0 }}/{{
+                                                        totalArray.total_priority_count }}
+                                                        (<span [style.color]="totalArray.priority_pcp_color" style="padding: 0;">{{ totalArray.priority_pcp_percentage | number:'1.0-0' }}%</span>)
+                                                    </td>
+                                                </tr>
+
+                                                <!-- PCP VISIT (OTHERS) -->
+                                                <tr>
+                                                    <td>PCP VISIT (OTHERS)</td>
+                                                    <ng-container *ngFor="let item of performanceArray">
+                                                        <ng-container *ngFor="let entry of (item | keyvalue)">
+                                                            <td>
+                                                                {{ entry.value.other_pcp_visit_count }}/{{
+                                                                entry.value.other_count }}
+                                                                (<span
+                                                                    [style.color]="entry.value.other_pcp_visit_color" style="padding: 0;">{{ entry.value.other_pcp_visit_percentage | number:'1.0-0' }}%</span>)
+                                                            </td>
+                                                        </ng-container>
+                                                    </ng-container>
+                                                    <td>
+                                                        {{ totalArray.total_other_count_pcp ?? 0 }}/{{
+                                                        totalArray.total_other_count }}
+                                                        (<span [style.color]="totalArray.other_pcp_color" style="padding: 0;">{{ totalArray.other_pcp_percentage | number:'1.0-0' }}%</span>)
+                                                    </td>
+                                                </tr>
+                                            </table>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-xl-6 col-sm-6 mb-xl-0">
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Left side columns -->
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-2">
+
+                    </div>
+
+
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+
+                                <!-- Nav Tabs -->
+                                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link active" id="profile-tab" data-bs-toggle="tab"
+                                            data-bs-target="#profile" type="button" role="tab" aria-controls="profile"
+                                            aria-selected="true">MEMBERS</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="referred-tab" data-bs-toggle="tab"
+                                            data-bs-target="#referred" type="button" role="tab" aria-controls="task"
+                                            aria-selected="false">TRANSFER</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <select onchange="get_action(this.value)" id="action_ids" class="ms-4 mb-2"
+                                            style="position: absolute;z-index: 647;margin-top: -7px;width:120px;">
+                                            <option VALUE="">ACTION</option>
+                                            <option VALUE="1">TRANSFER</option>
+                                            <option VALUE="2">ASSIGN PLAN</option>
+                                        </select>
+                                    </li>
+                                    <li>
+
+                                    </li>
+                                </ul>
+
+
+                                <div class="tab-content pt-2" id="myTabContent">
+
+                                    <!-- TASKS TAB -->
+                                    <div class="tab-pane " id="home" role="tabpanel" aria-labelledby="home-tab">
+                                        <table class="table table-borderless" id="tasks">
+                                            <thead>
+                                                <tr>
+                                                    <th width="5%"></th>
+                                                    <th>DATE</th>
+                                                    <th>STATUS</th>
+                                                    <th>ASSIGN TO</th>
+                                                    <th>ADDED BY</th>
+                                                    <th style="text-align:center;">COMPLETED DATE</th>
+                                                    <th style="text-align:center;">ACTION</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <!-- MEMBERS TAB -->
+                                    <div class="tab-pane show active" id="profile" role="tabpanel"
+                                        aria-labelledby="profile-tab">
+                                        <table class="table table-sm table-borderless" id="members">
+                                            <thead>
+                                                <tr class="group-header">
+                                                    <th colspan="7"></th>
+                                                    <th colspan="3" class="group-performance-td">RISK GAPS</th>
+                                                    <th colspan="3" class="group-performance-td">QUALITY GAPS</th>
+                                                    <th class="group-performance-td"></th>
+                                                </tr>
+                                                <tr>
+                                                    <th><input type="checkbox" id="allcheckbox"
+                                                            class="form-check-input"></th>
+                                                    <th>#MEMBER ID</th>
+                                                    <th>NAME/PHONE</th>
+                                                    <th class="text-center">PCP VISIT</th>
+                                                    <th class="text-center">PRIORITY</th>
+                                                    <th class="text-center">#TASK</th>
+                                                    <th class="text-center">#CALL</th>
+                                                    <th class="text-center group-performance-td">COUNT</th>
+                                                    <th class="text-center">COMPLETED</th>
+                                                    <th class="text-center">%</th>
+                                                    <th class="text-center group-performance-td">COUNT</th>
+                                                    <th class="text-center">COMPLETED</th>
+                                                    <th class="text-center">%</th>
+                                                    <th class="group-performance-td text-center">ACTION</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <!-- Check if members list has data -->
+                                                <tr *ngIf="members.length === 0">
+                                                    <td colspan="15" class="text-center text-danger">No records found
+                                                    </td>
+                                                </tr>
+
+                                                <tr *ngFor="let member of members; let i = index">
+                                                    <th class="text-primary">
+                                                        <input type="checkbox" class="form-check-input rowCheckbox"
+                                                            [value]="member.medicaid_id" />
+                                                    </th>
+
+                                                    <th class="text-primary">#{{ member.medicaid_id }}</th>
+
+                                                    <td class="text-primary" style="text-transform: uppercase;">
+                                                        {{ member.FIRST_NAME }} {{ member.LAST_NAME }}<br />
+                                                        {{ member.OTHER_PHONE || '' }}
+                                                    </td>
+
+                                                    <td class="text-center parent">
+                                                        <div [class.green]="member.PCP_VISIT_FLAG == 1"
+                                                            [class.red]="member.PCP_VISIT_FLAG != 1"></div>
+                                                        <div class="ms-1">{{ member.PCP_VISIT_DATE || '' }}</div>
+                                                    </td>
+
+                                                    <td class="text-center">{{ member.PRIORITY_FLAG || '' }}</td>
+
+                                                    <td class="text-center">
+                                                        <a class="text-center parent">
+                                                            <div [ngClass]="member.task_color"></div>
+                                                        </a>
+                                                        <!-- <a href="javascript:void(0);"
+                                                        (click)="add_update_task_click(member.medicaid_id, member.FIRST_NAME, member.LAST_NAME)">
+                                                        {{ member.upcoming_task_date || 'N/A' }}
+                                                    </a> -->
+                                                        {{ member.upcoming_task_date || 'N/A' }}
+                                                    </td>
+
+                                                    <td class="text-center">
+                                                        <!-- <a title="Call List" class="text-primary" style="cursor:pointer;"
+                                                        (click)="showCallList(member.medicaid_id, member.FIRST_NAME + ' ' + member.LAST_NAME)">
+                                                        {{ member.Call_count }}
+                                                    </a> -->{{ member.Call_count }}
+                                                    </td>
+
+                                                    <td class="text-center group-performance-td">
+                                                        <!-- <a title="Gap List" class="text-primary" style="cursor:pointer;"
+                                                        (click)="showGapList(member.medicaid_id, member.FIRST_NAME + ' ' + member.LAST_NAME)">
+                                                        {{ member.risk_gap_count }}
+                                                    </a> -->{{ member.risk_gap_count }}
+                                                    </td>
+
+                                                    <td class="text-center">{{ member.risk_comp_count }}</td>
+                                                    <td class="text-center" [style.color]="member.risk_perf_color">
+                                                        {{ member.risk_perf | number:'1.0-0' }}%
+                                                    </td>
+
+                                                    <td class="text-center group-performance-td">
+                                                        <!-- <a title="CIH Quality List" class="text-primary" style="cursor:pointer;"
+                                                        (click)="showCIHQualityList(member.medicaid_id, member.FIRST_NAME + ' ' + member.LAST_NAME)">
+                                                        {{ member.quality_count }}
+                                                    </a> -->{{ member.quality_count }}
+                                                    </td>
+
+                                                    <td class="text-center">{{ member.quality_comp_count }}</td>
+                                                    <td class="text-center" [style.color]="member.quality_perf_color">
+                                                        {{ member.quality_perf | number:'1.0-0' }}%
+                                                    </td>
+
+                                                    <td class="text-center group-performance-td">
+                                                        <button class="btn btn-primary"
+                                                            (click)="openModal(member.medicaid_id, member.FIRST_NAME + ' ' + member.LAST_NAME)">Add Action</button>
+                                                        <!-- <a target="_blank" [routerLink]="['/memberdetails', member.medicaid_id]">
+                                                        <i title="Member Details" class="fa fa-eye"></i>
+                                                    </a>&nbsp;&nbsp;
+
+                                                    <a href="javascript:void(0);"
+                                                        (click)="add_update_action_click(member.medicaid_id, member.FIRST_NAME, member.LAST_NAME)">
+                                                        <i title="Add Action" class="fa fa-plus"></i>
+                                                    </a>&nbsp;&nbsp;
+
+                                                    <a href="javascript:void(0);" (click)="benefits(member.medicaid_id)">P</a> -->
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+
+                                        </table>
+                                    </div>
+
+                                    <!-- REFERRED LIST TAB -->
+                                    <div class="tab-pane " id="referred" role="tabpanel" aria-labelledby="referred-tab">
+                                        <table class="table table-borderless" id="transferList">
+                                            <thead>
+                                                <tr>
+                                                    <th>#MEMBER ID</th>
+                                                    <th>TRANSFERRED BY</th>
+                                                    <th>TRANSFERRED TO</th>
+                                                    <th>TRANSFER DATE</th>
+                                                    <th>TRANSFER REASON</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                <tr class="text-uppercase">
+                                                    <td><a href="javascript:void(0);">#9401796637</a></td>
+                                                    <td>Nicole Johnson</td>
+                                                    <td>Justin Harmon</td>
+                                                    <td>10/15/2025</td>
+                                                    <td>Test reason</td>
+                                                </tr>
+
+                                                <tr class="text-uppercase">
+                                                    <td><a href="javascript:void(0);">#9401710877</a></td>
+                                                    <td>Nicole Johnson</td>
+                                                    <td>Justin Harmon</td>
+                                                    <td>10/15/2025</td>
+                                                    <td>Test reason</td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <!-- TRANSPORTATION TAB -->
+                                    <div class="tab-pane " id="transportation" role="tabpanel"
+                                        aria-labelledby="transportation-tab">
+                                        <table class="table table-striped table-bordered"
+                                            id="transportation_prior_list_table_id">
+                                            <thead>
+                                                <tr>
+                                                    <th>MEMBER ID</th>
+                                                    <th>FIRST NAME</th>
+                                                    <th>LAST NAME</th>
+                                                    <th>PHONE</th>
+                                                    <th>ADDRESS</th>
+                                                    <th>DATE & TIME</th>
+                                                    <th>VENDOR</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div><!-- End tab-content -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- End Left side columns -->
+
+            <div class="col-lg-6">
+                <!-- Recent Activity -->
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Recent Activity <span>| Today</span></h5>
+                        <div class="activity">
+
+
+                            <div class="activity-item row">
+                                <div class="activite-label col-lg-4">
+                                    Oct 29 2025 08:10
+                                </div>
+                                <div class="col-lg-1">
+                                    <i class="bi bi-circle-fill activity-badge text-primary align-self-start"></i>
+                                </div>
+                                <div class="activity-content col-lg-7">
+                                    #3801060702: Alternative Language, Alternative Language changed to FRENCH
+                                </div>
+                            </div> <!-- End activity item-->
+
+
+                            <div class="activity-item row">
+                                <div class="activite-label col-lg-4">
+                                    Oct 29 2025 08:09
+                                </div>
+                                <div class="col-lg-1">
+                                    <i class="bi bi-circle-fill activity-badge text-primary align-self-start"></i>
+                                </div>
+                                <div class="activity-content col-lg-7">
+                                    #3801060702: Alternative Language, Alternative Language changed to KHMER
+                                </div>
+                            </div> <!-- End activity item-->
+
+
+                            <div class="activity-item row">
+                                <div class="activite-label col-lg-4">
+                                    Oct 29 2025 07:45
+                                </div>
+                                <div class="col-lg-1">
+                                    <i class="bi bi-circle-fill activity-badge text-primary align-self-start"></i>
+                                </div>
+                                <div class="activity-content col-lg-7">
+                                    #3801060702: Alternative Phone, Alternative Phone changed to (324) 234-2342
+                                </div>
+                            </div> <!-- End activity item-->
+
+
+                            <div class="activity-item row">
+                                <div class="activite-label col-lg-4">
+                                    Oct 29 2025 07:44
+                                </div>
+                                <div class="col-lg-1">
+                                    <i class="bi bi-circle-fill activity-badge text-primary align-self-start"></i>
+                                </div>
+                                <div class="activity-content col-lg-7">
+                                    #3801060702: Alternative Phone, Alternative Phone changed to (432) 423-4423
+                                </div>
+                            </div> <!-- End activity item-->
+
+
+                            <div class="activity-item row">
+                                <div class="activite-label col-lg-4">
+                                    Oct 29 2025 07:42
+                                </div>
+                                <div class="col-lg-1">
+                                    <i class="bi bi-circle-fill activity-badge text-primary align-self-start"></i>
+                                </div>
+                                <div class="activity-content col-lg-7">
+                                    #3801060702: Alternative Address, Alternative Address changed for 3801060702
+                                </div>
+                            </div> <!-- End activity item-->
+
+
+                            <div class="activity-item row">
+                                <div class="activite-label col-lg-4">
+                                    Oct 29 2025 07:38
+                                </div>
+                                <div class="col-lg-1">
+                                    <i class="bi bi-circle-fill activity-badge text-primary align-self-start"></i>
+                                </div>
+                                <div class="activity-content col-lg-7">
+                                    #3801060702: Alternative Address, Alternative Address changed for 3801060702
+                                </div>
+                            </div> <!-- End activity item-->
+
+                        </div>
+                    </div>
+                </div><!-- End Recent Activity -->
+            </div>
+
+            <!-- Right side columns -->
+            <div class="col-lg-6">
+                <!-- Alerts -->
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Alerts <span>| Today</span></h5>
+                        <div class="activity">
+                            <div class="row">
+
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- End Recent Activity -->
+            </div> <!-- End Right side columns -->
+
+        </div>
+
+    </section>
+    <div *ngIf="isLoading" class="loader-overlay">
+  <div class="spinner"></div>
+</div>
+</main>
+
+
+
+
+<div class="modal fade" id="addActionModal" tabindex="-1" aria-labelledby="addActionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" style="width:90%;">
+        <div class="modal-content">
+            <!-- Header -->
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                    ADD/UPDATE ACTION |
+                    <span class="text-uppercase">{{ member_name }}</span> -
+                    #{{ medicaid_id }}
+                </h5>
+                <button type="button" class="btn-close" (click)="closeModal()"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-body">
+                        <!-- Tabs -->
+                        <ul class="nav nav-tabs mx-2" id="actionTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="todo-tab" data-bs-toggle="tab"
+                                    data-bs-target="#tab1" type="button" role="tab" aria-controls="tab1"
+                                    aria-selected="true">
+                                    TO-DO / DONE
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="appointment-tab" data-bs-toggle="tab"
+                                    data-bs-target="#tab2" type="button" role="tab" aria-controls="tab2"
+                                    aria-selected="false">
+                                    APPOINTMENT
+                                </button>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content mt-3" id="actionTabsContent">
+                            <!-- TO-DO / DONE TAB -->
+                            <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="todo-tab">
+                                <!-- Your TO-DO form here -->
+                                <form enctype="multipart/form-data" [formGroup]="addActionFormGroup" (ngSubmit)="add_update_action_submit()">
+                                    <div class="row mx-0">
+                                        <!-- (content omitted for brevity) -->
+                                        <div class="col-sm-6 mt-3 p-2 mt-3 ">
+                                            <div class="border rounded p-3">
+                                                <div class="mb-2 text-uppercase" style="cursor:pointer"
+                                                    (click)="toggleActionView()">
+                                                    <h4><b>Action</b></h4>
+                                                </div>
+
+                                                <div class="row" id="action_view" *ngIf="isActionVisible">
+                                                      <input type="hidden" formControlName="medicaid_id" />
+            <div class="col-sm-4">
+              <label class="form-label text-uppercase">Activity Category:</label>
+            </div>
+            <div class="col-sm-8">
+              @for (reagon of action_activity_category; track reagon.id; let i = $index) {
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" [value]="reagon.id" formControlName="action_id" />
+                  <label class="form-check-label text-uppercase">{{ reagon.Panel_Name }}</label>
+                </div>
+              }
+            </div>
+
+            <div class="col-sm-4 mt-4">
+              <label class="form-label text-uppercase">Activity Type:</label>
+            </div>
+            <div class="col-sm-8 mt-4">
+              @for (type of action_ativity_type; track type.id; let i = $index) {
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" [value]="type.id" formControlName="panel_id" />
+                  <label class="form-check-label text-uppercase">{{ type.action_type }}</label>
+                </div>
+              }
+            </div>
+
+            <div class="col-sm-3 mt-4">
+              <input
+                placeholder="Action Date"
+                type="text"
+                formControlName="action_date"
+                id="action_date"
+                class="form-control datepicker text-uppercase"
+                required
+              />
+            </div>
+
+            <div class="col-sm-3 mt-4">
+              <select
+                class="form-control form-select text-uppercase darrow"
+                formControlName="action_status"
+                id="action_status"
+                required
+              >
+                <option value="Scheduled">Scheduled</option>
+                <option value="Success">Success</option>
+                <option value="Failure">Failure</option>
+              </select>
+            </div>
+
+            <div class="col-sm-6 mt-4">
+              <select
+                class="form-control form-select text-uppercase darrow"
+                formControlName="action_result_id"
+                id="action_result_id"
+                required
+              >
+                <option value="">-- ACTION STATUS --</option>
+                @for (result of actionresult_followup_list; track result.id) {
+                  <option [value]="result.id">{{ result.action_result }}</option>
+                }
+              </select>
+            </div>
+
+            <div class="col-sm-12 mt-4">
+              <textarea
+                class="form-control"
+                formControlName="action_note"
+                id="action_note"
+                required
+                placeholder="Type your text..."
+              ></textarea>
+            </div>
+                                                    <div class="col-sm-12 mt-4">
+                                                        <input class="form-control" disabled type="file"
+                                                            name="file_visit_update" accept="application/pdf">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6 mt-3 p-2 mt-3 ">
+                                            <div class="border rounded p-3">
+                                                <div class="mb-2 text-uppercase" style="cursor:pointer"
+                                                    (click)="toggleNextActivityView()">
+                                                    <h4><b>Next Activity</b></h4>
+                                                </div>
+                                                <div class="row" id="next_activity" *ngIf="isNextActivityVisible">
+                                                    <div class="col-sm-4 mt-4">
+                                                        <label class="form-label text-uppercase">Next Activity
+                                                            Type:</label>
+                                                    </div>
+                                                    <div class="col-sm-8 mt-4">
+                                                        <div class="form-check form-check-inline"
+                                                            *ngFor="let type of action_ativity_type">
+                                                            <input class="form-check-input" type="radio"
+                                                                [value]="type.id" formControlName="next_panel_id" />
+                                                            <label class="form-check-label text-uppercase">{{
+                                                                type.action_type }}</label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-sm-4 mt-4">
+                                                        <label class="form-label text-uppercase">Next Activity
+                                                            Date:</label>
+                                                    </div>
+                                                    <div class="col-sm-8 mt-4">
+                                                        <input placeholder="Next Action Date" type="text"
+                                                            formControlName="next_action_date" id="next_action_date"
+                                                            class="form-control datepicker text-uppercase">
+                                                    </div>
+
+                                                    <div class="col-sm-12 mt-4">
+                                                        <textarea class="form-control text-uppercase"
+                                                            formControlName="next_action_note" id="next_action_note"
+                                                            placeholder="Type your text..."></textarea>
+                                                    </div>
+                                                    <div class="col-sm-12 mt-4">
+                                                        <table class="table">
+                                                            <tr>
+                                                                <th class="text-uppercase">Task Type</th>
+                                                                <th class="text-uppercase">Task Date</th>
+                                                                <th class="text-uppercase">Status</th>
+                                                                <th class="text-uppercase">Assign To</th>
+                                                                <th class="text-uppercase">Note</th>
+                                                            </tr>
+                                                            <tbody>
+                                                                <!-- Show tasks when data exists -->
+                                                                <tr *ngFor="let task of memberTaskList"
+                                                                    [style.color]="task.bg_color || ''">
+                                                                    <td>{{ task.action_type || '' }}</td>
+                                                                    <td>{{ task.action_date | date: 'MM/dd/yyyy' }}</td>
+                                                                    <td>{{ task.status || '' }}</td>
+                                                                    <td>{{ task.initial || '' }}</td>
+                                                                    <td>{{ task.action_note || '' }}</td>
+                                                                </tr>
+
+                                                                <!-- Show message when no records -->
+                                                                <tr
+                                                                    *ngIf="!memberTaskList || memberTaskList.length === 0">
+                                                                    <td colspan="5" class="text-center">No records found
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 p-2 mt-3">
+                                            <div class="border rounded p-3">
+                                                <div class=" mt-4">
+                                                    <div class="mb-2 text-uppercase" style="cursor:pointer"
+                                                        (click)="toggleRiskGaps()">
+                                                        <h4><b>Risk Gaps</b></h4>
+                                                    </div>
+                                                    <div class="multiselect" id="risk_gap"  formArrayName="riskGapsList" *ngIf="showRiskGaps">
+                                                        <div *ngFor="let riskGap of riskGapsList.controls; let i = index" [formGroupName]="i"
+                                                            class="text-uppercase mb-2">
+                                                                <input type="checkbox"
+                                                                    class="form-check-input me-2"
+                                                                    [id]="'gap_id_' + i"
+                                                                    formControlName="PROCESS_STATUS"
+                                                                    (change)="onGapChecked(i)" />
+                                                                <span (click)="toggleriskObsField(i)" style="cursor: pointer;">
+                                                                  {{ riskGap.get('DIAG_DESC')?.value }}
+                                                                </span>
+                                                                <div  *ngIf="isRiskFieldVisible[i]">
+                                                                    <input type="hidden" formControlName="DIAG_CODE" [value]="riskGap.get('DIAG_CODE')?.value" />
+                                                                    <input type="hidden" formControlName="risk_gap_id" [value]="riskGap.get('risk_gap_id')?.value" />
+                                                                    <div class="row">
+                                                                        <div class="col-2 mb-2">
+                                                                        <input
+                                                                            [value]="riskGap.get('risk_gap_id')?.value"
+                                                                            placeholder="Observation Date"
+                                                                            title="Observation Date"
+                                                                            type="text"
+                                                                            formControlName="Observation_Date"
+                                                                            class="form-control datepicker"
+                                                                        />
+                                                                        </div>
+
+                                                                        <div class="col-2 mb-2">
+                                                                            <input
+                                                                            placeholder="Observation Code"
+                                                                            title="Observation Code"
+                                                                            type="text"
+                                                                            formControlName="Observation_Code"
+                                                                            class="form-control"
+                                                                            />
+                                                                        </div>
+
+                                                                        <div class="col-2 mb-2">
+                                                                            <input
+                                                                            placeholder="CPT Code Modifier"
+                                                                            title="CPT Code Modifier"
+                                                                            type="text"
+                                                                            formControlName="CPT_Code_Modifier"
+                                                                            class="form-control"
+                                                                            />
+                                                                        </div>
+
+                                                                        <div class="col-2 mb-2">
+                                                                            <input
+                                                                            placeholder="Observation Code Set"
+                                                                            title="Observation Code Set"
+                                                                            type="text"
+                                                                            formControlName="Observation_Code_Set"
+                                                                            class="form-control"
+                                                                            />
+                                                                        </div>
+
+                                                                        <div class="col-2 mb-2">
+                                                                            <input
+                                                                            placeholder="Observation Result"
+                                                                            title="Observation Result"
+                                                                            type="text"
+                                                                            formControlName="Observation_Result"
+                                                                            class="form-control"
+                                                                            />
+                                                                        </div>
+
+                                                                        <div class="col-2 mb-2">
+                                                                            <input
+                                                                            placeholder="Service Provider NPI"
+                                                                            title="Service Provider NPI"
+                                                                            type="text"
+                                                                            formControlName="Service_Provider_NPI"
+                                                                            class="form-control"
+                                                                            />
+                                                                        </div>
+
+                                                                        <div class="col-2 mb-2">
+                                                                            <input
+                                                                            placeholder="Service Provider Taxonomy Code"
+                                                                            title="Service Provider Taxonomy Code"
+                                                                            type="text"
+                                                                            formControlName="Service_Provider_Taxonomy_Code"
+                                                                            class="form-control"
+                                                                            />
+                                                                        </div>
+
+                                                                        <div class="col-2 mb-2">
+                                                                            <input
+                                                                            placeholder="Service Provider Name"
+                                                                            title="Service Provider Name"
+                                                                            type="text"
+                                                                            formControlName="Service_Provider_Name"
+                                                                            class="form-control"
+                                                                            />
+                                                                        </div>
+
+                                                                        <div class="col-2 mb-2">
+                                                                            <input
+                                                                            placeholder="Service Provider Type"
+                                                                            title="Service Provider Type"
+                                                                            type="text"
+                                                                            formControlName="Service_Provider_Type"
+                                                                            class="form-control"
+                                                                            />
+                                                                        </div>
+
+                                                                        <div class="col-2 mb-2">
+                                                                            <input
+                                                                            placeholder="Service Provider RxProviderFlag"
+                                                                            title="Service Provider RxProviderFlag"
+                                                                            type="text"
+                                                                            formControlName="Service_Provider_RxProviderFlag"
+                                                                            class="form-control"
+                                                                            />
+                                                                        </div>
+
+                                                                        <div class="col-2 mb-2">
+                                                                            <input
+                                                                            placeholder="Provider Group NPI"
+                                                                            title="Provider Group NPI"
+                                                                            type="text"
+                                                                            formControlName="Provider_Group_NPI"
+                                                                            class="form-control"
+                                                                            />
+                                                                        </div>
+
+                                                                        <div class="col-2 mb-2">
+                                                                            <input
+                                                                            placeholder="Provider Group Taxonomy Code"
+                                                                            title="Provider Group Taxonomy Code"
+                                                                            type="text"
+                                                                            formControlName="Provider_Group_Taxonomy_Code"
+                                                                            class="form-control"
+                                                                            />
+                                                                        </div>
+
+                                                                        <div class="col-2 mb-2">
+                                                                            <input
+                                                                            placeholder="Provider Group Name"
+                                                                            title="Provider Group Name"
+                                                                            type="text"
+                                                                            formControlName="Provider_Group_Name"
+                                                                            class="form-control"
+                                                                            />
+                                                                        </div>
+
+                                                                        <div class="col-10 mb-2">
+                                                                            <textarea
+                                                                            formControlName="note"
+                                                                            placeholder="Note"
+                                                                            title="Note"
+                                                                            class="form-control"
+                                                                            style="height: 36px;"
+                                                                            ></textarea>
+                                                                        </div>
+
+
+
+
+                                                                    </div>
+                                                                </div>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 p-2 ">
+                                            <div class="border rounded p-3">
+                                                <div class=" mt-4">
+                                                    <div class="mb-2 text-uppercase" style="cursor:pointer"
+                                                        (click)="toggleQualityGaps()">
+                                                        <h4><b>Quality Gaps</b></h4>
+                                                    </div>
+                                                    <div class="multiselect" id="quality_gap"  formArrayName="qualityGapsList" *ngIf="showQualityGaps">
+                                                        <div *ngFor="let qualityGap of qualityGapsList.controls; let i = index" [formGroupName]="i"
+                                                            class="text-uppercase mb-2">
+                                                                <input type="checkbox"
+                                                                    class="form-check-input me-2"
+                                                                    [id]="'gap_id_' + i"
+                                                                    formControlName="PROCESS_STATUS"
+                                                                    (change)="onGapChecked(i)" />
+                                                                <span (click)="toggleObsField(i)" style="cursor: pointer;">
+                                                                  {{ qualityGap.get('MEASURE_NAME')?.value }}
+                                                                </span>
+                                                                <div *ngIf="isObsFieldVisible[i]">
+                                                                    <input type="hidden" formControlName="SUB_MEASURE" [value]="qualityGap.get('SUB_MEASURE')?.value" />
+                                                                    <input type="hidden" formControlName="quality_gap_id" [value]="qualityGap.get('quality_gap_id')?.value" />
+                                                                    <div class="row">
+                                                                        <div class="col-2 mb-2">
+                                                                        <input
+                                                                            [value]="qualityGap.get('risk_gap_id')?.value"
+                                                                            placeholder="Observation Date"
+                                                                            title="Observation Date"
+                                                                            type="text"
+                                                                            formControlName="Observation_Date"
+                                                                            class="form-control datepicker"
+                                                                        />
+                                                                        </div>
+
+                                                                        <div class="col-2 mb-2">
+                                                                            <input
+                                                                            placeholder="Observation Code"
+                                                                            title="Observation Code"
+                                                                            type="text"
+                                                                            formControlName="Observation_Code"
+                                                                            class="form-control"
+                                                                            />
+                                                                        </div>
+
+                                                                        <div class="col-2 mb-2">
+                                                                            <input
+                                                                            placeholder="CPT Code Modifier"
+                                                                            title="CPT Code Modifier"
+                                                                            type="text"
+                                                                            formControlName="CPT_Code_Modifier"
+                                                                            class="form-control"
+                                                                            />
+                                                                        </div>
+
+                                                                        <div class="col-2 mb-2">
+                                                                            <input
+                                                                            placeholder="Observation Code Set"
+                                                                            title="Observation Code Set"
+                                                                            type="text"
+                                                                            formControlName="Observation_Code_Set"
+                                                                            class="form-control"
+                                                                            />
+                                                                        </div>
+
+                                                                        <div class="col-2 mb-2">
+                                                                            <input
+                                                                            placeholder="Observation Result"
+                                                                            title="Observation Result"
+                                                                            type="text"
+                                                                            formControlName="Observation_Result"
+                                                                            class="form-control"
+                                                                            />
+                                                                        </div>
+
+                                                                        <div class="col-2 mb-2">
+                                                                            <input
+                                                                            placeholder="Service Provider NPI"
+                                                                            title="Service Provider NPI"
+                                                                            type="text"
+                                                                            formControlName="Service_Provider_NPI"
+                                                                            class="form-control"
+                                                                            />
+                                                                        </div>
+
+                                                                        <div class="col-2 mb-2">
+                                                                            <input
+                                                                            placeholder="Service Provider Taxonomy Code"
+                                                                            title="Service Provider Taxonomy Code"
+                                                                            type="text"
+                                                                            formControlName="Service_Provider_Taxonomy_Code"
+                                                                            class="form-control"
+                                                                            />
+                                                                        </div>
+
+                                                                        <div class="col-2 mb-2">
+                                                                            <input
+                                                                            placeholder="Service Provider Name"
+                                                                            title="Service Provider Name"
+                                                                            type="text"
+                                                                            formControlName="Service_Provider_Name"
+                                                                            class="form-control"
+                                                                            />
+                                                                        </div>
+
+                                                                        <div class="col-2 mb-2">
+                                                                            <input
+                                                                            placeholder="Service Provider Type"
+                                                                            title="Service Provider Type"
+                                                                            type="text"
+                                                                            formControlName="Service_Provider_Type"
+                                                                            class="form-control"
+                                                                            />
+                                                                        </div>
+
+                                                                        <div class="col-2 mb-2">
+                                                                            <input
+                                                                            placeholder="Service Provider RxProviderFlag"
+                                                                            title="Service Provider RxProviderFlag"
+                                                                            type="text"
+                                                                            formControlName="Service_Provider_RxProviderFlag"
+                                                                            class="form-control"
+                                                                            />
+                                                                        </div>
+
+                                                                        <div class="col-2 mb-2">
+                                                                            <input
+                                                                            placeholder="Provider Group NPI"
+                                                                            title="Provider Group NPI"
+                                                                            type="text"
+                                                                            formControlName="Provider_Group_NPI"
+                                                                            class="form-control"
+                                                                            />
+                                                                        </div>
+
+                                                                        <div class="col-2 mb-2">
+                                                                            <input
+                                                                            placeholder="Provider Group Taxonomy Code"
+                                                                            title="Provider Group Taxonomy Code"
+                                                                            type="text"
+                                                                            formControlName="Provider_Group_Taxonomy_Code"
+                                                                            class="form-control"
+                                                                            />
+                                                                        </div>
+
+                                                                        <div class="col-2 mb-2">
+                                                                            <input
+                                                                            placeholder="Provider Group Name"
+                                                                            title="Provider Group Name"
+                                                                            type="text"
+                                                                            formControlName="Provider_Group_Name"
+                                                                            class="form-control"
+                                                                            />
+                                                                        </div>
+
+                                                                        <div class="col-10 mb-2">
+                                                                            <textarea
+                                                                            formControlName="note"
+                                                                            placeholder="Note"
+                                                                            title="Note"
+                                                                            class="form-control"
+                                                                            style="height: 36px;"
+                                                                            ></textarea>
+                                                                        </div>
+
+
+
+
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="col-sm-12 p-2 ">
+                                            <div class="border rounded p-3">
+                                                <div class=" mt-4">
+                                                    <div class="mb-2 text-uppercase" style="cursor:pointer"
+                                                        onclick="quality_gap();">
+                                                        <h4><b>Quality Gaps</b></h4>
+                                                    </div>
+                                                    <div class="multiselect" id="quality_gap">
+                                                        @if (memberQualityList && memberQualityList.length > 0) {
+                                                        <div *ngFor="let quality of memberQualityList; let j = index"
+                                                            class="form-check text-uppercase mb-2">
+                                                            <input type="checkbox" class="form-check-input me-2"
+                                                                [id]="'quality_id_' + j" [value]="quality.id"
+                                                                [checked]="quality.PROCESS_STATUS === 1" />                                                              
+                                                            <span>
+                                                            <a
+                                                                style="cursor:pointer;"
+                                                                (click)="add_update_observation(quality.SUB_MEASURE, 'quality', j)"
+                                                            >
+                                                            {{ quality.MEASURE_NAME.trim() }}
+                                                            </a>
+                                                            </span>
+
+                                                        
+                                                        
+                                                        <div style="display:none;" [id]="'obs_field_list_quality' + j">
+                                                                <input type="hidden" name="gap_code_quality" [value]="quality.SUB_MEASURE" />
+                                                                <input type="hidden" name="type_quality" value="quality" />
+                                                                <input type="hidden" name="quality_gap_id" [value]="quality.id" />
+
+                                                                <div class="row">
+                                                                    <div class="col-2 mb-2">
+                                                                    <input
+                                                                        [value]="quality.ObservationDate === '01/01/1900' ? '' : quality.ObservationDate"
+                                                                        placeholder="Observation Date"
+                                                                        title="Observation Date"
+                                                                        type="text"
+                                                                        name="Observation_Date_quality"
+                                                                        class="form-control datepicker"
+                                                                    />
+                                                                    </div>
+
+         <div class="col-2 mb-2">
+          <input [value]="quality.Observation_Code || ''" placeholder="Observation Code" title="Observation Code"
+                 type="text" name="Observation_Code_quality" class="form-control" />
+        </div>
+
+        <div class="col-2 mb-2">
+          <input [value]="quality.CPT_Code_Modifier || ''" placeholder="CPT Code Modifier"
+                 title="CPT Code Modifier" type="text" name="CPT_Code_Modifier_quality" class="form-control" />
+        </div>
+
+        <div class="col-2 mb-2">
+          <input [value]="quality.Observation_Code_Set || 'ICD10'" placeholder="Observation Code Set"
+                 title="Observation Code Set" type="text" name="Observation_Code_Set_quality" class="form-control" />
+        </div>
+
+        <div class="col-2 mb-2">
+          <input [value]="quality.Observation_Result || ''" placeholder="Observation Result"
+                 title="Observation Result" type="text" name="Observation_Result_quality" class="form-control" />
+        </div>
+
+        <div class="col-2 mb-2">
+          <input [value]="quality.Service_Provider_NPI || ''" placeholder="Service Provider NPI"
+                 title="Service Provider NPI" type="text" name="Service_Provider_NPI_quality" class="form-control" />
+        </div>
+
+        <div class="col-2 mb-2">
+          <input [value]="quality.Service_Provider_Taxonomy_Code || ''"
+                 placeholder="Service Provider Taxonomy Code" title="Service Provider Taxonomy Code"
+                 type="text" name="Service_Provider_Taxonomy_Code_quality" class="form-control" />
+        </div>
+
+        <div class="col-2 mb-2">
+          <input [value]="quality.Service_Provider_Name || ''" placeholder="Service Provider Name"
+                 title="Service Provider Name" type="text" name="Service_Provider_Name_quality" class="form-control" />
+        </div>
+
+        <div class="col-2 mb-2">
+          <input [value]="quality.Service_Provider_Type || ''" placeholder="Service Provider Type"
+                 title="Service Provider Type" type="text" name="Service_Provider_Type_quality" class="form-control" />
+        </div>
+
+        <div class="col-2 mb-2">
+          <input [value]="quality.Service_Provider_RxProviderFlag || ''"
+                 placeholder="Service Provider RxProviderFlag" title="Service Provider RxProviderFlag"
+                 type="text" name="Service_Provider_RxProviderFlag_quality" class="form-control" />
+        </div>
+
+        <div class="col-2 mb-2">
+          <input [value]="quality.Provider_Group_NPI || ''" placeholder="Provider Group NPI"
+                 title="Provider Group NPI" type="text" name="Provider_Group_NPI_quality" class="form-control" />
+        </div>
+
+        <div class="col-2 mb-2">
+          <input [value]="quality.Provider_Group_Taxonomy_Code || ''"
+                 placeholder="Provider Group Taxonomy Code" title="Provider Group Taxonomy Code"
+                 type="text" name="Provider_Group_Taxonomy_Code_quality" class="form-control" />
+        </div>
+
+        <div class="col-2 mb-2">
+          <input [value]="quality.Provider_Group_Name || ''" placeholder="Provider Group Name"
+                 title="Provider Group Name" type="text" name="Provider_Group_Name_quality" class="form-control" />
+        </div>
+
+        <div class="col-10 mb-2">
+          <textarea
+            name="quality_note"
+            placeholder="Note"
+            title="Note"
+            class="form-control"
+            style="height: 36px;"
+          >{{ quality.note || '' }}</textarea>
+        </div> 
+      </div>
+    </div>
+    </div>
+                                                        
+                                                        } @else {
+                                                        <div>No record found</div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> -->
+
+                                    </div>
+                                    <div class="row mb-3 mt-4">
+                                        <div class="col-sm-12 text-end">
+                                            <button type="submit" class="btn btn-primary text-uppercase"> Submit1
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
+
+                            <!-- APPOINTMENT TAB -->
+                            <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="appointment-tab">
+                                <form enctype="multipart/form-data" [formGroup]="appointmentFormGroup">
+                                    <div class="row mb-3">
+                                        <div class="col-sm-12">
+                                            <input type="text" formControlName="vendor_name" placeholder="Search Vendor"
+                                                class="form-control text-uppercase" />
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-sm-12">
+                                            <input type="date" formControlName="appointment_date" class="form-control"
+                                                placeholder="Appointment Date" required />
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-sm-12">
+                                            <input type="time" formControlName="appointment_time"
+                                                class="form-control" />
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-sm-12">
+                                            <textarea class="form-control text-uppercase"
+                                                formControlName="appointment_note" placeholder="Note"
+                                                required></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-end">
+                                        <button type="submit" class="btn btn-primary text-uppercase">
+                                            Submit 2
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

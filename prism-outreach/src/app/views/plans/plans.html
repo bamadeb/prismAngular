@@ -1,0 +1,68 @@
+
+
+<main id="main" class="main" style="margin-top:50px!important;min-height:550px;">
+    <section class="section dashboard">
+        <div class="row">
+            <!-- Left side columns -->
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                
+                                <div align="right" class="mb-4"> <a onclick="add_plan();" style="text-decoration:underline;cursor:pointer;">+ ADD PLAN</a></div>
+                                        <table class="table table-sm table-borderless" id="members">
+                                            <thead>
+                                                    <tr>
+                                                        <th>PLAN NAME</th>
+                                                        <th>START DATE</th>
+                                                        <th>END DATE</th>
+                                                        <th>FILE NAME</th>
+                                                        <th>FILE TYPE</th>
+                                                        <th>STATUS</th>
+                                                        <th>ACTION</th>
+                                                    </tr>
+                                            </thead>
+                                            <tbody>
+                                                 
+                                                    <tr>
+                                                        <td class="text-uppercase">PLAN-1</td>
+                                                        <td class="text-uppercase">10/06/2025</td>
+                                                        <td class="text-uppercase">10/20/2025</td>
+                                                        <td class="text-uppercase">2025 KeystoneVIP Benefits (JKH Final).pdf</td>
+                                                        <td class="text-uppercase">.pdf</td>
+                                                        <td class="text-uppercase">  Active </td>
+                                                        <td class="text-uppercase"><a title="Update" href="javascript:void(0);" onclick="update_plan(1,'PLAN-1','10/06/2025','10/20/2025',0,1);"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                                                    </tr>
+                                                
+                                                    <tr>
+                                                        <td class="text-uppercase">PLAN-2</td>
+                                                        <td class="text-uppercase">10/15/2025</td>
+                                                        <td class="text-uppercase">10/30/2025</td>
+                                                        <td class="text-uppercase">2025.pdf</td>
+                                                        <td class="text-uppercase">.pdf</td>
+                                                        <td class="text-uppercase">  Active </td>
+                                                        <td class="text-uppercase"><a title="Update" href="javascript:void(0);" onclick="update_plan(15,'PLAN-2','10/15/2025','10/30/2025',0,10);"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                                                    </tr>
+                                                
+                                                    <tr>
+                                                        <td class="text-uppercase">PLAN-2</td>
+                                                        <td class="text-uppercase">10/15/2025</td>
+                                                        <td class="text-uppercase">10/30/2025</td>
+                                                        <td class="text-uppercase">2025.pdf</td>
+                                                        <td class="text-uppercase">.pdf</td>
+                                                        <td class="text-uppercase"> Inactive </td>
+                                                        <td class="text-uppercase"><a title="Update" href="javascript:void(0);" onclick="update_plan(15,'PLAN-2','10/15/2025','10/30/2025',1,11);"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                                                    </tr>
+                                                
+                                            </tbody>
+                                        </table>
+
+                    </div>
+                </div>
+            </div><!-- End Left side columns -->
+        </div>
+            </div>
+        </div>
+    </section>
+</main>

@@ -1,0 +1,117 @@
+.contentBox{overflow-wrap:break-word;word-wrap:break-word;}.responsive-table-wrap{overflow-x:auto;}
+.ddc-header{border-bottom:none!important;}
+.frame {
+height:100vh;
+width:100vw;
+margin: o auto;
+background-image: url('assets/images/5.jpg');
+background-position: right center;
+background-size: cover;
+animation: image 15s infinite alternate;
+}
+.loginField{
+ border: none !important;    
+ border-bottom: 1px solid #bfbfbf !important;   
+ background-color: #fff !important;
+ border-radius: 0px !important;
+}
+.loginHeader{overflow: hidden;}
+.loginHeaderpart{width:30%;margin:0 auto;}
+.loginHeaderSubpart{box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;padding:30px;}
+.logoWidth{width:200px;}
+.loginBoxMargin{margin-top: 50px;}
+.loginFieldMargin{margin-top: 15px;}
+.footerPadding{padding-top:30ox;}
+.footerPart{font-size:24px;text-align:center;padding-top:90px;}
+.footerMargin{margin-right:5px;}
+.footerText{font-size:12px;color:#999;}
+
+.red{
+
+    border-radius: 50%;
+    background-color: #dc3545;
+    width: 14px;
+    height: 14px;
+    }
+    .yellow{
+    border-radius: 50%;
+    background-color: #ffc107;
+    width: 14px;
+    height: 14px;
+    }
+    .parent {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .green{
+
+        border-radius: 50%;
+        background-color: #198754;
+        width: 14px;
+        height: 14px;
+    }
+    #members thead tr:first-child th {
+      /* background-color: #f2f2f2;*/
+      text-align: center;
+      font-weight: bold;
+      border-bottom: none !important;
+      padding: 0 !important;
+    }
+  /* Style for the grouped headers */
+  .group-header th {
+    /* background-color: #f5f5f5; */
+    text-align: center;
+    font-weight: bold;
+    position: relative;
+    border-bottom: none !important;
+  }
+
+  /* Contact Info group box */
+  .group-contact {
+    border: 2px solid #4CAF50;
+    border-bottom: none; /* Avoid double border with lower row */
+  }
+
+  /* Performance group box */
+  .group-performance {
+    border: 2px solid #2196F3;
+    border-bottom: none;
+  }
+
+  /* Optional: Style for ungrouped column */
+  .no-group {
+    border: 2px solid #ccc;
+    border-bottom: none;
+  }
+    /* Remove top border from the second header row */
+    #members thead tr:not(.group-header) th {
+      border-top: none !important;
+    }
+    .group-performance-td {
+    border-left: 2px solid #d3cfcf !important;
+    }
+  .table-header-color {
+    background-color: #f5f5f5;
+    }
+
+     #largeModal .modal-dialog {
+        max-width: 90% !important;
+    }
+    #checkboxes { 
+      border: 1px #dadada solid;
+    }
+    #checkboxes1 { 
+      border: 1px #dadada solid;
+    }
+
+    #taskModal .modal-dialog {
+      max-width: 50% !important;
+  }
+  #checkboxes { 
+    border: 1px #dadada solid;
+  }
+  #checkboxes1 { 
+    border: 1px #dadada solid;
+  }

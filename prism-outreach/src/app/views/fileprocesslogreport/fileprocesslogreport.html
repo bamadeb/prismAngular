@@ -1,0 +1,74 @@
+
+<main id="main" class="main" style="margin-top:50px!important;min-height:550px;">
+    <section class="section dashboard">
+        <div class="row">
+            <!-- Left side columns -->
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <!-- Upload form -->
+                            <div class="col-lg-12">
+                                <form method="post" action="/processmember/" enctype="multipart/form-data" id="process_member_action" onsubmit="show_loder();">
+                                    <input type="hidden" name="csrfmiddlewaretoken" value="tAVdRVmzMV4b6FoPZhMPJQGwfx6QaMcelwhl7fZCkwJN8LkkR9GmYlUuTAgfciEy">
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-lg-3 text-uppercase">
+                                            <select class="text-uppercase w-100" name="process_type" id="process_type" required onchange="getProcessList(this.value);">
+                                                <option value=""> -- SELECT PROCESS TYPE --</option>
+                                                <option value="Member Process">Member File Process</option>
+                                                <option value="Risk Gaps Process">Risk Gaps File Process</option>
+                                                <option value="Quality Gaps Process">Quality Gaps File Process</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-3 text-uppercase">
+                                            <select class="text-uppercase w-100" name="process_list" id="process_list" required onchange="get_log_details(this.value);">
+                                                <option value=""> -- SELECT PROCESS --</option>
+                                            </select>
+
+                                        </div>
+                                        <div class="col-lg-4 text-uppercase">
+
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+            </div>
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                    <table  class="table">
+                        <thead>
+                        <tr>
+                            <th>Sl No</th>
+                            <th>PROCESS MESSAGE</th>
+                            <th>COUNT</th>
+                            <th>DATE</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody id="log_message_tbody">
+                            <tr><td colspan='4' class='text-center'>No records found</td></tr>
+                        </tbody>
+
+                    </table>
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+            </div>
+        </div>
+
+
+    </section>
+</main>

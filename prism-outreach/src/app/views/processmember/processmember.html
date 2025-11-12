@@ -1,0 +1,47 @@
+
+<main id="main" class="main" style="margin-top:50px!important;min-height:550px;">
+    <section class="section dashboard">
+        <div class="row">
+         <!-- Left side columns -->
+         <div class="col-lg-12">
+           <div class="card">
+                     <div class="card-body">
+
+                         <div class="row align-items-center">
+    <!-- Upload form -->
+    <div class="col-lg-6">
+        <form method="post" action="/processmember/" enctype="multipart/form-data" id="process_member_action" onsubmit="show_loder();">
+            <input type="hidden" name="csrfmiddlewaretoken" value="O8NTGr9XzwJSPyveg2Fd4C4xJURlaPwfG491WLM077ouRErJ8UzKj7ivnX1KclYz">
+            <div class="row g-2 align-items-center">
+                <div class="col-lg-4 text-uppercase">
+                    Select Member File
+                </div>
+                <div class="col-lg-4 text-uppercase">
+                    <input type="file" name="file" accept=".csv" class="form-control" required>
+                </div>
+                <div class="col-lg-4 text-uppercase">
+                    <button type="submit" class="btn btn-primary w-100 text-uppercase">Upload</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    
+      <div class="col-lg-6  text-uppercase">
+          <a href="/static/sample_file/Member_sample_file.csv" target="_blank">MEMBER SAMPLE FILE</a>
+      </div>
+    
+    <!-- Messages -->
+    <div class="col-lg-6">
+        
+    </div>
+</div>
+
+
+                     </div>
+           </div>
+         </div>
+        </div>
+        
+       
+    </section>
+</main>

@@ -1,0 +1,96 @@
+<!-- Add Action Modal -->
+<div class="modal fade" id="largeModal" tabindex="-1" data-bs-backdrop="false">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">
+          <i class="fa fa-plus" aria-hidden="true"></i> Add Action
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <ul class="nav nav-tabs nav-tabs-bordered" role="tablist">
+          <li class="nav-item">
+            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#todo-tab" type="button">To-Do</button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#appointment-tab" type="button">Appointment</button>
+          </li>
+        </ul>
+
+        <div class="tab-content pt-2">
+          <!-- ================= To-Do Tab ================= -->
+          <div class="tab-pane fade show active" id="todo-tab">
+            <!-- <form (ngSubmit)="submitTodo()" #todoForm="ngForm">
+              <div class="row mb-3">
+                <div class="col-sm-12">
+                  <select class="form-select" name="activityCategory" [(ngModel)]="todo.activityCategory" required>
+                    <option value="">Activity Category</option>
+                    <option *ngFor="let region of selPanelList" [value]="region.id">{{ region.Panel_Name }}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-sm-12">
+                  <select class="form-select" name="activityType" [(ngModel)]="todo.activityType" required>
+                    <option value="">Activity Type</option>
+                    <option *ngFor="let type of selPanelType" [value]="type.id">{{ type.action_type }}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-sm-12">
+                  <input type="date" class="form-control" name="actionDate" [(ngModel)]="todo.actionDate" required />
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-sm-12">
+                  <textarea class="form-control" name="note" [(ngModel)]="todo.note" placeholder="Note" required></textarea>
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-sm-12 text-end">
+                  <button class="btn btn-primary" type="submit">Submit</button>
+                </div>
+              </div>
+            </form> -->
+          </div>
+
+          <!-- ================= Appointment Tab ================= -->
+          <div class="tab-pane fade" id="appointment-tab">
+            <!-- <form (ngSubmit)="submitAppointment()" #appointmentForm="ngForm">
+              <div class="row mb-3">
+                <div class="col-sm-12">
+                  <input type="text" class="form-control" name="vendorName" [(ngModel)]="appointment.vendorName" placeholder="Search Vendor">
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-sm-12">
+                  <input type="date" class="form-control" name="appointmentDate" [(ngModel)]="appointment.date" required>
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-sm-12">
+                  <textarea class="form-control" name="appointmentNote" [(ngModel)]="appointment.note" placeholder="Note" required></textarea>
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-sm-12 text-end">
+                  <button class="btn btn-primary" type="submit">Submit</button>
+                </div>
+              </div>
+            </form> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

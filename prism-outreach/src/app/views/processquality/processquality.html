@@ -1,43 +1,178 @@
-
 <main id="main" class="main" style="margin-top:50px!important;min-height:550px;">
-    <section class="section dashboard">
-        <div class="row">
-         <!-- Left side columns -->
-         <div class="col-lg-12">
-           <div class="card">
-                     <div class="card-body">
+  <section class="section dashboard">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
 
-                         <div class="row align-items-center">
-                            <!-- Upload form -->
-                            <div class="col-lg-6">
-                                <form method="post" action="/processquality/" enctype="multipart/form-data" id="process_quality_action" onsubmit="show_loder();">
-                                        <input type="hidden" name="csrfmiddlewaretoken" value="TCq6VPksX46FhuXccNr4jiXr9bG9XGNhLyMeb9XvvFLhjATH4FlByNbpNeQyZcfB">
-                                    <div class="row g-2 align-items-center">
-                                        <div class="col-lg-4 text-uppercase">
-                                            Select Quality Gap File
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <input type="file" name="file" accept=".csv" class="form-control" required>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <button type="submit" class="btn btn-primary w-100 text-uppercase">Upload</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                            
-                            <div class="col-lg-6">
-                                <a href="/static/sample_file/Qualitygaps_sample_file.csv" target="_blank">QUALITY GAPS SAMPLE FILE</a>
-                            </div>
-                            
-                           
-                        </div>
+            <div class="row align-items-center">
+              <!-- Upload form -->
+              <div class="col-lg-6">
+                <form [formGroup]="processQualityFormGroup" (ngSubmit)="qualityFileSubmit()" enctype="multipart/form-data">
+                  <div class="row g-2 align-items-center">
+                    <div class="col-lg-4 text-uppercase">
+                      Select Quality Gap File
+                    </div>
 
-                     </div>
-           </div>
-         </div>
-               
-       
+                    <div class="col-lg-4">
+                      <input
+                        type="file"
+                        formControlName="file"
+                        (change)="onFileSelect($event)"
+                        accept=".csv"
+                        class="form-control"
+                        required
+                      />
+                      <div class="text-danger mt-1"
+                           *ngIf="processQualityFormGroup.invalid && (processQualityFormGroup.dirty || processQualityFormGroup.touched)">
+                        File is required.
+                      </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                      <button
+                        type="submit"
+                        class="btn btn-primary w-100 text-uppercase"
+                        [disabled]="isUpload || !processQualityFormGroup.valid">
+                        @if (isUpload) {
+                          <span class="spinner-border spinner-border-sm me-2"></span> Uploading...
+                        } @else {
+                          Upload
+                        }
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+              <!-- Conditional UI -->
+              @if (totalRecords > 0) {
+                <div class="col-lg-3 text-uppercase">
+                  <div>Total quality gaps: {{ totalRecords }}</div>
+                  @if (error_count > 0) {
+                    <div class="text-danger">Error record(s): {{ error_count }}</div>
+                  }
+                  @if (exist_count > 0) {
+                    <div class="text-warning">Existing quality gaps: {{ exist_count }}</div>
+                  }
+                </div>
+
+                <div class="col-lg-2">
+                  <button
+                    type="button"
+                    class="btn btn-success w-100 text-uppercase"
+                    (click)="processQualityGaps()"
+                    [disabled]="isProcessing">
+                    @if (isProcessing) {
+                      <span class="spinner-border spinner-border-sm me-2"></span> Processing...
+                    } @else {
+                      Process
+                    }
+                  </button>
+                </div>
+              } @else {
+                <div class="col-lg-6 text-uppercase">
+                  <a href="/sample_file/Qualitygaps_sample_file.csv" target="_blank">QUALITY GAPS SAMPLE FILE</a>
+                </div>
+              }
+            </div>
+          </div>
         </div>
-    </section>
+      </div>
+    </div>
+
+    <!-- ✅ Table for temp quality gaps -->
+    <div class="row" *ngIf="tempQualityList && tempQualityList.length > 0">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <table class="table table-sm table-borderless" id="tempQualityList">
+              <thead>
+                <tr>
+                  <th>Subscriber ID</th>
+                  <th>Measure Name</th>
+                  <th>Submeasure</th>
+                  <th>First Name</th>
+                  <th>Middle Name</th>
+                  <th>Last Name</th>
+                  <th>Medicare ID</th>
+                  <th>Medicaid ID</th>
+                  <th>Date of Birth</th>
+                  <th>Sex</th>
+                  <th>Provider ID</th>
+                  <th>Provider Name</th>
+                  <th>Numerator Gap</th>
+                  <th>STATUS</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let q of tempQualityList">
+                  <td>{{ q.Subscriber_ID }}</td>
+                  <td>{{ q.Measure_Name }}</td>
+                  <td>{{ q.Submeasure }}</td>
+                  <td>{{ q.First_Name }}</td>
+                  <td>{{ q.Middle_Name }}</td>
+                  <td>{{ q.Last_Name }}</td>
+                  <td>{{ q.Medicare_ID }}</td>
+                  <td>{{ q.Medicaid_ID }}</td>
+                  <td>{{ q.Date_of_Birth | date:'MM/dd/yyyy' }}</td>
+                  <td>{{ q.Sex }}</td>
+                  <td>{{ q.Provider_ID }}</td>
+                  <td>{{ q.Provider_Name }}</td>
+                  <td>{{ q.Numerator_Gap }}</td>
+
+                  <td
+                    [ngStyle]="{
+                      'background-color': (!q.Subscriber_ID || q.Subscriber_ID.trim() === '' || !q.member_exist) ? 'red' :
+                                         q.quality_gaps_exist ? 'yellow' : 'transparent'
+                    }"
+                  >
+                    <ng-container *ngIf="q.quality_gaps_exist">
+                      Find duplicate quality gaps
+                    </ng-container>
+                    <ng-container *ngIf="!q.member_exist">
+                      Member not exist for this quality gaps
+                    </ng-container>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ✅ Process logs -->
+    @if (processLogList.length > 0) {
+      <div class="row mt-4">
+        <div class="col-lg-3"></div>
+        <div class="col-lg-6">
+          <div class="card shadow-sm rounded-3">
+            <div class="card-body">
+              <h3 class="text-uppercase mb-3 text-center">Quality Gaps File Upload Process Details</h3>
+              <table class="table table-sm table-borderless align-middle" id="processQualityLogs">
+                <thead class="table-light">
+                  <tr>
+                    <th>PROCESS MESSAGE</th>
+                    <th>COUNT</th>
+                    <th>DATE / TIME</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (log of processLogList; track log) {
+                    <tr [ngStyle]="{ color: log.LOG_TYPE === 'Error' ? 'red' : 'inherit' }">
+                      <td>{{ log.MESSAGE }}</td>
+                      <td>{{ log.RECORD_COUNT || '' }}</td>
+                      <td>{{ log.LOG_DATE | date: 'short' }}</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3"></div>
+      </div>
+    }
+  </section>
 </main>

@@ -1,47 +1,172 @@
-
 <main id="main" class="main" style="margin-top:50px!important;min-height:550px;">
-    <section class="section dashboard">
-        <div class="row">
-         <!-- Left side columns -->
-         <div class="col-lg-12">
-           <div class="card">
-                     <div class="card-body">
+  <section class="section dashboard">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
 
-                         <div class="row align-items-center">
-    <!-- Upload form -->
-    <div class="col-lg-6">
-        <form method="post" action="/processriskgap/" enctype="multipart/form-data" id="process_member_action" onsubmit="show_loder();">
-                  <input type="hidden" name="csrfmiddlewaretoken" value="0nTKNalXlPxaVUGUYUE53lkKVVHMomlVSjfS3uY0TqcMX0CpQMyCiQyIzYRbqSNf">
-            <div class="row g-2 align-items-center">
-                <div class="col-lg-4 text-uppercase">
-                    Select Risk Gap File
+            <div class="row align-items-center">
+              <!-- Upload form -->
+              <div class="col-lg-6">
+                <form [formGroup]="processRiskGapsFormGroup" (ngSubmit)="riskGapsFileSubmit()" enctype="multipart/form-data">
+                  <div class="row g-2 align-items-center">
+                    <div class="col-lg-4 text-uppercase">
+                      Select Risk Gaps File
+                    </div>
+
+                    <div class="col-lg-4">
+                      <input
+                        type="file"
+                        formControlName="file"
+                        (change)="onFileSelect($event)"
+                        accept=".csv"
+                        class="form-control"
+                        required
+                      />
+                      <div class="text-danger mt-1"
+                           *ngIf="processRiskGapsFormGroup.invalid && (processRiskGapsFormGroup.dirty || processRiskGapsFormGroup.touched)">
+                        File is required.
+                      </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                      <button
+                        type="submit"
+                        class="btn btn-primary w-100 text-uppercase"
+                        [disabled]="isUpload || !processRiskGapsFormGroup.valid">
+                        @if (isUpload) {
+                          <span class="spinner-border spinner-border-sm me-2"></span> Uploading...
+                        } @else {
+                          Upload
+                        }
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+              <!-- Conditional UI -->
+              @if (totalRecords > 0) {
+                <div class="col-lg-3 text-uppercase">
+                  <div>Total risk gaps: {{ totalRecords }}</div>
+
+                  @if (error_count > 0) {
+                    <div class="text-danger">Error record(s): {{ error_count }}</div>
+                  }
+
+                  @if (exist_count > 0) {
+                    <div class="text-warning">Existing risk gaps: {{ exist_count }}</div>
+                  }
                 </div>
-                <div class="col-lg-4">
-                    <input type="file" name="file" accept=".csv" class="form-control" required>
+
+                <div class="col-lg-2">
+                  <button
+                    type="button"
+                    class="btn btn-success w-100 text-uppercase"
+                    (click)="processRiskGaps()"
+                    [disabled]="isProcessing">
+                    @if (isProcessing) {
+                      <span class="spinner-border spinner-border-sm me-2"></span> Processing...
+                    } @else {
+                      Process
+                    }
+                  </button>
                 </div>
-                <div class="col-lg-4">
-                    <button type="submit" class="btn btn-primary w-100 text-uppercase">Upload</button>
+              } @else {
+                <div class="col-lg-6 text-uppercase">
+                  <a href="/sample_file/Riskgaps_sample_file.csv" target="_blank">RISK GAPS SAMPLE FILE</a>
                 </div>
+              }
             </div>
-        </form>
-    </div>
-    
-      <div class="col-lg-6">
-          <a href="/static/sample_file/Riskgaps_sample_file.csv" target="_blank">RISK GAPS SAMPLE FILE</a>
-      </div>
-    
-    <!-- Messages -->
-    <div class="col-lg-6">
-        
-    </div>
-</div>
-
-
-                     </div>
-           </div>
-         </div>
+          </div>
         </div>
-        
-       
-    </section>
+      </div>
+    </div>
+
+    <!-- ✅ Table for temp risk gaps -->
+    <div class="row" *ngIf="tempRiskGapsList && tempRiskGapsList.length > 0">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <table class="table table-sm table-borderless" id="tempRiskGapsList">
+              <thead>
+                <tr>
+                  <th>MBR_ID</th>
+                  <th>PRODUCT_TYPE</th>
+                  <th>HCC_CATEGORY</th>
+                  <th>HCC_MODEL</th>
+                  <th>STATUS</th>
+                  <th>RELEVANT_DATE</th>
+                  <th>DIAG_SOURCE</th>
+                  <th>DIAG_CODE</th>
+                  <th>DIAG_DESC</th>
+                  <th>STATUS</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let gap of tempRiskGapsList">
+                  <td>{{ gap.MBR_ID }}</td>
+                  <td>{{ gap.PRODUCT_TYPE }}</td>
+                  <td>{{ gap.HCC_CATEGORY }}</td>
+                  <td>{{ gap.HCC_MODEL }}</td>
+                  <td>{{ gap.STATUS }}</td>
+                  <td>{{ gap.RELEVANT_DATE | date: 'MM/dd/yyyy' }}</td>
+                  <td>{{ gap.DIAG_SOURCE }}</td>
+                  <td>{{ gap.DIAG_CODE }}</td>
+                  <td>{{ gap.DIAG_DESC }}</td>
+
+                  <td
+                    [ngStyle]="{
+                      'background-color': (!gap.MBR_ID || gap.MBR_ID.trim() === '' || !gap.member_exist) ? 'red' :
+                                         gap.exist_gap ? 'yellow' : 'transparent'
+                    }"
+                  >
+                    <ng-container *ngIf="gap.exist_gap">
+                      Find duplicate risk gaps
+                    </ng-container>
+                    <ng-container *ngIf="!gap.member_exist">
+                      Member not exist for this risk gap
+                    </ng-container>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ✅ Process logs -->
+    @if (processLogList.length > 0) {
+      <div class="row mt-4">
+        <div class="col-lg-3"></div>
+        <div class="col-lg-6">
+          <div class="card shadow-sm rounded-3">
+            <div class="card-body">
+              <h3 class="text-uppercase mb-3 text-center">Risk Gaps File Upload Process Details</h3>
+              <table class="table table-sm table-borderless align-middle" id="processRiskLogs">
+                <thead class="table-light">
+                  <tr>
+                    <th>PROCESS MESSAGE</th>
+                    <th>COUNT</th>
+                    <th>DATE / TIME</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (log of processLogList; track log) {
+                    <tr [ngStyle]="{ color: log.LOG_TYPE === 'Error' ? 'red' : 'inherit' }">
+                      <td>{{ log.MESSAGE }}</td>
+                      <td>{{ log.RECORD_COUNT || '' }}</td>
+                      <td>{{ log.LOG_DATE | date: 'short' }}</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3"></div>
+      </div>
+    }
+  </section>
 </main>

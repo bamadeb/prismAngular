@@ -22,7 +22,8 @@ declare var $: any;
 export class Dashboard implements OnInit {
   
   selectedMedicaidIds: string[] = [];
-  userId: number | null = null;
+  userId: number | null = null; 
+  userRole: number | null = null;
   apiRes: ApiResponseAllmyworkspace = {
     statusCode: 0,
     data: {    
@@ -144,7 +145,7 @@ quality: any;
 
   ngOnInit(): void {
     const user = this.auth.getUser();
-
+    this.userRole = user.role_id;
     if (!user) {
       alert('User not logged in!');
       this.router.navigate(['/login']);
@@ -205,9 +206,15 @@ quality: any;
     //this.userId = user.ID || user.id;
     this.userId = user.ID ?? user.id ?? 0;
     if (this.userId !== null) {
-      this.loadDashboard(this.userId);
+      if(user.role_id==9){
+        this.loadDashboard(this.userId);
+
+      }else{
+        this.loadDashboard(0);
+
+      }
     }
-    //this.loadDashboard(this.userId);
+     //this.loadDashboard(this.userId);
     this.getAddActionMasterData();
     this.setScheduledActionStatus('11');
     if (this.qualityGapsList && this.qualityGapsList.controls) {

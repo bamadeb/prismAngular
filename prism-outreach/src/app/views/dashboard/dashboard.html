@@ -16,7 +16,7 @@
                                 </div>
                                 <div class="col-xl-4 col-sm-4"></div>
                                 <div class="col-xl-4 col-sm-4">
-
+                                    @if (userRole == 7 || userRole == 20 || userRole == 21){
                                     <form action="/mywork/" name="navigatorForm" id="navigatorForm"
                                         enctype="multipart/form-data" method="post">
                                         <input type="hidden" name="csrfmiddlewaretoken"
@@ -29,6 +29,7 @@
                                             </option>
                                         </select>
                                     </form>
+                                    }
                                 </div>
                             </div>
                             <div id="collapseThree" class="row " [class.collapse]="!isCollapseThreeOpen"

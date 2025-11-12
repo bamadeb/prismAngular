@@ -1432,6 +1432,9 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <tr *ngIf="!callList || callList.length === 0">
+                            <td colspan="2" class="text-center">No record found</td>
+                        </tr>
                         <tr *ngFor="let call of callList; let i = index">
                             <td>{{ i + 1 }}</td>
                             <td>{{ call.action_date | date: 'M/d/yyyy' }}</td>
@@ -1474,6 +1477,9 @@
                         </tr>
                     </thead>
                     <tbody>
+                         <tr *ngIf="!gapList || gapList.length === 0">
+                            <td colspan="4" class="text-center">No record found</td>
+                        </tr>
                         <tr *ngFor="let gap of gapList; let i = index">
                             <td>{{i+1}}</td>
                             <td>{{gap.RELEVANT_DATE | date: 'M/d/yyyy' }}</td>
@@ -1516,6 +1522,10 @@
                         </tr>
                     </thead>
                     <tbody>
+                         <tr *ngIf="!qualityList || qualityList.length === 0">
+                            <td colspan="3" class="text-center">No record found</td>
+                        </tr>
+
                         <tr *ngFor="let quality of qualityList; let i = index">
                             <td>{{ i + 1 }}</td>
                             <td>{{ quality.MEASURE_NAME }}</td>

@@ -423,6 +423,7 @@ quality: any;
 /////////////////////////////////////////////////////////////////
 //////// Show Call List ///////////
   showCallList(medicaid_id: number,fname: string,lname: string): void { 
+    this.isLoading = true; // show loader
     this.selectedMedicaidId = medicaid_id.toString();
     this.selectedName = fname+' '+lname;
     const payload = { medicaid_id: this.selectedMedicaidId };
@@ -432,7 +433,7 @@ quality: any;
       next: (res) => {     
         if (res.data) { 
          this.callList = res.data || [];            
-          
+         this.isLoading = false; // show loader 
         } else {
           console.warn('⚠️ No data found:', res);
         }
@@ -442,7 +443,7 @@ quality: any;
         alert('Server error. Please try again later.');
       }
     }); 
-
+    
      this.callListModal?.show();
   }
 
@@ -453,6 +454,7 @@ quality: any;
 
  //////// Show Gap List ///////////
   showGapList(medicaid_id: number,fname: string,lname: string): void { 
+    this.isLoading = true; // show loader
     this.selectedMedicaidId = medicaid_id.toString();
     this.selectedName = fname+' '+lname;
     const payload = { medicaid_id: this.selectedMedicaidId };
@@ -462,6 +464,7 @@ quality: any;
       next: (res) => {
         if (res.data) { 
          this.gapList = res.data || [];
+         this.isLoading = false; // hide loader
           
         } else {
           //console.warn('⚠️ No data found:', res);
@@ -482,6 +485,7 @@ quality: any;
   
  //////// Show Quality List ///////////
   showCIHQualityList(medicaid_id: number,fname: string,lname: string): void { 
+    this.isLoading = true; // show loader
     this.selectedMedicaidId = medicaid_id.toString();
     this.selectedName = fname+' '+lname;
     const payload = { medicaid_id: this.selectedMedicaidId };
@@ -490,7 +494,8 @@ quality: any;
     .subscribe({
       next: (res) => {      
         if (res.data) { 
-         this.qualityList = res.data || [];  
+         this.qualityList = res.data || []; 
+         this.isLoading = false; // hide loader 
           
         } else {
           //console.warn('⚠️ No data found:', res);
@@ -511,6 +516,7 @@ quality: any;
   
  //////// Show Benefits List ///////////
   showBenefits(medicaid_id: number,fname: string,lname: string): void { 
+    this.isLoading = true; // show loader
     this.selectedMedicaidId = medicaid_id.toString(); 
     this.selectedName = fname+' '+lname;
     const payload = { medicaid_id: this.selectedMedicaidId };
@@ -520,6 +526,7 @@ quality: any;
       next: (res) => {      
         if (res.data) { 
          this.benefitsList = res.data || [];  
+         this.isLoading = false; // hide loader
             //console.log(this.benefitsList);
           
         } else {
@@ -542,6 +549,7 @@ quality: any;
 
   //////// Add and Update Task List ///////////
   add_update_task_click(medicaid_id: number,fname: string,lname: string): void { 
+    this.isLoading = true; // show loader
     this.selectedMedicaidId = medicaid_id.toString(); 
     this.selectedName = fname+' '+lname;
     const payload = { medicaid_id: this.selectedMedicaidId };
@@ -551,7 +559,8 @@ quality: any;
     next: (res) => {      
       if (res.data) { 
         this.taskList = res.data || [];  
-        console.log('Task list:', this.taskList);        
+        this.isLoading = false; // hide loader
+        //console.log('Task list:', this.taskList);        
       } else {
         this.taskList = [];
       }
@@ -560,8 +569,7 @@ quality: any;
       console.error('❌ Dashboard load failed:', err);
       alert('Server error. Please try again later.');
     }
-  });
-
+  });     
      this.taskListModal?.show();
   }
 
@@ -1631,7 +1639,8 @@ mobisVisible: Boolean | undefined;
 langVisible: Boolean | undefined;
 encounterVisible: Boolean | undefined;
 pcpVisible: Boolean | undefined;
-  showDetails(medicaid_id: string){  
+  showDetails(medicaid_id: string){ 
+    //this.isLoading = true; // show loader 
    //alert(medicaid_id);
     const isVisible = true; 
     const addrVisible = true;
@@ -1644,18 +1653,14 @@ pcpVisible: Boolean | undefined;
 
   this.apiService.post('prismMemberAllDetails', payload).subscribe({
     next: (res: any) => {
-      this.memberDetails = res.data.memberDetails || [];
-
-      // Safely extract Care_Coordinator_id from response
-      const careCoordinatorId = this.memberDetails?.[0]?.Care_Coordinator_id || '';
-
-      // ✅ Patch form values
+      this.memberDetails = res.data.memberDetails || []; 
+      const careCoordinatorId = this.memberDetails?.[0]?.Care_Coordinator_id || ''; 
       this.memberInfoFormGroup.patchValue({
         medicaid_id: medicaid_id,
         assign_to: careCoordinatorId
       });
 
-      console.log('Form patched:', this.memberInfoFormGroup.value);
+      //this.isLoading = false; // show loader
     },
     error: (err) => {
       console.error('❌ Dashboard load failed:', err);

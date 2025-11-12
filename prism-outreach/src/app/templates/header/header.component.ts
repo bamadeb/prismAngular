@@ -1,49 +1,36 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { filter, map } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-header',
-  standalone: true,                // ✅ Recommended for standalone components
+  standalone: true,
   imports: [CommonModule],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  userName: string = '';
-  Name: string = '';
-  pageTitle: string = '';
+   @Input() pageTitle: string = '';
+  userName = '';
+  Name = '';
+ 
 
   constructor(
     private auth: AuthService,
-    private router: Router,          // ✅ Inject Router
-    private route: ActivatedRoute,    // ✅ Inject ActivatedRoute
-    private titleService: Title 
+    private router: Router,
+    private titleService: Title,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.userName = this.auth.getUserName();
-    this.Name = this.auth.getName ? this.auth.getName() : '';
+  this.userName = this.auth.getUserName();
+  this.Name = this.auth.getName ? this.auth.getName() : ''; 
 
-    // ✅ Listen to route changes and update title dynamically
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd),
-      map(() => {
-        let child = this.route.firstChild;
-        while (child?.firstChild) {
-          child = child.firstChild;
-        }
-        return child?.snapshot.data?.['title'] || '';
-      })
-    ).subscribe((title: string) => {     
-      this.pageTitle = title;
-      this.titleService.setTitle(title);
-
-    });
-  }
+}
 
   logout() {
     this.auth.logout();

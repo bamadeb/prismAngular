@@ -21,9 +21,9 @@
                                         enctype="multipart/form-data" method="post">
                                         <input type="hidden" name="csrfmiddlewaretoken"
                                             value="HIF6WtPdMCNb3aH3u1j3yS9vbRbVCqagzE1ecNsgkdsN5gDymTdANnntPUlkEWCA">
-                                        <select class="text-uppercase mt-2" name="selected_navigator"
-                                            id="selected_navigator" (change)="onNavigatorChange($event)">
-                                            <option value="0">ALL NEVIGATOR</option>
+                                        <select class="text-uppercase" name="selected_navigator" id="selected_navigator"
+                                            (change)="onNavigatorChange($event)">
+                                            <option value="0">ALL NAVIGATOR</option>
                                             <option value="{{nav.ID}}" *ngFor="let nav of navigatorList; let i = index"
                                                 [selected]="nav.ID === userId">{{nav.FistName}} {{nav.LastName}}
                                             </option>
@@ -34,153 +34,197 @@
                             </div>
                             <div id="collapseThree" class="row " [class.collapse]="!isCollapseThreeOpen"
                                 [class.show]="isCollapseThreeOpen">
-                                <div class="col-xl-6 col-sm-6 mb-xl-0">
+                                <div class="col-xl-5 col-sm-5 mb-xl-0">
                                     <div class="row">
                                         <div class="col-xl-12 col-sm-12 mb-xl-0">
                                             <div class="row">
                                                 <div class="col-xl-12 col-sm-12 mb-xl-0">
                                                     <table class="table text-uppercase">
-                                                        <!-- ===== RISK SECTION ===== -->
-                                                        <tr class="table-header-color">
-                                                            <th>
-                                                                <h4 class="text-uppercase"
-                                                                    style="text-decoration: underline; font-weight: bold;">
-                                                                    RISK</h4>
-                                                            </th>
-                                                            <th>
-                                                                <h5 class="text-uppercase">Gaps</h5>
-                                                            </th>
-                                                            <th>
-                                                                <h5 class="text-uppercase">Completed</h5>
-                                                            </th>
-                                                            <th>
-                                                                <h5 class="text-uppercase">Performance</h5>
-                                                            </th>
-                                                        </tr>
+                                                        <tbody>
+                                                            <!-- ===== RISK SECTION ===== -->
+                                                            <tr class="table-header-color">
+                                                                <th style="background-color:#f5f5f5;border-top: 1px solid #cfcfcf;"
+                                                                    class="py-1">
+                                                                    <div valign="center">
+                                                                        <h5 class="text-uppercas mb-0 fw-bold"
+                                                                            style="text-decoration: underline; ">
+                                                                            RISK</h5>
+                                                                    </div>
+                                                                </th>
+                                                                <th
+                                                                    style="background-color:#f5f5f5;border-top: 1px solid #cfcfcf;vertical-align: middle;">
+                                                                    <div valign="center">
+                                                                        <h6 class="text-uppercase  mb-0">Gaps
+                                                                        </h6>
+                                                                    </div>
+                                                                </th>
+                                                                <th
+                                                                    style="background-color:#f5f5f5;border-top: 1px solid #cfcfcf;vertical-align: middle;">
+                                                                    <div valign="center">
+                                                                        <h6 class="text-uppercase  mb-0">
+                                                                            Completed</h6>
+                                                                    </div>
+                                                                </th>
+                                                                <th
+                                                                    style="background-color:#f5f5f5;border-top: 1px solid #cfcfcf;vertical-align: middle;">
+                                                                    <div valign="center">
+                                                                        <h6 class="text-uppercase  mb-0">
+                                                                            Performance</h6>
+                                                                    </div>
+                                                                </th>
+                                                            </tr>
 
-                                                        <!-- Overall (PRIORITY) -->
-                                                        <tr>
-                                                            <td>Overall (PRIORITY)</td>
-                                                            <td width="20%">{{ overallSummary?.priority_risk_count }}
-                                                            </td>
-                                                            <td width="20%">{{ overallSummary?.priority_risk_comp_count
-                                                                }}</td>
-                                                            <td width="20%"
-                                                                [style.color]="overallSummary?.priority_risk_perf_color">
-                                                                {{ overallSummary?.priority_risk_perf | number:'1.0-0'
-                                                                }}%
-                                                            </td>
-                                                        </tr>
+                                                            <!-- Overall (PRIORITY) -->
+                                                            <tr>
+                                                                <td>Overall (PRIORITY)</td>
+                                                                <td width="20%">{{ overallSummary?.priority_risk_count
+                                                                    }}
+                                                                </td>
+                                                                <td width="20%">{{
+                                                                    overallSummary?.priority_risk_comp_count
+                                                                    }}
+                                                                </td>
+                                                                <td width="20%"
+                                                                    [style.color]="overallSummary?.priority_risk_perf_color">
+                                                                    {{ overallSummary?.priority_risk_perf |
+                                                                    number:'1.0-0'
+                                                                    }}%
+                                                                </td>
+                                                            </tr>
 
-                                                        <!-- Overall (OTHERS) -->
-                                                        <tr>
-                                                            <td>Overall (OTHERS)</td>
-                                                            <td>{{ overallSummary?.other_risk_count }}</td>
-                                                            <td>{{ overallSummary?.other_risk_comp_count }}</td>
-                                                            <td [style.color]="overallSummary?.other_risk_perf_color">
-                                                                {{ overallSummary?.other_risk_perf | number:'1.0-0' }}%
-                                                            </td>
-                                                        </tr>
+                                                            <!-- Overall (OTHERS) -->
+                                                            <tr style="border-bottom: 2px solid;">
+                                                                <td>Overall (OTHERS)</td>
+                                                                <td>{{ overallSummary?.other_risk_count }}</td>
+                                                                <td>{{ overallSummary?.other_risk_comp_count }}</td>
+                                                                <td
+                                                                    [style.color]="overallSummary?.other_risk_perf_color">
+                                                                    {{ overallSummary?.other_risk_perf | number:'1.0-0'
+                                                                    }}%
+                                                                </td>
+                                                            </tr>
 
-                                                        <tr>
-                                                            <td colspan="4" style="border-top: 2px solid #000;"></td>
-                                                        </tr>
 
-                                                        <!-- My Own (PRIORITY) -->
-                                                        <tr>
-                                                            <td>My Own (PRIORITY)</td>
-                                                            <td width="20%">{{ ownSummary?.priority_risk_count }}</td>
-                                                            <td width="20%">{{ ownSummary?.priority_risk_comp_count }}
-                                                            </td>
-                                                            <td width="20%"
-                                                                [style.color]="ownSummary?.priority_risk_perf_color">
-                                                                {{ ownSummary?.priority_risk_perf | number:'1.0-0' }}%
-                                                            </td>
-                                                        </tr>
+                                                            <!-- My Own (PRIORITY) -->
+                                                            <tr>
+                                                                <td>My Own (PRIORITY)</td>
+                                                                <td width="20%">{{ ownSummary?.priority_risk_count }}
+                                                                </td>
+                                                                <td width="20%">{{ ownSummary?.priority_risk_comp_count
+                                                                    }}
+                                                                </td>
+                                                                <td width="20%"
+                                                                    [style.color]="ownSummary?.priority_risk_perf_color">
+                                                                    {{ ownSummary?.priority_risk_perf | number:'1.0-0'
+                                                                    }}%
+                                                                </td>
+                                                            </tr>
 
-                                                        <!-- My Own (OTHERS) -->
-                                                        <tr>
-                                                            <td>My Own (OTHERS)</td>
-                                                            <td>{{ ownSummary?.other_risk_count }}</td>
-                                                            <td>{{ ownSummary?.other_risk_comp_count }}</td>
-                                                            <td [style.color]="ownSummary?.other_risk_perf_color">
-                                                                {{ ownSummary?.other_risk_perf | number:'1.0-0' }}%
-                                                            </td>
-                                                        </tr>
+                                                            <!-- My Own (OTHERS) -->
+                                                            <tr>
+                                                                <td>My Own (OTHERS)</td>
+                                                                <td>{{ ownSummary?.other_risk_count }}</td>
+                                                                <td>{{ ownSummary?.other_risk_comp_count }}</td>
+                                                                <td [style.color]="ownSummary?.other_risk_perf_color">
+                                                                    {{ ownSummary?.other_risk_perf | number:'1.0-0' }}%
+                                                                </td>
+                                                            </tr>
 
-                                                        <!-- ===== QUALITY SECTION ===== -->
-                                                        <tr class="table-header-color">
-                                                            <th>
-                                                                <h4 class="text-uppercase"
-                                                                    style="text-decoration: underline; font-weight: bold;">
-                                                                    QUALITY</h4>
-                                                            </th>
-                                                            <th>
-                                                                <h5 class="text-uppercase">Gaps</h5>
-                                                            </th>
-                                                            <th>
-                                                                <h5 class="text-uppercase">Completed</h5>
-                                                            </th>
-                                                            <th>
-                                                                <h5 class="text-uppercase">Performance</h5>
-                                                            </th>
-                                                        </tr>
+                                                            <!-- ===== QUALITY SECTION ===== -->
+                                                            <tr class="table-header-color">
+                                                                <th style="background-color:#f5f5f5;border-top: 1px solid #cfcfcf;"
+                                                                    class="py-1">
+                                                                    <div valign="center">
+                                                                        <h5 class="text-uppercas mb-0 fw-bold"
+                                                                            style="text-decoration: underline; ">
+                                                                            QUALITY</h5>
+                                                                    </div>
+                                                                </th>
+                                                                <th
+                                                                    style="background-color:#f5f5f5;border-top: 1px solid #cfcfcf;vertical-align: middle;">
+                                                                    <div valign="center">
+                                                                        <h6 class="text-uppercase mb-0">Gaps
+                                                                        </h6>
+                                                                    </div>
+                                                                </th>
+                                                                <th
+                                                                    style="background-color:#f5f5f5;border-top: 1px solid #cfcfcf;vertical-align: middle;">
+                                                                    <div valign="center">
+                                                                        <h6 class="text-uppercase mb-0">
+                                                                            Completed</h6>
+                                                                    </div>
+                                                                </th>
+                                                                <th
+                                                                    style="background-color:#f5f5f5;border-top: 1px solid #cfcfcf;vertical-align: middle;">
+                                                                    <div valign="center">
+                                                                        <h6 class="text-uppercase mb-0">
+                                                                            Performance</h6>
+                                                                    </div>
+                                                                </th>
+                                                            </tr>
 
-                                                        <!-- Overall (PRIORITY) -->
-                                                        <tr>
-                                                            <td>Overall (PRIORITY)</td>
-                                                            <td width="20%">{{ overallSummary?.priority_quality_count }}
-                                                            </td>
-                                                            <td width="20%">{{
-                                                                overallSummary?.priority_quality_comp_count }}</td>
-                                                            <td width="20%"
-                                                                [style.color]="overallSummary?.priority_quality_perf_color">
-                                                                {{ overallSummary?.priority_quality_perf |
-                                                                number:'1.0-0' }}%
-                                                            </td>
-                                                        </tr>
+                                                            <!-- Overall (PRIORITY) -->
+                                                            <tr>
+                                                                <td>Overall (PRIORITY)</td>
+                                                                <td width="20%">{{
+                                                                    overallSummary?.priority_quality_count }}
+                                                                </td>
+                                                                <td width="20%">{{
+                                                                    overallSummary?.priority_quality_comp_count }}</td>
+                                                                <td width="20%"
+                                                                    [style.color]="overallSummary?.priority_quality_perf_color">
+                                                                    {{ overallSummary?.priority_quality_perf |
+                                                                    number:'1.0-0' }}%
+                                                                </td>
+                                                            </tr>
 
-                                                        <!-- Overall (OTHERS) -->
-                                                        <tr>
-                                                            <td>Overall (OTHERS)</td>
-                                                            <td>{{ overallSummary?.other_quality_count }}</td>
-                                                            <td>{{ overallSummary?.other_quality_comp_count }}</td>
-                                                            <td
-                                                                [style.color]="overallSummary?.other_quality_perf_color">
-                                                                {{ overallSummary?.other_quality_perf | number:'1.0-0'
-                                                                }}%
-                                                            </td>
-                                                        </tr>
+                                                            <!-- Overall (OTHERS) -->
+                                                            <tr style="border-bottom: 2px solid;">
+                                                                <td>Overall (OTHERS)</td>
+                                                                <td>{{ overallSummary?.other_quality_count }}</td>
+                                                                <td>{{ overallSummary?.other_quality_comp_count }}</td>
+                                                                <td
+                                                                    [style.color]="overallSummary?.other_quality_perf_color">
+                                                                    {{ overallSummary?.other_quality_perf |
+                                                                    number:'1.0-0'
+                                                                    }}%
+                                                                </td>
+                                                            </tr>
 
-                                                        <tr>
-                                                            <td colspan="4" style="border-top: 2px solid #000;"></td>
-                                                        </tr>
 
-                                                        <!-- My Own (PRIORITY) -->
-                                                        <tr>
-                                                            <td>My Own (PRIORITY)</td>
-                                                            <td width="20%">{{ ownSummary?.priority_quality_count }}
-                                                            </td>
-                                                            <td width="20%">{{ ownSummary?.priority_quality_comp_count
-                                                                }}</td>
-                                                            <td width="20%"
-                                                                [style.color]="ownSummary?.priority_quality_perf_color">
-                                                                {{ ownSummary?.priority_quality_perf | number:'1.0-0'
-                                                                }}%
-                                                            </td>
-                                                        </tr>
 
-                                                        <!-- My Own (OTHERS) -->
-                                                        <tr>
-                                                            <td>My Own (OTHERS)</td>
-                                                            <td width="20%">{{ ownSummary?.other_quality_count }}</td>
-                                                            <td width="20%">{{ ownSummary?.other_quality_comp_count }}
-                                                            </td>
-                                                            <td width="20%"
-                                                                [style.color]="ownSummary?.other_quality_perf_color">
-                                                                {{ ownSummary?.other_quality_perf | number:'1.0-0' }}%
-                                                            </td>
-                                                        </tr>
+                                                            <!-- My Own (PRIORITY) -->
+                                                            <tr>
+                                                                <td>My Own (PRIORITY)</td>
+                                                                <td width="20%">{{ ownSummary?.priority_quality_count }}
+                                                                </td>
+                                                                <td width="20%">{{
+                                                                    ownSummary?.priority_quality_comp_count
+                                                                    }}
+                                                                </td>
+                                                                <td width="20%"
+                                                                    [style.color]="ownSummary?.priority_quality_perf_color">
+                                                                    {{ ownSummary?.priority_quality_perf |
+                                                                    number:'1.0-0'
+                                                                    }}%
+                                                                </td>
+                                                            </tr>
+
+                                                            <!-- My Own (OTHERS) -->
+                                                            <tr>
+                                                                <td>My Own (OTHERS)</td>
+                                                                <td width="20%">{{ ownSummary?.other_quality_count }}
+                                                                </td>
+                                                                <td width="20%">{{ ownSummary?.other_quality_comp_count
+                                                                    }}
+                                                                </td>
+                                                                <td width="20%"
+                                                                    [style.color]="ownSummary?.other_quality_perf_color">
+                                                                    {{ ownSummary?.other_quality_perf | number:'1.0-0'
+                                                                    }}%
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
                                                     </table>
                                                 </div>
                                             </div>
@@ -190,248 +234,274 @@
 
                                     </div>
                                 </div>
-                                <div class="col-xl-6 col-sm-6 mb-xl-0">
+                                <div class="col-xl-7 col-sm-7 mb-xl-0">
                                     <div class="row">
                                         <div class="col-xl-12 col-sm-12 mb-xl-0">
                                             <table class="table text-uppercase">
-                                                <tr class="table-header-color">
-                                                    <th>
-                                                        <h4 class="text-uppercase"
-                                                            style="text-decoration: underline; font-weight: bold !important;">
-                                                            WORK OVERVIEW</h4>
-                                                    </th>
+                                                <tbody>
+                                                    <tr class="table-header-color">
+                                                        <th style="background-color:#f5f5f5;border-top: 1px solid #cfcfcf;"
+                                                            class="py-1">
+                                                            <div valign="center">
+                                                                <h5 class="text-uppercas mb-0 fw-bold"
+                                                                    style="text-decoration: underline;">
+                                                                    WORK OVERVIEW</h5>
+                                                            </div>
+                                                        </th>
 
-                                                    <ng-container *ngFor="let item of performanceArray">
-                                                        <ng-container *ngFor="let entry of (item | keyvalue)">
-                                                            <th>
-                                                                <h5 class="text-uppercase"
-                                                                    [title]="entry.value.provider_name">
-                                                                    {{ entry.value.provider_name?.slice(0, 5) }}..
-                                                                </h5>
-                                                            </th>
+                                                        <ng-container *ngFor="let item of performanceArray">
+                                                            <ng-container *ngFor="let entry of (item | keyvalue)">
+                                                                <th
+                                                                    style="background-color:#f5f5f5;border-top: 1px solid #cfcfcf;vertical-align: middle;">
+                                                                    <div valign="center">
+                                                                        <h6 class="text-uppercase mb-0"
+                                                                            [title]="entry.value.provider_name">
+                                                                            {{ entry.value.provider_name?.slice(0, 5)
+                                                                            }}..
+                                                                        </h6>
+                                                                    </div>
+                                                                </th>
+                                                            </ng-container>
                                                         </ng-container>
-                                                    </ng-container>
 
-                                                    <th>
-                                                        <h5>TOTAL</h5>
-                                                    </th>
-                                                </tr>
+                                                        <th
+                                                            style="background-color:#f5f5f5;border-top: 1px solid #cfcfcf;vertical-align: middle;">
+                                                            <div valign="center">
+                                                                <h6 class="text-uppercase mb-0">TOTAL</h6>
+                                                            </div>
+                                                        </th>
+                                                    </tr>
 
-                                                <!-- CONTACTED (PRIORITY) -->
-                                                <tr>
-                                                    <td>CONTACTED (PRIORITY)</td>
-                                                    <ng-container *ngFor="let item of performanceArray">
-                                                        <ng-container *ngFor="let entry of (item | keyvalue)">
-                                                            <td>
-                                                                {{ entry.value.call_count }}/{{
-                                                                entry.value.priority_count }}
-                                                                (<span [style.color]="entry.value.priority_color"
-                                                                    style="padding: 0;">{{
-                                                                    entry.value.priority_percentage |
-                                                                    number:'1.0-0'}}%</span>)
-                                                            </td>
+                                                    <!-- CONTACTED (PRIORITY) -->
+                                                    <tr>
+                                                        <td>CONTACTED (PRIORITY)</td>
+                                                        <ng-container *ngFor="let item of performanceArray">
+                                                            <ng-container *ngFor="let entry of (item | keyvalue)">
+                                                                <td class="px-0">
+                                                                    {{ entry.value.call_count }}/{{
+                                                                    entry.value.priority_count }}
+                                                                    (<span [style.color]="entry.value.priority_color"
+                                                                        style="padding: 0;">{{
+                                                                        entry.value.priority_percentage |
+                                                                        number:'1.0-0'}}%</span>)
+                                                                </td>
+                                                            </ng-container>
                                                         </ng-container>
-                                                    </ng-container>
-                                                    <td>
-                                                        {{ totalArray.total_call_count }}/{{
-                                                        totalArray.total_priority_count }}
-                                                        (<span [style.color]="totalArray.priority_call_color"
-                                                            style="padding: 0;">{{ totalArray.priority_call_percentage |
-                                                            number:'1.0-0' }}%</span>)
-                                                    </td>
-                                                </tr>
+                                                        <td class="px-0">
+                                                            {{ totalArray.total_call_count }}/{{
+                                                            totalArray.total_priority_count }}
+                                                            (<span [style.color]="totalArray.priority_call_color"
+                                                                style="padding: 0;">{{
+                                                                totalArray.priority_call_percentage |
+                                                                number:'1.0-0' }}%</span>)
+                                                        </td>
+                                                    </tr>
 
-                                                <!-- CONTACTED (OTHERS) -->
-                                                <tr>
-                                                    <td>CONTACTED (OTHERS)</td>
-                                                    <ng-container *ngFor="let item of performanceArray">
-                                                        <ng-container *ngFor="let entry of (item | keyvalue)">
-                                                            <td>
-                                                                {{ entry.value.other_call_count }}/{{
-                                                                entry.value.other_count }}
-                                                                (<span [style.color]="entry.value.other_call_color"
-                                                                    style="padding: 0;">{{
-                                                                    entry.value.other_call_percentage | number:'1.0-0'
-                                                                    }}%</span>)
-                                                            </td>
+                                                    <!-- CONTACTED (OTHERS) -->
+                                                    <tr>
+                                                        <td>CONTACTED (OTHERS)</td>
+                                                        <ng-container *ngFor="let item of performanceArray">
+                                                            <ng-container *ngFor="let entry of (item | keyvalue)">
+                                                                <td class="px-0">
+                                                                    {{ entry.value.other_call_count }}/{{
+                                                                    entry.value.other_count }}
+                                                                    (<span [style.color]="entry.value.other_call_color"
+                                                                        style="padding: 0;">{{
+                                                                        entry.value.other_call_percentage |
+                                                                        number:'1.0-0'
+                                                                        }}%</span>)
+                                                                </td>
+                                                            </ng-container>
                                                         </ng-container>
-                                                    </ng-container>
-                                                    <td>
-                                                        {{ totalArray.total_other_call_count }}/{{
-                                                        totalArray.total_other_count }}
-                                                        (<span [style.color]="totalArray.other_call_color"
-                                                            style="padding: 0;">{{ totalArray.other_call_percentage |
-                                                            number:'1.0-0' }}%</span>)
-                                                    </td>
-                                                </tr>
+                                                        <td class="px-0">
+                                                            {{ totalArray.total_other_call_count }}/{{
+                                                            totalArray.total_other_count }}
+                                                            (<span [style.color]="totalArray.other_call_color"
+                                                                style="padding: 0;">{{ totalArray.other_call_percentage
+                                                                |
+                                                                number:'1.0-0' }}%</span>)
+                                                        </td>
+                                                    </tr>
 
-                                                <tr>
-                                                    <td [attr.colspan]="performanceArray.length + 2"
-                                                        style="border-top: 2px solid #000; padding: 0; margin: 0; line-height: 0;">
-                                                    </td>
-                                                </tr>
+                                                    <tr>
+                                                        <td [attr.colspan]="performanceArray.length + 2"
+                                                            style="border-top: 2px solid #000; padding: 0; margin: 0; line-height: 0;">
+                                                        </td>
+                                                    </tr>
 
 
-                                                <!-- RISK GAPS (PRIORITY) -->
-                                                <tr>
-                                                    <td>RISK GAPS (PRIORITY)</td>
-                                                    <ng-container *ngFor="let item of performanceArray">
-                                                        <ng-container *ngFor="let entry of (item | keyvalue)">
-                                                            <td>
-                                                                {{ entry.value.priority_complete_gaps_count }}/{{
-                                                                entry.value.priority_gaps_count }}
-                                                                (<span [style.color]="entry.value.priority_gaps_color"
-                                                                    style="padding: 0;">{{
-                                                                    entry.value.priority_gaps_percentage |
-                                                                    number:'1.0-0' }}%</span>)
-                                                            </td>
+                                                    <!-- RISK GAPS (PRIORITY) -->
+                                                    <tr>
+                                                        <td>RISK GAPS (PRIORITY)</td>
+                                                        <ng-container *ngFor="let item of performanceArray">
+                                                            <ng-container *ngFor="let entry of (item | keyvalue)">
+                                                                <td class="px-0">
+                                                                    {{ entry.value.priority_complete_gaps_count }}/{{
+                                                                    entry.value.priority_gaps_count }}
+                                                                    (<span
+                                                                        [style.color]="entry.value.priority_gaps_color"
+                                                                        style="padding: 0;">{{
+                                                                        entry.value.priority_gaps_percentage |
+                                                                        number:'1.0-0' }}%</span>)
+                                                                </td>
+                                                            </ng-container>
                                                         </ng-container>
-                                                    </ng-container>
-                                                    <td>
-                                                        {{ totalArray.total_priority_complete_gaps_count }}/{{
-                                                        totalArray.total_priority_gaps_count }}
-                                                        (<span [style.color]="totalArray.priority_gaps_color"
-                                                            style="padding: 0;">{{ totalArray.priority_gaps_percentage |
-                                                            number:'1.0-0' }}%</span>)
-                                                    </td>
-                                                </tr>
+                                                        <td class="px-0">
+                                                            {{ totalArray.total_priority_complete_gaps_count }}/{{
+                                                            totalArray.total_priority_gaps_count }}
+                                                            (<span [style.color]="totalArray.priority_gaps_color"
+                                                                style="padding: 0;">{{
+                                                                totalArray.priority_gaps_percentage |
+                                                                number:'1.0-0' }}%</span>)
+                                                        </td>
+                                                    </tr>
 
-                                                <!-- RISK GAPS (OTHERS) -->
-                                                <tr>
-                                                    <td>RISK GAPS (OTHERS)</td>
-                                                    <ng-container *ngFor="let item of performanceArray">
-                                                        <ng-container *ngFor="let entry of (item | keyvalue)">
-                                                            <td>
-                                                                {{ entry.value.other_complete_gaps_count }}/{{
-                                                                entry.value.other_gaps_count }}
-                                                                (<span [style.color]="entry.value.other_gaps_color"
-                                                                    style="padding: 0;">{{
-                                                                    entry.value.other_gaps_percentage | number:'1.0-0'
-                                                                    }}%</span>)
-                                                            </td>
+                                                    <!-- RISK GAPS (OTHERS) -->
+                                                    <tr>
+                                                        <td>RISK GAPS (OTHERS)</td>
+                                                        <ng-container *ngFor="let item of performanceArray">
+                                                            <ng-container *ngFor="let entry of (item | keyvalue)">
+                                                                <td class="px-0">
+                                                                    {{ entry.value.other_complete_gaps_count }}/{{
+                                                                    entry.value.other_gaps_count }}
+                                                                    (<span [style.color]="entry.value.other_gaps_color"
+                                                                        style="padding: 0;">{{
+                                                                        entry.value.other_gaps_percentage |
+                                                                        number:'1.0-0'
+                                                                        }}%</span>)
+                                                                </td>
+                                                            </ng-container>
                                                         </ng-container>
-                                                    </ng-container>
-                                                    <td>
-                                                        {{ totalArray.total_other_complete_gaps_count }}/{{
-                                                        totalArray.total_other_gaps_count }}
-                                                        (<span [style.color]="totalArray.other_gaps_color"
-                                                            style="padding: 0;">{{ totalArray.other_gaps_percentage |
-                                                            number:'1.0-0' }}%</span>)
-                                                    </td>
-                                                </tr>
+                                                        <td class="px-0">
+                                                            {{ totalArray.total_other_complete_gaps_count }}/{{
+                                                            totalArray.total_other_gaps_count }}
+                                                            (<span [style.color]="totalArray.other_gaps_color"
+                                                                style="padding: 0;">{{ totalArray.other_gaps_percentage
+                                                                |
+                                                                number:'1.0-0' }}%</span>)
+                                                        </td>
+                                                    </tr>
 
-                                                <tr>
-                                                    <td [attr.colspan]="performanceArray.length + 2"
-                                                        style="border-top: 2px solid #000; padding: 0; margin: 0; line-height: 0;">
-                                                    </td>
-                                                </tr>
+                                                    <tr>
+                                                        <td [attr.colspan]="performanceArray.length + 2"
+                                                            style="border-top: 2px solid #000; padding: 0; margin: 0; line-height: 0;">
+                                                        </td>
+                                                    </tr>
 
-                                                <!-- QUALITY GAPS (PRIORITY) -->
-                                                <tr>
-                                                    <td>QUALITY GAPS (PRIORITY)</td>
-                                                    <ng-container *ngFor="let item of performanceArray">
-                                                        <ng-container *ngFor="let entry of (item | keyvalue)">
-                                                            <td>
-                                                                {{ entry.value.priority_complete_quality_gaps_count
-                                                                }}/{{ entry.value.priority_quality_gaps_count }}
-                                                                (<span
-                                                                    [style.color]="entry.value.priority_quality_gaps_color"
-                                                                    style="padding: 0;">{{
-                                                                    entry.value.priority_quality_gaps_percentage |
-                                                                    number:'1.0-0' }}%</span>)
-                                                            </td>
+                                                    <!-- QUALITY GAPS (PRIORITY) -->
+                                                    <tr>
+                                                        <td>QUALITY GAPS (PRIORITY)</td>
+                                                        <ng-container *ngFor="let item of performanceArray">
+                                                            <ng-container *ngFor="let entry of (item | keyvalue)">
+                                                                <td class="px-0">
+                                                                    {{ entry.value.priority_complete_quality_gaps_count
+                                                                    }}/{{ entry.value.priority_quality_gaps_count }}
+                                                                    (<span
+                                                                        [style.color]="entry.value.priority_quality_gaps_color"
+                                                                        style="padding: 0;">{{
+                                                                        entry.value.priority_quality_gaps_percentage |
+                                                                        number:'1.0-0' }}%</span>)
+                                                                </td>
+                                                            </ng-container>
                                                         </ng-container>
-                                                    </ng-container>
-                                                    <td>
-                                                        {{ totalArray.total_priority_complete_quality_gaps_count }}/{{
-                                                        totalArray.total_priority_quality_gaps_count }}
-                                                        (<span [style.color]="totalArray.priority_quality_gaps_color"
-                                                            style="padding: 0;">{{
-                                                            totalArray.priority_quality_gaps_percentage | number:'1.0-0'
-                                                            }}%</span>)
-                                                    </td>
-                                                </tr>
+                                                        <td class="px-0">
+                                                            {{ totalArray.total_priority_complete_quality_gaps_count
+                                                            }}/{{
+                                                            totalArray.total_priority_quality_gaps_count }}
+                                                            (<span
+                                                                [style.color]="totalArray.priority_quality_gaps_color"
+                                                                style="padding: 0;">{{
+                                                                totalArray.priority_quality_gaps_percentage |
+                                                                number:'1.0-0'
+                                                                }}%</span>)
+                                                        </td>
+                                                    </tr>
 
-                                                <!-- QUALITY GAPS (OTHERS) -->
-                                                <tr>
-                                                    <td>QUALITY GAPS (OTHERS)</td>
-                                                    <ng-container *ngFor="let item of performanceArray">
-                                                        <ng-container *ngFor="let entry of (item | keyvalue)">
-                                                            <td>
-                                                                {{ entry.value.other_complete_quality_gaps_count }}/{{
-                                                                entry.value.other_quality_gaps_count }}
-                                                                (<span
-                                                                    [style.color]="entry.value.other_quality_gaps_color"
-                                                                    style="padding: 0;">{{
-                                                                    entry.value.other_quality_gaps_percentage |
-                                                                    number:'1.0-0' }}%</span>)
-                                                            </td>
+                                                    <!-- QUALITY GAPS (OTHERS) -->
+                                                    <tr>
+                                                        <td>QUALITY GAPS (OTHERS)</td>
+                                                        <ng-container *ngFor="let item of performanceArray">
+                                                            <ng-container *ngFor="let entry of (item | keyvalue)">
+                                                                <td class="px-0">
+                                                                    {{ entry.value.other_complete_quality_gaps_count
+                                                                    }}/{{
+                                                                    entry.value.other_quality_gaps_count }}
+                                                                    (<span
+                                                                        [style.color]="entry.value.other_quality_gaps_color"
+                                                                        style="padding: 0;">{{
+                                                                        entry.value.other_quality_gaps_percentage |
+                                                                        number:'1.0-0' }}%</span>)
+                                                                </td>
+                                                            </ng-container>
                                                         </ng-container>
-                                                    </ng-container>
-                                                    <td>
-                                                        {{ totalArray.total_other_complete_quality_gaps_count }}/{{
-                                                        totalArray.total_other_quality_gaps_count }}
-                                                        (<span [style.color]="totalArray.other_quality_gaps_color"
-                                                            style="padding: 0;">{{
-                                                            totalArray.other_quality_gaps_percentage |
-                                                            number:'1.0-0'}}%</span>)
-                                                    </td>
-                                                </tr>
+                                                        <td class="px-0">
+                                                            {{ totalArray.total_other_complete_quality_gaps_count }}/{{
+                                                            totalArray.total_other_quality_gaps_count }}
+                                                            (<span [style.color]="totalArray.other_quality_gaps_color"
+                                                                style="padding: 0;">{{
+                                                                totalArray.other_quality_gaps_percentage |
+                                                                number:'1.0-0'}}%</span>)
+                                                        </td>
+                                                    </tr>
 
-                                                <tr>
-                                                    <td [attr.colspan]="performanceArray.length + 2"
-                                                        style="border-top: 2px solid #000; padding: 0; margin: 0; line-height: 0;">
-                                                    </td>
-                                                </tr>
+                                                    <tr>
+                                                        <td [attr.colspan]="performanceArray.length + 2"
+                                                            style="border-top: 2px solid #000; padding: 0; margin: 0; line-height: 0;">
+                                                        </td>
+                                                    </tr>
 
-                                                <!-- PCP VISIT (PRIORITY) -->
-                                                <tr>
-                                                    <td>PCP VISIT (PRIORITY)</td>
-                                                    <ng-container *ngFor="let item of performanceArray">
-                                                        <ng-container *ngFor="let entry of (item | keyvalue)">
-                                                            <td>
-                                                                {{ entry.value.priority_pcp_visit_count }}/{{
-                                                                entry.value.priority_count }}
-                                                                (<span
-                                                                    [style.color]="entry.value.priority_pcp_visit_color"
-                                                                    style="padding: 0;">{{
-                                                                    entry.value.priority_pcp_visit_percentage |
-                                                                    number:'1.0-0' }}%</span>)
-                                                            </td>
+                                                    <!-- PCP VISIT (PRIORITY) -->
+                                                    <tr>
+                                                        <td>PCP VISIT (PRIORITY)</td>
+                                                        <ng-container *ngFor="let item of performanceArray">
+                                                            <ng-container *ngFor="let entry of (item | keyvalue)">
+                                                                <td class="px-0">
+                                                                    {{ entry.value.priority_pcp_visit_count }}/{{
+                                                                    entry.value.priority_count }}
+                                                                    (<span
+                                                                        [style.color]="entry.value.priority_pcp_visit_color"
+                                                                        style="padding: 0;">{{
+                                                                        entry.value.priority_pcp_visit_percentage |
+                                                                        number:'1.0-0' }}%</span>)
+                                                                </td>
+                                                            </ng-container>
                                                         </ng-container>
-                                                    </ng-container>
-                                                    <td>
-                                                        {{ totalArray.priority_pcp_visit_count ?? 0 }}/{{
-                                                        totalArray.total_priority_count }}
-                                                        (<span [style.color]="totalArray.priority_pcp_color"
-                                                            style="padding: 0;">{{ totalArray.priority_pcp_percentage |
-                                                            number:'1.0-0' }}%</span>)
-                                                    </td>
-                                                </tr>
+                                                        <td class="px-0">
+                                                            {{ totalArray.priority_pcp_visit_count ?? 0 }}/{{
+                                                            totalArray.total_priority_count }}
+                                                            (<span [style.color]="totalArray.priority_pcp_color"
+                                                                style="padding: 0;">{{
+                                                                totalArray.priority_pcp_percentage |
+                                                                number:'1.0-0' }}%</span>)
+                                                        </td>
+                                                    </tr>
 
-                                                <!-- PCP VISIT (OTHERS) -->
-                                                <tr>
-                                                    <td>PCP VISIT (OTHERS)</td>
-                                                    <ng-container *ngFor="let item of performanceArray">
-                                                        <ng-container *ngFor="let entry of (item | keyvalue)">
-                                                            <td>
-                                                                {{ entry.value.other_pcp_visit_count }}/{{
-                                                                entry.value.other_count }}
-                                                                (<span [style.color]="entry.value.other_pcp_visit_color"
-                                                                    style="padding: 0;">{{
-                                                                    entry.value.other_pcp_visit_percentage |
-                                                                    number:'1.0-0' }}%</span>)
-                                                            </td>
+                                                    <!-- PCP VISIT (OTHERS) -->
+                                                    <tr>
+                                                        <td>PCP VISIT (OTHERS)</td>
+                                                        <ng-container *ngFor="let item of performanceArray">
+                                                            <ng-container *ngFor="let entry of (item | keyvalue)">
+                                                                <td class="px-0">
+                                                                    {{ entry.value.other_pcp_visit_count }}/{{
+                                                                    entry.value.other_count }}
+                                                                    (<span
+                                                                        [style.color]="entry.value.other_pcp_visit_color"
+                                                                        style="padding: 0;">{{
+                                                                        entry.value.other_pcp_visit_percentage |
+                                                                        number:'1.0-0' }}%</span>)
+                                                                </td>
+                                                            </ng-container>
                                                         </ng-container>
-                                                    </ng-container>
-                                                    <td>
-                                                        {{ totalArray.total_other_count_pcp ?? 0 }}/{{
-                                                        totalArray.total_other_count }}
-                                                        (<span [style.color]="totalArray.other_pcp_color"
-                                                            style="padding: 0;">{{ totalArray.other_pcp_percentage |
-                                                            number:'1.0-0' }}%</span>)
-                                                    </td>
-                                                </tr>
+                                                        <td class="px-0">
+                                                            {{ totalArray.total_other_count_pcp ?? 0 }}/{{
+                                                            totalArray.total_other_count }}
+                                                            (<span [style.color]="totalArray.other_pcp_color"
+                                                                style="padding: 0;">{{ totalArray.other_pcp_percentage |
+                                                                number:'1.0-0' }}%</span>)
+                                                        </td>
+                                                    </tr>
+
+                                                </tbody>
                                             </table>
 
                                         </div>
@@ -1068,10 +1138,6 @@
                                                                             class="form-control"
                                                                             style="height: 36px;"></textarea>
                                                                     </div>
-
-
-
-
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1217,7 +1283,8 @@
 
                                                             </div>
                                                         </div>
-                                                        <div *ngIf="qualityGapsList.length === 0">No Quality Gaps Found</div>
+                                                        <div *ngIf="qualityGapsList.length === 0">No Quality Gaps Found
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1478,7 +1545,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                         <tr *ngIf="!gapList || gapList.length === 0">
+                        <tr *ngIf="!gapList || gapList.length === 0">
                             <td colspan="4" class="text-center">No record found</td>
                         </tr>
                         <tr *ngFor="let gap of gapList; let i = index">
@@ -1523,7 +1590,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                         <tr *ngIf="!qualityList || qualityList.length === 0">
+                        <tr *ngIf="!qualityList || qualityList.length === 0">
                             <td colspan="3" class="text-center">No record found</td>
                         </tr>
 
@@ -1923,92 +1990,102 @@
                                 <h4 align="center">DEMOGRAPHIC</h4>
                                 <div class="box_height">
                                     <div class="tbl_scorll">
-                                        <form [formGroup]="memberInfoFormGroup" (ngSubmit)="update_member_info_submit()">
+                                        <form [formGroup]="memberInfoFormGroup"
+                                            (ngSubmit)="update_member_info_submit()">
                                             <div class="row">
 
                                                 <!-- Hidden field -->
-                                                <input type="hidden" formControlName="medicaid_id" value="medicaid_id"/>
+                                                <input type="hidden" formControlName="medicaid_id"
+                                                    value="medicaid_id" />
 
                                                 <!-- Address -->
                                                 <div class="col-lg-4">
-                                                <label for="address"><strong>ADDRESS</strong></label>
-                                                <input id="address" type="text" class="form-control" readonly
+                                                    <label for="address"><strong>ADDRESS</strong></label>
+                                                    <input id="address" type="text" class="form-control" readonly
                                                         [value]="memberDetails?.[0]?.OTHER_ADDR1 || 'N/A'" />
                                                 </div>
 
                                                 <!-- Alternate Address -->
                                                 <div class="col-lg-4">
-                                                <label for="latest_alt_address"><strong><a>ALT ADDRESS</a></strong></label>
-                                                <input id="latest_alt_address" type="text" class="form-control" readonly
-                                                        [value]="memberDetails?.[0]?.alt_address || 'N/A'" />
+                                                    <label for="latest_alt_address"><strong><a>ALT
+                                                                ADDRESS</a></strong></label>
+                                                    <input id="latest_alt_address" type="text" class="form-control"
+                                                        readonly [value]="memberDetails?.[0]?.alt_address || 'N/A'" />
                                                 </div>
 
                                                 <!-- Phone Number -->
                                                 <div class="col-lg-4">
-                                                <label for="phone_number"><strong>PHONE NUMBER</strong></label>
-                                                <input id="phone_number" type="text" class="form-control" readonly
+                                                    <label for="phone_number"><strong>PHONE NUMBER</strong></label>
+                                                    <input id="phone_number" type="text" class="form-control" readonly
                                                         [value]="memberDetails?.[0]?.OTHER_PHONE || 'N/A'" />
                                                 </div>
 
                                                 <!-- Alternate Phone -->
                                                 <div class="col-lg-4 mt-1">
-                                                <label for="latest_alt_phone"><strong><a>ALT. PHONE</a></strong></label>
-                                                <input id="latest_alt_phone" type="text" class="form-control" readonly
-                                                        [value]="memberDetails?.[0]?.alt_phone_no || 'N/A'" />
+                                                    <label for="latest_alt_phone"><strong><a>ALT.
+                                                                PHONE</a></strong></label>
+                                                    <input id="latest_alt_phone" type="text" class="form-control"
+                                                        readonly [value]="memberDetails?.[0]?.alt_phone_no || 'N/A'" />
                                                 </div>
 
                                                 <!-- Language -->
                                                 <div class="col-lg-4 mt-1">
-                                                <label><strong>ROSTER / ALT LANGUAGE</strong></label>
-                                                <div>
-                                                    <span>{{ memberDetails?.[0]?.language === '01' ? 'ENGLISH' : 'N/A' }}</span> /
-                                                    <span>{{ memberDetails?.[0]?.alt_language?.trim() ? memberDetails[0].alt_language : 'N/A' }}</span>
-                                                </div>
+                                                    <label><strong>ROSTER / ALT LANGUAGE</strong></label>
+                                                    <div>
+                                                        <span>{{ memberDetails?.[0]?.language === '01' ? 'ENGLISH' :
+                                                            'N/A' }}</span> /
+                                                        <span>{{ memberDetails?.[0]?.alt_language?.trim() ?
+                                                            memberDetails[0].alt_language : 'N/A' }}</span>
+                                                    </div>
                                                 </div>
 
                                                 <!-- City -->
                                                 <div class="col-lg-4 mt-1">
-                                                <label for="city"><strong>CITY</strong></label>
-                                                <input id="city" type="text" class="form-control" readonly
+                                                    <label for="city"><strong>CITY</strong></label>
+                                                    <input id="city" type="text" class="form-control" readonly
                                                         [value]="memberDetails?.[0]?.OTHER_CITY || 'N/A'" />
                                                 </div>
 
                                                 <!-- State -->
                                                 <div class="col-lg-4 mt-1">
-                                                <label for="state"><strong>STATE</strong></label>
-                                                <input id="state" type="text" class="form-control" readonly
+                                                    <label for="state"><strong>STATE</strong></label>
+                                                    <input id="state" type="text" class="form-control" readonly
                                                         [value]="memberDetails?.[0]?.OTHER_STATE || 'N/A'" />
                                                 </div>
 
                                                 <!-- ZIP -->
                                                 <div class="col-lg-4 mt-1">
-                                                <label for="zip_code"><strong>ZIP CODE</strong></label>
-                                                <input id="zip_code" type="text" class="form-control" readonly
+                                                    <label for="zip_code"><strong>ZIP CODE</strong></label>
+                                                    <input id="zip_code" type="text" class="form-control" readonly
                                                         [value]="memberDetails?.[0]?.OTHER_ZIP || 'N/A'" />
                                                 </div>
 
                                                 <!-- Assigned To -->
                                                 <div class="col-lg-4 mt-1">
-                                                <label for="assign_to"><strong>ASSIGNED TO</strong></label>
-                                                <select id="assign_to" formControlName="assign_to" class="form-control text-uppercase">
-                                                    <option value="">SELECT</option>
+                                                    <label for="assign_to"><strong>ASSIGNED TO</strong></label>
+                                                    <select id="assign_to" formControlName="assign_to"
+                                                        class="form-control text-uppercase">
+                                                        <option value="">SELECT</option>
                                                         <option *ngFor="let nav of navigatorList" [ngValue]="nav.ID">
                                                             {{ nav.FistName }} {{ nav.LastName }}
                                                         </option>
-                                                </select>
+                                                    </select>
                                                 </div>
 
                                                 <!-- Preferred Call Time -->
                                                 <div class="col-lg-4 mt-1">
-                                                <label for="preferred_call_time"><strong>PREFERRED CALL TIME</strong></label>
-                                                <input id="preferred_call_time" type="text" class="form-control" formControlName="preferred_call_time"
+                                                    <label for="preferred_call_time"><strong>PREFERRED CALL
+                                                            TIME</strong></label>
+                                                    <input id="preferred_call_time" type="text" class="form-control"
+                                                        formControlName="preferred_call_time"
                                                         [value]="memberDetails?.[0]?.preferred_call_time || 'N/A'" />
                                                 </div>
 
                                                 <!-- Provider -->
                                                 <div class="col-lg-8 mt-1">
-                                                <label for="Provider_Name"><strong>PCP NAME, ADDRESS</strong></label>
-                                                <input id="Provider_Name" type="text" class="form-control" readonly
+                                                    <label for="Provider_Name"><strong>PCP NAME,
+                                                            ADDRESS</strong></label>
+                                                    <input id="Provider_Name" type="text" class="form-control" readonly
                                                         [value]="
                                                         memberDetails?.[0]?.Provider_Name
                                                             ? memberDetails[0].Provider_Name
@@ -2020,10 +2097,10 @@
 
                                                 <!-- Submit -->
                                                 <div class="col-lg-12 mt-2 text-end">
-                                                <button type="submit" class="btn btn-primary">SAVE CHANGES</button>
+                                                    <button type="submit" class="btn btn-primary">SAVE CHANGES</button>
                                                 </div>
                                             </div>
-                                            </form>
+                                        </form>
 
                                     </div>
                                 </div>

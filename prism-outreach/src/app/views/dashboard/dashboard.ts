@@ -150,11 +150,11 @@ export class Dashboard implements OnInit {
       const user = this.auth.getUser();
       //console.log(44);
       //console.log(user);
-      if (!user) {
-        //alert('User not logged in!');
-        this.router.navigate(['/login']);
-        return;
-      }
+      // if (!user) {
+      //   //alert('User not logged in!');
+      //   this.router.navigate(['/login']);
+      //   return;
+      // }
       this.userRole = user.role_id;
       this.addTaskFormGroup = this.fb.group({
         task_next_panel_id: ['', Validators.required],

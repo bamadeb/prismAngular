@@ -15,20 +15,30 @@
                                     </h3>
                                 </div>
                                 <div class="col-xl-4 col-sm-4"></div>
-                                <div class="col-xl-4 col-sm-4">
+                                <div class="col-xl-4 col-sm-4" style="text-align: right;">
                                     @if (userRole == 7 || userRole == 20 || userRole == 21){
                                     <form action="/mywork/" name="navigatorForm" id="navigatorForm"
                                         enctype="multipart/form-data" method="post">
                                         <input type="hidden" name="csrfmiddlewaretoken"
                                             value="HIF6WtPdMCNb3aH3u1j3yS9vbRbVCqagzE1ecNsgkdsN5gDymTdANnntPUlkEWCA">
 
-                                        <select class="text-uppercase" name="selected_navigator" id="selected_navigator"
+                                        <!-- <select class="text-uppercase" name="selected_navigator" id="selected_navigator"
                                             (change)="onNavigatorChange($event)">
 
                                             <option value="0">ALL NAVIGATOR</option>
                                             <option value="{{nav.ID}}" *ngFor="let nav of navigatorList; let i = index"
                                                 [selected]="nav.ID === selectedNavigator">{{nav.FistName}} {{nav.LastName}}
                                             </option>
+                                        </select> -->
+                                        <select class="text-uppercase"
+                                                name="selected_navigator"
+                                                id="selected_navigator"
+                                                [(ngModel)]="selectedNavigator"
+                                                (change)="onNavigatorChange($event)">
+                                        <option value="0">ALL NAVIGATOR</option>
+                                        <option *ngFor="let nav of navigatorList" [value]="nav.ID">
+                                            {{ nav.FistName }} {{ nav.LastName }}
+                                        </option>
                                         </select>
                                     </form>
                                     }

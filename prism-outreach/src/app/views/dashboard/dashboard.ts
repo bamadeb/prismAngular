@@ -215,7 +215,7 @@ export class Dashboard implements OnInit {
       }else{
         this.selectedNavigator = 0;
         this.route.queryParams.subscribe(params => {
-          this.selectedNavigator = params['selected_navigator'] || '0';
+          this.selectedNavigator = params['navigator'] || '0';
           console.log('Selected Navigator:', this.selectedNavigator);
         });
           // this.route.queryParams.subscribe(params => {

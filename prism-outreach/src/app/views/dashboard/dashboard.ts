@@ -621,11 +621,11 @@ export class Dashboard implements OnInit {
               id_field_value: this.currentTaskId
             };
 
-            console.log('Updating record:', payload);
+            //console.log('Updating record:', payload);
 
             this.apiService.post('prismMultiplefieldupdate', payload).subscribe({
               next: (res) => {
-                console.log('Update Response:', res);
+                //console.log('Update Response:', res);
                 this.addTaskFormGroup.reset();
                 this.add_task_click();
                 this.closeTaskList();
@@ -677,15 +677,15 @@ export class Dashboard implements OnInit {
 
 update_task(task_id: number): void { 
   const payload = { task_id: task_id };
-  console.log(payload);
+  //console.log(payload);
   
   this.apiService.post<ApiResponse>('prismGetTaskDetailsByID', payload).subscribe({
     next: (res) => {
-      console.log('✅ Task Details Response:', res);
+      //console.log('✅ Task Details Response:', res);
 
       if (res.data.length > 0) {
         const task = res.data[0]; // assuming API returns list
-        console.log(task);
+        //console.log(task);
         const formattedDate = this.formatDateToMDY(task.action_date);
 
         // ✅ Switch to edit mode
@@ -872,7 +872,7 @@ add_system_log(LogArray: { medicaid_id: string; log_name: string; log_details: s
         table_name: 'MEM_SYSTEM_LOG',
         insertDataArray: LogArray,
       };
-      console.log('Inserting plan data:', payload); 
+      //console.log('Inserting plan data:', payload); 
       this.apiService.post('prismMultipleinsert', payload).subscribe({
         next: (res) => {},
         error: (err) => {
@@ -931,7 +931,7 @@ assign_plan_submit(): void {
         insertDataArray: insertDataArray,
       };
 
-      console.log('✅ Inserting plan data:', payload);
+      //console.log('✅ Inserting plan data:', payload);
 
       // ✅ Insert all records at once
       this.apiService.post('prismMultipleinsert', payload).subscribe({
@@ -1070,7 +1070,7 @@ formatDateToMDY(dateStr: string): string {
       .subscribe({
         next: (res) => {
           this.actionMaster = res;
-          console.log(res);
+          //console.log(res);
           if (res.data) {
             this.action_activity_category = res.data.actionActivityCategory || [];
             this.action_ativity_type = res.data.actionActivityType || [];
@@ -1104,7 +1104,7 @@ onNavigatorChange(event: Event): void {
 }  
 loadDashboard(user_id: number) {
   const payload = { user_id: user_id };
-console.log(payload);
+  //console.log(payload);
 this.isLoading = true; // 🔹 show loader
   this.apiService.post<ApiResponseAllmyworkspace>('prismOutreachAllmyworkspaceSP', payload)
     .subscribe({
@@ -1480,7 +1480,7 @@ calculatePerformance(data: any) {
     const riskObsUpdateArray: any[] = [];
     if (formValues.riskGapsList && formValues.riskGapsList.length > 0) {
       formValues.riskGapsList.forEach((riskGap: any, index: number) => {
-        console.log(`Risk Gap ${index + 1}:`, riskGap);
+        //console.log(`Risk Gap ${index + 1}:`, riskGap);
         
         // Example: Access individual fields
         const gapId = riskGap.risk_gap_id;
@@ -1526,7 +1526,7 @@ calculatePerformance(data: any) {
 
     if (formValues.qualityGapsList && formValues.qualityGapsList.length > 0) {
       formValues.qualityGapsList.forEach((qualityGap: any, index: number) => {
-        console.log(`Risk Gap ${index + 1}:`, qualityGap);
+        //console.log(`Risk Gap ${index + 1}:`, qualityGap);
         
         // Example: Access individual fields
         const gapId = qualityGap.quality_gap_id;
@@ -1577,7 +1577,7 @@ calculatePerformance(data: any) {
         this.apiService.post('prismUnSetMemberGapsStatus', paramsunsetq).subscribe({
             next: (res: any) => {
               //console.log('✅ Data inserted:', res);
-             console.log('Member gaps unset successfully')
+             //console.log('Member gaps unset successfully')
               //alert('Action saved successfully!');
               const diagVal = diagCodes.length > 0 ? `'${diagCodes.join("','")}'` : '';
               const paramsupdate = {
@@ -1587,7 +1587,7 @@ calculatePerformance(data: any) {
               };
               this.apiService.post('prismUpdategapStatus', paramsupdate).subscribe({
                   next: (updateRes: any) => {
-                    console.log('✅ Risk status updated successfully:', updateRes);
+                    //console.log('✅ Risk status updated successfully:', updateRes);
                     // ✅ Step 3: Update existing Observation rows
                                 if (riskObsUpdateArray.length > 0) {
                                   const apiparamUpdate = {
@@ -1617,7 +1617,7 @@ calculatePerformance(data: any) {
                                   this.apiService.post('prismMultipleinsert', apiparamInsert)
                                     .subscribe({
                                       next: (insertRes: any) => {
-                                        console.log("✅ New Observation Data inserted successfully:", insertRes);
+                                        //console.log("✅ New Observation Data inserted successfully:", insertRes);
                                         if (this.userId !== null) {
                                           //this.loadDashboard(this.userId);
                                           //this.router.navigate(['/dashboard']);
@@ -1667,7 +1667,7 @@ calculatePerformance(data: any) {
             },
         });
 
-    console.log('✅ Quality/Risk data update process completed.');
+    //console.log('✅ Quality/Risk data update process completed.');
   }
 
 isVisible: Boolean | undefined;
@@ -1723,11 +1723,11 @@ pcpVisible: Boolean | undefined;
         id_field_name: 'medicaid_id',
         id_field_value: formValue.medicaid_id
       };
-      console.log('Updating record:', payload);
+      //console.log('Updating record:', payload);
 
       this.apiService.post('prismMultiplefieldupdate', payload).subscribe({
         next: (res) => {  
-          console.log('Updating:', res);
+          //console.log('Updating:', res);
         },
         error: (err) => {
           console.error('❌ Update API Error:', err);

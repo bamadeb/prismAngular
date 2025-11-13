@@ -2001,6 +2001,59 @@
                                 <h4 align="center">ALT ADDRESS</h4>
                                 <div class="box_height">
                                     <div class="tbl_scorll">
+                                        <div class="row">
+                                                <div class="col-lg-5">
+                                                     <form [formGroup]="altAddressFormGroup" (ngSubmit)="add_alt_address_submit()">
+                                                         
+                                                        <input type="hidden" formControlName="medicaid_id" value="medicaid_id">
+                                                        <div class="col-lg-12  mt-3">
+                                                            <input type="text" formControlName="alt_address" placeholder="Alternate Address" class="form-control" required="" style="text-transform:uppercase;">
+                                                        </div>
+                                                        <div class="col-lg-12  mt-3">
+                                                            <input type="text" formControlName="alt_city" placeholder="Alternate City" class="form-control" required="" style="text-transform:uppercase;">
+                                                        </div>
+                                                        <div class="col-lg-12  mt-3">
+                                                            <input type="text" formControlName="alt_state" placeholder="Alternate State" class="form-control" required="" style="text-transform:uppercase;">
+                                                        </div>
+                                                        <div class="col-lg-12  mt-3">
+                                                            <input type="text" formControlName="alt_zip" placeholder="Alternate Zip" class="form-control" required="" style="text-transform:uppercase;">
+                                                        </div>
+                                                        <div class="col-lg-12  mt-3 mb-3">
+                                                            <input type="date" class="form-control" formControlName="created_date" placeholder="Added Date" style="text-transform:uppercase;">
+                                                        </div>
+                                                        <div class="col-lg-12">
+                                                            <input class="btn btn-primary" type="submit" value="SAVE">
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <div class="col-lg-7">
+                                                    <div class="tbl_scorll">
+                                                        <table class="table table-sm" style="font-size:14px;">
+                                                            <thead>
+                                                            <tr>
+                                                                <th>ADDRESS</th>
+                                                                <th>ADDED DATE</th>
+                                                                <th width="22%">ADDED BY</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>                                                            
+                                                                <tr *ngIf="alt_address.length == 0">
+                                                                    <td colspan="3" align="center">No record found.</td>
+                                                                </tr>   
+                                                                
+                                                                <tr *ngFor="let alt of alt_address; let i = index">
+                                                                    <td class="text-uppercase">{{ alt.alt_address }}, {{ alt.alt_city }}, {{ alt.alt_state }}, {{ alt.alt_zip }}</td>
+                                                                    <td class="text-uppercase">{{ alt.add_date }}</td>
+                                                                    <td class="text-uppercase">{{ alt.initial }}</td>
+                                                                </tr>
+
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
 
                                     </div>
                                 </div>

@@ -71,3 +71,14 @@ export interface ProviderPerformance {
   other_pcp_visit_color: string;
   provider_name: string;
 }
+
+export interface Altaddress {
+  medicaid_id: string;
+  alt_address: string;
+  alt_city: string;
+  alt_state: string;
+  alt_zip: string;
+  add_date: string;
+  initial:string;
+  
+}

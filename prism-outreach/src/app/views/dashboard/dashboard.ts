@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef, NgZone } from '@angular/core';
-import { ApiResponseAllmyworkspace, ProviderPerformance, AddActionMasterData, ApiResponse, ApiResponseMemberGapsList, ApiResponseTaskdata} from '../../models/api-response';
+import { ApiResponseAllmyworkspace, ProviderPerformance, AddActionMasterData, ApiResponse, ApiResponseMemberGapsList, ApiResponseTaskdata, Altaddress} from '../../models/api-response';
 //import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service'; 
@@ -107,7 +107,8 @@ export class Dashboard implements OnInit {
   planList: any[] = [];  
   updateDataArray: any[] = [];
   userList: any[] = [];
-   memberDetails: any[] = [];
+  memberDetails: any[] = [];
+  alt_address: Altaddress[] = [];
   callListModal: any;
   gapListModal: any;
   qualityListModal: any; 
@@ -126,6 +127,7 @@ export class Dashboard implements OnInit {
   transferFormGroup!:FormGroup;
   planassignFormGroup!:FormGroup;
   memberInfoFormGroup!:FormGroup;
+  altAddressFormGroup!:FormGroup;
   isEditMode: boolean | undefined;
   currentTaskId: number | undefined;
   sel_panel_type: any = {};  
@@ -180,6 +182,17 @@ export class Dashboard implements OnInit {
       medicaid_id: [''],
       preferred_call_time: ['10.30 PM']
     });
+     this.altAddressFormGroup = this.fb.group({
+      medicaid_id: [''],
+      alt_address: [''],
+      alt_city: [''],
+      alt_state: [''],
+      alt_zip: [''],
+      created_date: ['']
+    });
+
+
+    
       
       this.addActionFormGroup = this.fb.group({
           action_id: [11],
@@ -1685,8 +1698,8 @@ langVisible: Boolean | undefined;
 encounterVisible: Boolean | undefined;
 pcpVisible: Boolean | undefined;
   showDetails(medicaid_id: string){ 
-    //this.isLoading = true; // show loader 
-   //alert(medicaid_id);
+    this.isLoading = true; // show loader 
+    //alert(medicaid_id);
     const isVisible = true; 
     const addrVisible = true;
     const mobisVisible = true;
@@ -1699,13 +1712,19 @@ pcpVisible: Boolean | undefined;
   this.apiService.post('prismMemberAllDetails', payload).subscribe({
     next: (res: any) => {
       this.memberDetails = res.data.memberDetails || []; 
+      this.alt_address = res.data.altaddress || []; 
+      //console.log(this.alt_address);
       const careCoordinatorId = this.memberDetails?.[0]?.Care_Coordinator_id || ''; 
       this.memberInfoFormGroup.patchValue({
         medicaid_id: medicaid_id,
         assign_to: careCoordinatorId
       });
 
-      //this.isLoading = false; // show loader
+      this.altAddressFormGroup.patchValue({
+        medicaid_id: medicaid_id 
+      });
+
+      this.isLoading = false; // show loader
     },
     error: (err) => {
       console.error('❌ Dashboard load failed:', err);
@@ -1742,5 +1761,43 @@ pcpVisible: Boolean | undefined;
         }
       });    
   }
+
+  add_alt_address_submit() { 
+      const formValues = this.altAddressFormGroup.value; 
+      const user = this.auth.getUser();
+      const added_by = user?.ID || 0; 
+      //console.log(formValues);
+      const Payload = {
+        table_name: 'MEM_ALT_ADDRESS',
+        insertDataArray: [
+          {
+            medicaid_id: formValues.medicaid_id,
+            alt_address: formValues.alt_address,
+            alt_city: formValues.alt_city,
+            alt_state: formValues.alt_state,
+            alt_zip: formValues.alt_zip,
+            add_date: formValues.created_date,
+            add_by: added_by
+          },
+        ],
+      };     
+      this.apiService.post('prismMultipleinsert', Payload).subscribe({
+        next: (res) => {   
+          this.apiService.post('prismMemberAllDetails', { medicaid_id: formValues.medicaid_id }).subscribe({
+            next: (res:any) => {
+              //console.log(res);
+             this.alt_address = res.data.altaddress || []; 
+            },
+            error: (err) => console.error(err)
+          });
+
+        },
+        error: (err) => {
+          console.error('❌ Update API Error:', err);
+        }
+      });
+      this.altAddressFormGroup.reset();  
+  } 
+   
 }
 

@@ -23,7 +23,7 @@
                                             value="HIF6WtPdMCNb3aH3u1j3yS9vbRbVCqagzE1ecNsgkdsN5gDymTdANnntPUlkEWCA">
                                         <select class="text-uppercase mt-2" name="selected_navigator"
                                             id="selected_navigator" (change)="onNavigatorChange($event)">
-                                            <option value="0">ALL NEVIGATOR</option>
+                                            <option value="0">ALL NAVIGATOR</option>
                                             <option value="{{nav.ID}}" *ngFor="let nav of navigatorList; let i = index"
                                                 [selected]="nav.ID === userId">{{nav.FistName}} {{nav.LastName}}
                                             </option>

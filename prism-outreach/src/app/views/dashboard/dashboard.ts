@@ -90,13 +90,13 @@ export class Dashboard implements OnInit {
   isCollapseThreeOpen = false;
   ////////////////////////////
   qualityIds: string[] = [];             // checked quality gap IDs
-gapIds: string[] = [];                 // checked risk gap IDs
-qualityObservationList: any[] = [];    // all quality observation data
-riskObservationList: any[] = [];       // all risk observation data
-////////////////////////////////////
-j: any;
-quality: any;
- ///////////////////////////////
+  gapIds: string[] = [];                 // checked risk gap IDs
+  qualityObservationList: any[] = [];    // all quality observation data
+  riskObservationList: any[] = [];       // all risk observation data
+  ////////////////////////////////////
+  j: any;
+  quality: any;
+  ///////////////////////////////
   qualityList: any[] = [];
   callList: any[] = [];  gapList: any[] = [];benefitsList: any[] = [];  taskList: any[] = [];  
   departmentList:  any[] = [];  
@@ -1074,7 +1074,7 @@ formatDateToMDY(dateStr: string): string {
 onNavigatorChange(event: Event): void {
   const selectedValue = (event.target as HTMLSelectElement).value;
   const navigatorId = Number(selectedValue); // ✅ Convert string → number
-  alert(navigatorId);
+  //alert(navigatorId);
   if (!isNaN(navigatorId)) {
     this.loadDashboard(navigatorId);
   }
@@ -1107,7 +1107,7 @@ this.isLoading = true; // 🔹 show loader
               this.initializeDataTable('#transferList');
             }, 300);
           });
-          
+          this.cdRef.detectChanges();
         } else {
           console.warn('⚠️ No data found:', res);
           this.isLoading = false; 
@@ -1384,7 +1384,7 @@ calculatePerformance(data: any) {
                 this.updateQualityAndRiskData(formValues, action_id); // ✅ also call here
                 //console.log('✅ New Action ID:', action_id);
               }
-              alert('Action saved successfully!');
+              //alert('Action saved successfully!');
             },
             error: (err) => {
               console.error('❌ Error inserting action:', err);

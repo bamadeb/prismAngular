@@ -1384,7 +1384,7 @@ calculatePerformance(data: any) {
                 this.updateQualityAndRiskData(formValues, action_id); // ✅ also call here
                 //console.log('✅ New Action ID:', action_id);
               }
-              alert('Action saved successfully!');
+              //alert('Action saved successfully!');
             },
             error: (err) => {
               console.error('❌ Error inserting action:', err);

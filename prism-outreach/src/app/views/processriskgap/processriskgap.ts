@@ -4,7 +4,8 @@ import { ApiService } from '../../services/api.service';
 import { finalize } from 'rxjs/operators';
 import { firstValueFrom } from 'rxjs';
 import { CommonModule } from '@angular/common';
-
+import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-processriskgap',
   standalone: true,
@@ -24,13 +25,19 @@ export class Processriskgap implements OnInit {
   error_count = 0;
   processLogList: any[] = [];
 
-  constructor(private fb: FormBuilder, private apiService: ApiService) {
+  constructor(private fb: FormBuilder, private apiService: ApiService,private auth: AuthService,private router: Router) {
     this.processRiskGapsFormGroup = this.fb.group({
       file: [null, Validators.required]
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    const user = this.auth.getUser();
+    if (!user) {
+      this.router.navigate(['/login']);
+      return;
+    }  
+  }
 
   onFileSelect(event: any): void {
     const file = event.target.files[0];

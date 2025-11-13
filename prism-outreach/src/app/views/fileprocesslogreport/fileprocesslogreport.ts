@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
 import { ApiService } from '../../services/api.service'; 
+import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-fileprocesslogreport',
   standalone: true,
@@ -19,10 +21,15 @@ export class Fileprocesslogreport implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private apiService: ApiService
+    private apiService: ApiService,private auth: AuthService,private router: Router
   ) {}
 
   ngOnInit(): void {
+    const user = this.auth.getUser();
+    if (!user) {
+      this.router.navigate(['/login']);
+      return;
+    } 
     this.processLogForm = this.fb.group({
       process_type: ['', Validators.required],
       process_list: ['', Validators.required]

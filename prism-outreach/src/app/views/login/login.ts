@@ -36,7 +36,14 @@ username = '';
             const user = res.data[0];
             this.auth.setUser(user);
             console.log('✅ Login success:', res);
-            this.router.navigate(['/dashboard']);
+            const loginuser = this.auth.getUser();
+            const user_role = loginuser.role_id;
+            if(user_role == 7){
+              this.router.navigate(['/users']);
+            }else{
+              this.router.navigate(['/dashboard']);
+            }
+
           } else {
             alert('Invalid login credentials');
           }

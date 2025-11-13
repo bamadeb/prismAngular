@@ -12,6 +12,7 @@ export class MenuComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     const user = this.auth.getUser();
+    if(user)
     this.userRole = user.role_id;
 
   }

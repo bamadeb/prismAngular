@@ -27,7 +27,7 @@
 
                                             <option value="0">ALL NAVIGATOR</option>
                                             <option value="{{nav.ID}}" *ngFor="let nav of navigatorList; let i = index"
-                                                [selected]="nav.ID === userId">{{nav.FistName}} {{nav.LastName}}
+                                                [selected]="nav.ID === selectedNavigator">{{nav.FistName}} {{nav.LastName}}
                                             </option>
                                         </select>
                                     </form>

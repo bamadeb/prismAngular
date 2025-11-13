@@ -4,7 +4,7 @@
 height:100vh;
 width:100vw;
 margin: o auto;
-background-image: url('assets/images/5.jpg');
+background-image: url('../../assets/images/5.jpg');
 background-position: right center;
 background-size: cover;
 animation: image 15s infinite alternate;

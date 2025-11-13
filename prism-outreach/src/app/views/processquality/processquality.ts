@@ -1,16 +1,18 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../services/api.service';
 import { firstValueFrom } from 'rxjs';
 import { finalize } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service'; 
 @Component({
   selector: 'app-processquality',
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './processquality.html',
   styleUrl: './processquality.css',
 })
-export class Processquality {
+export class Processquality implements OnInit {
   @ViewChild('fileInput') fileInput!: ElementRef;
 
   processQualityFormGroup!: FormGroup;
@@ -23,8 +25,15 @@ export class Processquality {
   exist_count = 0;
   error_count = 0;
   processLogList: any[] = [];
-  
-  constructor(private fb: FormBuilder, private apiService: ApiService) {
+  ngOnInit(): void {
+    
+    const user = this.auth.getUser();
+    if (!user) {
+      this.router.navigate(['/login']);
+      return;
+    }    
+  }
+  constructor(private fb: FormBuilder, private apiService: ApiService,private auth: AuthService,private router: Router) {
     this.processQualityFormGroup = this.fb.group({
       file: [null, Validators.required]
     });

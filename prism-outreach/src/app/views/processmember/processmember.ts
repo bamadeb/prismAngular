@@ -4,6 +4,8 @@ import { ApiService } from '../../services/api.service'; // adjust path
 import { finalize } from 'rxjs/operators';
 import { firstValueFrom } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service'; 
 @Component({
   selector: 'app-processmember',
   standalone: true, // ✅ Add this
@@ -24,13 +26,21 @@ export class Processmember implements OnInit {
   isProcessing = false;
   isUpload = false;
   processLogList: any[] = [];
-  constructor(private fb: FormBuilder, private apiService: ApiService) {
+  constructor(private fb: FormBuilder, private apiService: ApiService,private auth: AuthService,private router: Router) {
     this.processMembersFormGroup = this.fb.group({
       file: [null, Validators.required]
     });
   }  
   ngOnInit(): void {
     //throw new Error('Method not implemented.');
+    const user = this.auth.getUser();
+    //console.log(44);
+    //console.log(user);
+    if (!user) {
+      //alert('User not logged in!');
+      this.router.navigate(['/login']);
+      return;
+    }    
   }
   onFileSelect(event: any): void {
     const file = event.target.files[0];

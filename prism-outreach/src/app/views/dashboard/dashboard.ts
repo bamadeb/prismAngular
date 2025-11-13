@@ -216,7 +216,7 @@ export class Dashboard implements OnInit {
         this.selectedNavigator = 0;
         this.route.queryParams.subscribe(params => {
           this.selectedNavigator = params['navigator'] || '0';
-          console.log('Selected Navigator:', this.selectedNavigator);
+          //console.log('Selected Navigator:', this.selectedNavigator);
         });
           // this.route.queryParams.subscribe(params => {
           //    this.selectedNavigator = params['navigator'] || '0';
@@ -802,7 +802,7 @@ getUser(event: Event) {
      this.apiService.post('prismMultipleRowAndFieldUpdate', apiparamUpdate)
       .subscribe({
         next: (updateResult: any) => {
-          console.log("Data updated successfully:", updateResult);
+          //console.log("Data updated successfully:", updateResult);
         },
         error: (updateErr) => {
           console.error("Error updating Observation Data:", updateErr);
@@ -851,6 +851,7 @@ getUser(event: Event) {
       // Insert into MEM_REFERRING
       this.apiService.post('prismMultipleinsert', payload).subscribe({
         next: (res) => {
+          //console.log(formValue.user_id);
           //console.log('Insert success:', res);
           this.updateOutreachmember(formValue.user_id);
           // Reset and close modal
@@ -858,12 +859,16 @@ getUser(event: Event) {
           this.selectedMedicaidIds = [];
           this.uncheckAllMembers();
           this.closeTransfer(); 
+          // Navigation
+          window.location.href = '/dashboard';
+
         },
         error: (err) => {
           console.error('❌ Insert API error:', err);
           alert('Error during transfer. Please try again.');
         },
-      });
+      }); 
+
 }
 
 add_system_log(LogArray: { medicaid_id: string; log_name: string; log_details: string; log_status: string; log_by: any; action_type: string; }[]){  
@@ -941,7 +946,7 @@ assign_plan_submit(): void {
           const LogArray = this.selectedMedicaidIds.map((medicaid_id) => ({
               medicaid_id: medicaid_id,
               log_name: 'ASSIGN PLAN',
-              log_details: 'PLAN ASSIGN TO'+ medicaid_id,
+              log_details: 'PLAN ASSIGN TO '+ medicaid_id,
               log_status: 'Success',
               log_by: added_by,
               action_type: 'ASSIGN PLAN',
@@ -953,7 +958,8 @@ assign_plan_submit(): void {
           this.selectedMedicaidIds = [];
           this.uncheckAllMembers();
           this.closePlanList();
-          alert('✅ Plan assigned successfully!');
+          window.location.href = '/dashboard';
+         //alert('✅ Plan assigned successfully!');
         },
         error: (err) => {
           console.error('❌ Insert API error:', err);
@@ -966,6 +972,8 @@ assign_plan_submit(): void {
       alert(err.message);
       console.warn(err.message);
     });
+
+      
 }
 
 uncheckAllMembers(): void {

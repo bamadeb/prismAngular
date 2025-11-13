@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { AfterViewInit } from '@angular/core';
 import { Modal } from 'bootstrap'; // ✅ Bootstrap Modal class (no jQuery)
  import { FormsModule,ReactiveFormsModule,FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
+ import { ActivatedRoute } from '@angular/router';
 // import { ReactiveFormsModule } from '@angular/forms';
 import 'datatables.net';
 declare var $: any;
@@ -24,6 +25,7 @@ export class Dashboard implements OnInit {
   selectedMedicaidIds: string[] = [];
   userId: number | null = null; 
   userRole: number | null = null;
+  selectedNavigator: number | null = null;
   apiRes: ApiResponseAllmyworkspace = {
     statusCode: 0,
     data: {    
@@ -140,7 +142,8 @@ export class Dashboard implements OnInit {
     private auth: AuthService,
     private fb: FormBuilder,
     private cdRef: ChangeDetectorRef,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -210,8 +213,19 @@ export class Dashboard implements OnInit {
         this.loadDashboard(this.userId);
 
       }else{
-        this.loadDashboard(0);
-
+        this.selectedNavigator = 0;
+        this.route.queryParams.subscribe(params => {
+          this.selectedNavigator = params['selected_navigator'] || '0';
+          console.log('Selected Navigator:', this.selectedNavigator);
+        });
+          // this.route.queryParams.subscribe(params => {
+          //    this.selectedNavigator = params['navigator'] || '0';
+          //   //console.log('Selected Navigator:', selectedNavigator);
+          //   // call API or filter data based on navigator ID
+          // });
+        // this.selectedNavigator = request.POST.get('selected_navigator', '0') 
+         this.loadDashboard(this.selectedNavigator);
+        //this.loadDashboard(0);
       }
     }
      //this.loadDashboard(this.userId);
@@ -1075,9 +1089,18 @@ onNavigatorChange(event: Event): void {
   const selectedValue = (event.target as HTMLSelectElement).value;
   const navigatorId = Number(selectedValue); // ✅ Convert string → number
   //alert(navigatorId);
-  if (!isNaN(navigatorId)) {
-    this.loadDashboard(navigatorId);
-  }
+  this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+    this.router.navigate(['/dashboard'], { queryParams: { navigator: navigatorId } });
+  });
+  
+  // if (!isNaN(navigatorId)) {
+  //   this.loadDashboard(navigatorId);
+  // }
+  // 🔹 Submit the form
+  // const form = document.getElementById('navigatorForm') as HTMLFormElement;
+  // if (form) {
+  //   form.submit();
+  // }  
 }  
 loadDashboard(user_id: number) {
   const payload = { user_id: user_id };
@@ -1596,7 +1619,11 @@ calculatePerformance(data: any) {
                                       next: (insertRes: any) => {
                                         //console.log("✅ New Observation Data inserted successfully:", insertRes);
                                         if (this.userId !== null) {
-                                          this.loadDashboard(this.userId);
+                                          //this.loadDashboard(this.userId);
+                                          //this.router.navigate(['/dashboard']);
+                                          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+                                            this.router.navigate(['/dashboard']);
+                                          });
                                         }
                                         this.isLoading = false;
                                         this.modalInstance?.hide();    
@@ -1604,7 +1631,12 @@ calculatePerformance(data: any) {
                                       error: (insertErr) => {
                                         console.error("❌ Error inserting Observation Data:", insertErr);
                                         if (this.userId !== null) {
-                                          this.loadDashboard(this.userId);
+                                          //this.loadDashboard(this.userId);
+                                          //this.router.navigate(['/dashboard']);
+                                          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+                                            this.router.navigate(['/dashboard']);
+                                          });
+
                                         }
                                         this.isLoading = false;
                                         this.modalInstance?.hide();    
@@ -1612,7 +1644,12 @@ calculatePerformance(data: any) {
                                     });
                                 }else{
                                         if (this.userId !== null) {
-                                          this.loadDashboard(this.userId);
+                                          //this.loadDashboard(this.userId);
+                                          //this.router.navigate(['/dashboard']);
+                                          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+                                            this.router.navigate(['/dashboard']);
+                                          });
+
                                         }
                                         this.isLoading = false;
                                         this.modalInstance?.hide();    

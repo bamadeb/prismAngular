@@ -11,6 +11,7 @@ import { Modal } from 'bootstrap'; // ✅ Bootstrap Modal class (no jQuery)
  import { ActivatedRoute } from '@angular/router';
 // import { ReactiveFormsModule } from '@angular/forms';
 import 'datatables.net';
+import { switchMap } from 'rxjs/operators';
 declare var $: any;
 @Component({
   selector: 'app-dashboard',
@@ -1124,44 +1125,94 @@ onNavigatorChange(event: Event): void {
   //   form.submit();
   // }  
 }  
+// loadDashboard(user_id: number) {
+//   const payload = { user_id: user_id };
+//   //console.log(payload);
+// this.isLoading = true; // 🔹 show loader
+//   this.apiService.post<ApiResponseAllmyworkspace>('prismOutreachAllmyworkspaceSP', payload)
+//     .subscribe({
+//       next: (res) => {
+//         this.apiRes = res;
+//         //console.log(res);
+//         if (res.data) {
+//           this.members = res.data.members || [];
+//           this.overallSummary = res.data.overallRiskQualitySummary || [];
+//           this.ownSummary = res.data.ownRiskQualitySummary || [];
+//           //this.navigatorList = res.data.navigatorList || [];
+//           this.calculatePerformance(res.data);
+//           this.isLoading = false; // 🔹 show loader
+//           this.departmentList = res.data.departmentList || [];
+//           this.recentActivity = res.data.recentActivity || [];
+//           this.referralList = res.data.referralList || [];
+//           this.planList = res.data.planList || [];   
+          
+//            // ✅ Initialize DataTables after DOM updates
+//           this.ngZone.runOutsideAngular(() => {
+//             setTimeout(() => {
+//               this.initializeDataTable('#members', true);
+//               this.initializeDataTable('#transferList');
+//             }, 300);
+//           });
+//           this.cdRef.detectChanges();
+//         } else {
+//           console.warn('⚠️ No data found:', res);
+//           this.isLoading = false; 
+//         }
+//       },
+//       error: (err) => {
+//         console.error('❌ Dashboard load failed:', err);
+//         alert('Server error. Please try again later.');
+//         this.isLoading = false; 
+//       }
+//     });
+// }
 loadDashboard(user_id: number) {
-  const payload = { user_id: user_id };
-  //console.log(payload);
-this.isLoading = true; // 🔹 show loader
-  this.apiService.post<ApiResponseAllmyworkspace>('prismOutreachAllmyworkspaceSP', payload)
+  const payload = { user_id };
+
+  this.isLoading = true;
+
+  this.apiService.post('prismGetUserMemberList', payload)   // 1️⃣ First API
+    .pipe(
+      switchMap((userMemberRes: any) => {
+        // You can save the response if needed
+        this.members = userMemberRes.data || [];
+        this.isLoading = false;
+        // 2️⃣ Call second API only after first completes
+        return this.apiService.post<ApiResponseAllmyworkspace>('prismOutreachAllmyworkspaceSP', payload);
+      })
+    )
     .subscribe({
       next: (res) => {
         this.apiRes = res;
-        //console.log(res);
+
         if (res.data) {
-          this.members = res.data.members || [];
+          //this.members = res.data.members || [];
           this.overallSummary = res.data.overallRiskQualitySummary || [];
           this.ownSummary = res.data.ownRiskQualitySummary || [];
-          //this.navigatorList = res.data.navigatorList || [];
-          this.calculatePerformance(res.data);
-          this.isLoading = false; // 🔹 show loader
           this.departmentList = res.data.departmentList || [];
           this.recentActivity = res.data.recentActivity || [];
           this.referralList = res.data.referralList || [];
-          this.planList = res.data.planList || [];   
-          
-           // ✅ Initialize DataTables after DOM updates
+          this.planList = res.data.planList || [];
+
+          this.calculatePerformance(res.data);
+
+          // Reinitialize DataTables
           this.ngZone.runOutsideAngular(() => {
             setTimeout(() => {
               this.initializeDataTable('#members', true);
               this.initializeDataTable('#transferList');
             }, 300);
           });
+          
           this.cdRef.detectChanges();
-        } else {
-          console.warn('⚠️ No data found:', res);
-          this.isLoading = false; 
         }
+
+        this.isLoading = false;
       },
       error: (err) => {
         console.error('❌ Dashboard load failed:', err);
         alert('Server error. Please try again later.');
-        this.isLoading = false; 
+        this.isLoading = false;
       }
     });
 }

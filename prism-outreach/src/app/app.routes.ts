@@ -13,6 +13,7 @@ import { Fileprocesslogreport } from './views/fileprocesslogreport/fileprocesslo
 import { Memberdetails } from './views/memberdetails/memberdetails';
 import { AuthLayout } from './layout/auth-layout/auth-layout';
 import { MainLayout } from './layout/main-layout/main-layout';
+import { Logreport } from './views/logreport/logreport';
 
 export const routes: Routes = [
     {
@@ -96,6 +97,12 @@ export const routes: Routes = [
     component: MainLayout,
     children: [ 
       { path: '', component: Memberdetails , data: { title: 'MEMBER DETAILS' }},
+    ]
+  }, {
+    path: 'logreport',
+    component: MainLayout,
+    children: [ 
+      { path: '', component: Logreport , data: { title: 'ACTION LOG REPORT' }},
     ]
   }, 
   

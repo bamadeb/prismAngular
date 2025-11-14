@@ -110,6 +110,10 @@ export class Dashboard implements OnInit {
   userList: any[] = [];
   memberDetails: any[] = [];
   alt_address: Altaddress[] = [];
+  member_alt_phone_details: any[] = [];
+  all_language_master_list: any[] = [];
+  member_alt_language_details: any[] = [];
+  pcp_list: any[] = [];  
   callListModal: any;
   gapListModal: any;
   qualityListModal: any; 
@@ -129,6 +133,8 @@ export class Dashboard implements OnInit {
   planassignFormGroup!:FormGroup;
   memberInfoFormGroup!:FormGroup;
   altAddressFormGroup!:FormGroup;
+  altPhoneFormGroup!:FormGroup;
+  altLangFormGroup!:FormGroup;
   isEditMode: boolean | undefined;
   currentTaskId: number | undefined;
   sel_panel_type: any = {};  
@@ -191,6 +197,17 @@ export class Dashboard implements OnInit {
       alt_state: [''],
       alt_zip: [''],
       created_date: ['']
+    });
+
+     this.altPhoneFormGroup = this.fb.group({
+      medicaid_id: [''],
+      alt_phone_no: [''] 
+    });
+
+     this.altLangFormGroup = this.fb.group({
+      medicaid_id: [''],
+      alt_language_name: [''],
+      alt_language: [''] 
     });
 
 
@@ -641,6 +658,18 @@ export class Dashboard implements OnInit {
             this.apiService.post('prismMultiplefieldupdate', payload).subscribe({
               next: (res) => {
                 //console.log('Update Response:', res);
+                 ////////////////// Log entry start //////////////////////
+              const LogArray = {
+                  medicaid_id: this.selectedMedicaidId,
+                  log_name: 'UPDATE TASK',
+                  log_details: 'UPDATE TASK FOR '+ this.selectedMedicaidId,
+                  log_status: 'Success',
+                  log_by: userId,
+                  action_type: 'UPDATE TASK'
+              }; 
+              this.add_system_log([LogArray]);
+          ///////////////////// Log entry end ///////////////////// 
+
                 this.addTaskFormGroup.reset();
                 this.add_task_click();
                 this.closeTaskList();
@@ -671,8 +700,19 @@ export class Dashboard implements OnInit {
 
             this.apiService.post('prismMultipleinsert', payload).subscribe({
             next: (res) => {
-              //console.log('✅ API Response:', res);
-              //alert('Task saved successfully!');
+
+              ////////////////// Log entry start //////////////////////
+                const LogArray = {
+                    medicaid_id: this.selectedMedicaidId,
+                    log_name: 'ADD TASK',
+                    log_details: 'ADD TASK FOR '+ this.selectedMedicaidId,
+                    log_status: 'Success',
+                    log_by: userId,
+                    action_type: 'ADD TASK'
+                }; 
+                this.add_system_log([LogArray]);
+              ///////////////////// Log entry end ///////////////////// 
+
               this.addTaskFormGroup.reset();
               this.closeTaskList();
             },
@@ -869,6 +909,19 @@ getUser(event: Event) {
           //console.log(formValue.user_id);
           //console.log('Insert success:', res);
           this.updateOutreachmember(formValue.user_id);
+
+          ////////////////// Log entry start //////////////////////
+          const LogArray = this.selectedMedicaidIds.map((medicaid_id) => ({
+              medicaid_id: medicaid_id,
+              log_name: 'TRANSFER MEMBER',
+              log_details: 'TRANSFER MEMBER TO '+ formValue.user_id,
+              log_status: 'Success',
+              log_by: refer_by,
+              action_type: 'TRANSFER MEMBER',
+          })); 
+          this.add_system_log(LogArray);
+          ///////////////////// Log entry end /////////////////////
+
           // Reset and close modal
           this.transferFormGroup.reset();
           this.selectedMedicaidIds = [];
@@ -1765,6 +1818,10 @@ pcpVisible: Boolean | undefined;
     next: (res: any) => {
       this.memberDetails = res.data.memberDetails || []; 
       this.alt_address = res.data.altaddress || []; 
+      this.member_alt_phone_details = res.data.prismMemberaltphone || []; 
+      this.all_language_master_list = res.data.prismMasterLanguage || []; 
+      this.member_alt_language_details = res.data.prismMemberaltlanguage || []; 
+      this.pcp_list = res.data.prismMemberPCPList || []; 
       //console.log(this.alt_address);
       const careCoordinatorId = this.memberDetails?.[0]?.Care_Coordinator_id || ''; 
       this.memberInfoFormGroup.patchValue({
@@ -1773,6 +1830,14 @@ pcpVisible: Boolean | undefined;
       });
 
       this.altAddressFormGroup.patchValue({
+        medicaid_id: medicaid_id 
+      });
+
+      this.altPhoneFormGroup.patchValue({
+        medicaid_id: medicaid_id 
+      });
+
+      this.altLangFormGroup.patchValue({
         medicaid_id: medicaid_id 
       });
 
@@ -1791,6 +1856,7 @@ pcpVisible: Boolean | undefined;
   }
 
   update_member_info_submit() { 
+      this.isLoading = true;  
       const formValue = this.memberInfoFormGroup.value;  
       const updateData = { 
         Care_Coordinator_id: formValue.assign_to,  
@@ -1802,11 +1868,25 @@ pcpVisible: Boolean | undefined;
         id_field_name: 'medicaid_id',
         id_field_value: formValue.medicaid_id
       };
-      //console.log('Updating record:', payload);
+      console.log('Updating record:', payload);
 
       this.apiService.post('prismMultiplefieldupdate', payload).subscribe({
         next: (res) => {  
+          const user = this.auth.getUser();
+          const added_by = user?.ID || 0; 
           //console.log('Updating:', res);
+          ////////////////// Log entry start //////////////////////
+            const LogArray = {
+                medicaid_id: formValue.medicaid_id,
+                log_name: 'UPDATE MEBER INFO',
+                log_details: 'UPDATE MEBER INFO FOR '+ formValue.medicaid_id,
+                log_status: 'Success',
+                log_by: added_by,
+                action_type: 'UPDATE MEBER INFO'
+            }; 
+            this.add_system_log([LogArray]);
+          ///////////////////// Log entry end ///////////////////// 
+          this.isLoading = false;  
         },
         error: (err) => {
           console.error('❌ Update API Error:', err);
@@ -1839,8 +1919,20 @@ pcpVisible: Boolean | undefined;
           this.apiService.post('prismMemberAllDetails', { medicaid_id: formValues.medicaid_id }).subscribe({
             next: (res:any) => { 
              this.alt_address = res.data.altaddress || []; 
+             ////////////////// Log entry start //////////////////////
+            const LogArray = {
+                medicaid_id: formValues.medicaid_id,
+                log_name: 'ADD ALTERNATIVE ADDRESS',
+                log_details: 'ADD ALTERNATIVE ADDRESS FOR '+ formValues.medicaid_id,
+                log_status: 'Success',
+                log_by: added_by,
+                action_type: 'ADD ALTERNATIVE ADDRESS'
+            }; 
+            this.add_system_log([LogArray]);
+          ///////////////////// Log entry end /////////////////////
+
              this.altAddressFormGroup.reset(); 
-             this.isLoading = true;
+             this.isLoading = false;
             },
             error: (err) => console.error(err)
           });
@@ -1849,9 +1941,133 @@ pcpVisible: Boolean | undefined;
         error: (err) => {
           console.error('❌ Update API Error:', err);
         }
-      });
-       
+      });       
   } 
+
+  add_alt_phone_submit(){
+      this.isLoading = true;  
+      const formValues = this.altPhoneFormGroup.value; 
+      const user = this.auth.getUser();
+      const added_by = user?.ID || 0; 
+      //console.log(formValues);
+      const Payload = {
+        table_name: 'MEM_ALT_PHONE',
+        insertDataArray: [
+          {
+            medicaid_id: formValues.medicaid_id,
+            alt_phone_no: formValues.alt_phone_no, 
+            add_by: added_by
+          },
+        ],
+      };     
+      this.apiService.post('prismMultipleinsert', Payload).subscribe({
+        next: (res) => {   
+          //alert(formValues.medicaid_id);
+          this.apiService.post('prismMemberAllDetails', { medicaid_id: formValues.medicaid_id }).subscribe({
+            next: (res:any) => { 
+             this.member_alt_phone_details = res.data.prismMemberaltphone || []; 
+
+             ////////////////// Log entry start //////////////////////
+            const LogArray = {
+                medicaid_id: formValues.medicaid_id,
+                log_name: 'ADD ALTERNATIVE PHONE',
+                log_details: 'ADD ALTERNATIVE PHONE FOR '+ formValues.medicaid_id,
+                log_status: 'Success',
+                log_by: added_by,
+                action_type: 'ADD ALTERNATIVE PHONE'
+            }; 
+            this.add_system_log([LogArray]);
+          ///////////////////// Log entry end /////////////////////
+
+             //console.log(this.member_alt_phone_details);
+             //this.altPhoneFormGroup.reset(); 
+             $('#alt_phone_no').val('');
+             this.isLoading = false;
+            },
+            error: (err) => console.error(err)
+          });
+
+        },
+        error: (err) => {
+          console.error('❌ Update API Error:', err);
+        }
+      }); 
+  } 
+
+  add_alt_language_submit(){
+    this.isLoading = true;  
+    const formValues = this.altLangFormGroup.value; 
+    const user = this.auth.getUser();
+    const added_by = user?.ID || 0; 
+    //console.log(formValues);
+
+    this.apiService.post('prismMemberlanguage', { medicaid_id: formValues.medicaid_id }).subscribe({
+        next: (res:any) => { 
+          this.member_alt_language_details = res.data.prismMemberaltlanguage || [];
+         // console.log(res.data[0].PRIMARY_LANG); 
+           const Payload = {
+              table_name: 'MEM_ALT_LANGUAGE',
+              insertDataArray: [
+                {
+                  medicaid_id: formValues.medicaid_id,
+                  alt_language: formValues.alt_language_name, 
+                  code: formValues.alt_language, 
+                  roster_language: res.data[0].LANGUAGE_DESC, 
+                  language_code: res.data[0].PRIMARY_LANG, 
+                  add_by: added_by
+                },
+              ],
+            };
+
+            this.apiService.post('prismMultipleinsert', Payload).subscribe({
+              next: (res) => {   
+
+                this.apiService.post('prismMemberAllDetails', { medicaid_id: formValues.medicaid_id }).subscribe({
+                  next: (res:any) => { 
+                    this.member_alt_language_details = res.data.prismMemberaltlanguage || []; 
+                    ////////////////// Log entry start //////////////////////
+                    const LogArray = {
+                        medicaid_id: formValues.medicaid_id,
+                        log_name: 'ADD ALTERNATIVE LANGUAGE',
+                        log_details: 'ADD ALTERNATIVE LANGUAGE FOR '+ formValues.medicaid_id,
+                        log_status: 'Success',
+                        log_by: added_by,
+                        action_type: 'ADD ALTERNATIVE LANGUAGE'
+                    }; 
+                    this.add_system_log([LogArray]);
+                  ///////////////////// Log entry end /////////////////////
+                  
+                    $('#alt_language').val('');
+                    this.isLoading = false;
+                  },
+                  error: (err) => console.error(err)
+                });
+                
+
+              },
+              error: (err) => {
+                console.error('❌ Update API Error:', err);
+              }
+            });  
+          
+        },
+      error: (err) => console.error(err)
+    }); 
+
+  }
+
+  get_language_name(event: any) {
+      const selectedCode = event.target.value;
+      const lang = this.all_language_master_list.find(
+        x => x.LANGUAGE_CD === selectedCode
+      );
+
+      const selectedName = lang ? lang.LANGUAGE_DESC : ''; 
+      this.altLangFormGroup.patchValue({
+        alt_language_name: selectedName
+      });
+  }
+
    
 }
 

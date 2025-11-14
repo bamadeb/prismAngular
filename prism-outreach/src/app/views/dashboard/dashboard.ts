@@ -79,8 +79,8 @@ export class Dashboard implements OnInit {
   memberGapList: any[] = [];
   memberQualityList: any[] = [];
   memberTaskList: any[] = [];  
-  isActionVisible = false;
-  isNextActivityVisible = false;
+  isActionVisible = true;
+  isNextActivityVisible = true;
   addActionFormGroup!: FormGroup;
   appointmentFormGroup!: FormGroup;
   medicaid_id: string = '';
@@ -217,9 +217,9 @@ export class Dashboard implements OnInit {
           action_id: [11],
           panel_id: [17],
           action_date: ['',Validators.required],
-          action_status: ['',Validators.required],
-          action_result_id: [''],
-          action_note: [''],
+          action_status: ['Success',Validators.required],
+          action_result_id: ['',Validators.required],
+          action_note: ['',Validators.required],
           next_panel_id: [''],
           next_action_date: [''],
           next_action_note: [''],
@@ -412,6 +412,12 @@ export class Dashboard implements OnInit {
       orientation: 'bottom'
     });
   }
+  formatDate(date: Date): string {
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const dd = String(date.getDate()).padStart(2, '0');
+    const yyyy = date.getFullYear();
+    return `${mm}/${dd}/${yyyy}`;
+  }
 
   openModal(medicaid_id: string, member_name: string): void {
     this.modalInstance?.show();
@@ -420,6 +426,12 @@ export class Dashboard implements OnInit {
     // ✅ Force change detection to ensure lists render
     //this.isLoading = true;
     //alert(this.isLoading);
+    const today = new Date();
+
+    this.addActionFormGroup.patchValue({
+      action_date: this.formatDate(today)   // mm/dd/yyyy
+    });
+
     this.isRiskFieldVisible = [];
     this.isObsFieldVisible = [];
     this.medicaid_id = medicaid_id;
@@ -629,14 +641,23 @@ export class Dashboard implements OnInit {
 
   add_task_click(){ 
   this.task_add_update_form = !this.task_add_update_form
+     setTimeout(() => {
+      $('.datepicker').datepicker({
+        format: 'mm/dd/yyyy',
+        autoclose: true,
+        todayHighlight: true,
+        orientation: 'bottom'
+      });
+    }, 200);
   }
 
   add_update_task_submit() {
   if (this.addTaskFormGroup.valid) {
+    this.isLoading = true;
      const formValue = this.addTaskFormGroup.value;
      const user = this.auth.getUser();
      const userId = user.ID;
-
+      
      if (this.isEditMode) {
           const updateData = { 
               action_id: formValue.task_next_panel_id,  
@@ -672,10 +693,13 @@ export class Dashboard implements OnInit {
 
                 this.addTaskFormGroup.reset();
                 this.add_task_click();
+                this.isLoading = false;
                 this.closeTaskList();
+                window.location.href = '/dashboard';
               },
               error: (err) => {
                 console.error('❌ Update API Error:', err);
+                this.isLoading = false;
               }
             });
 
@@ -714,10 +738,13 @@ export class Dashboard implements OnInit {
               ///////////////////// Log entry end ///////////////////// 
 
               this.addTaskFormGroup.reset();
+              this.isLoading = false;
               this.closeTaskList();
+              window.location.href = '/dashboard';
             },
             error: (err) => {
               console.error('❌ API Error:', err);
+              this.isLoading = false;
             }
           });
 
@@ -726,6 +753,7 @@ export class Dashboard implements OnInit {
     
   } else {
     alert('Please fill all required fields.');
+    this.isLoading = false;
   }
 }
 
@@ -1228,7 +1256,14 @@ loadDashboard(user_id: number) {
     .pipe(
       switchMap((userMemberRes: any) => {
         // You can save the response if needed
+        
         this.members = userMemberRes.data || [];
+          this.ngZone.runOutsideAngular(() => {
+            setTimeout(() => {
+              this.initializeDataTable('#members', true);
+              
+            }, 300);
+          });        
         this.isLoading = false;
         // 2️⃣ Call second API only after first completes
         return this.apiService.post<ApiResponseAllmyworkspace>('prismOutreachAllmyworkspaceSP', payload);
@@ -1253,7 +1288,7 @@ loadDashboard(user_id: number) {
           this.ngZone.runOutsideAngular(() => {
             setTimeout(() => {
               this.initializeDataTable('#members', true);
-              this.initializeDataTable('#transferList');
+              //this.initializeDataTable('#transferList');
             }, 300);
           });
           

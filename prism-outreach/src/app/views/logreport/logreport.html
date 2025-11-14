@@ -1,0 +1,82 @@
+<div class="container mt-3">
+
+  <div class="card">
+    <div class="card-body">
+
+      <form [formGroup]="logForm" (ngSubmit)="onSearch()">
+
+        <div class="row g-2">
+
+          <div class="col-lg-3">
+            <select class="form-control text-uppercase" formControlName="user_id">
+                @for (u of users; track u.ID) {
+                    <option [value]="u.ID">
+                        {{ u.FistName }} {{ u.LastName }} - ({{ u.ROLE_NAME }})
+                    </option>
+                }
+            </select>
+          </div>
+
+          <div class="col-lg-2">
+            <input type="text" class="form-control datepicker" formControlName="start_date">
+          </div>
+
+          <div class="col-lg-2">
+            <input type="text" class="form-control datepicker" formControlName="end_date">
+          </div>
+
+          <div class="col-lg-3">
+            <button type="submit" class="btn btn-primary" [disabled]="isLoading">  
+                @if (!isLoading) {
+                    SEARCH
+                } @else {
+                    <span class="spinner-border spinner-border-sm"></span>
+                    Loading...
+                }
+            </button>
+          </div>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <div class="card mt-3">
+    <div class="card-body">
+
+      <table class="table table-bordered text-uppercase">
+        <thead>
+        <tr>
+          <th>MEDICAID ID</th>
+          <th>ACTIVITY CATEGORY</th>
+          <th>ACTIVITY TYPE</th>
+          <th>ACTION RESULT</th>
+          <th>ACTION STATUS</th>
+          <th>ACTION DATE</th>
+          <th>NOTE</th>
+        </tr>
+        </thead>
+
+        <tbody>
+            @for (log of logList; track log.medicaid_id) {
+            <tr>
+                <td>{{ log.medicaid_id }}</td>
+                <td>{{ log.Panel_Name }}</td>
+                <td>{{ log.action_type }}</td>
+                <td>{{ log.action_result }}</td>
+                <td>{{ log.action_status }}</td>
+                <td>
+                {{ log.action_date !== '01/01/1900' ? log.action_date : '' }}
+                </td>
+                <td>{{ log.action_note }}</td>
+            </tr>
+            }
+
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+
+</div>

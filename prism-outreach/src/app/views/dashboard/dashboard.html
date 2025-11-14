@@ -912,9 +912,13 @@
                                                     </div>
 
                                                     <div class="col-sm-3 mt-4">
-                                                        <input placeholder="Action Date" type="date"
+                                                        <input placeholder="Action Date" type="text"
                                                             formControlName="action_date" id="action_date"
                                                             class="form-control datepicker text-uppercase" required />
+                                                        <div class="text-danger small"
+                                                                *ngIf="addActionFormGroup.get('action_date')?.touched && addActionFormGroup.get('action_date')?.invalid">
+                                                                This field is required.
+                                                        </div>    
                                                     </div>
 
                                                     <div class="col-sm-3 mt-4">
@@ -924,6 +928,10 @@
                                                             <option value="Success">Success</option>
                                                             <option value="Failure">Failure</option>
                                                         </select>
+                                                        <div class="text-danger small"
+                                                                *ngIf="addActionFormGroup.get('action_status')?.touched && addActionFormGroup.get('action_status')?.invalid">
+                                                                This field is required.
+                                                        </div>
                                                     </div>
 
                                                     <div class="col-sm-6 mt-4">
@@ -937,12 +945,20 @@
                                                             </option>
                                                             }
                                                         </select>
+                                                        <div class="text-danger small"
+                                                                *ngIf="addActionFormGroup.get('action_result_id')?.touched && addActionFormGroup.get('action_result_id')?.invalid">
+                                                                This field is required.
+                                                        </div>
                                                     </div>
 
                                                     <div class="col-sm-12 mt-4">
                                                         <textarea class="form-control" formControlName="action_note"
                                                             id="action_note" required
                                                             placeholder="Type your text..."></textarea>
+                                                        <div class="text-danger small"
+                                                                *ngIf="addActionFormGroup.get('action_note')?.touched && addActionFormGroup.get('action_note')?.invalid">
+                                                                This field is required.
+                                                        </div>
                                                     </div>
                                                     <div class="col-sm-12 mt-4">
                                                         <input class="form-control" disabled type="file"
@@ -1564,7 +1580,7 @@
                             </div>
 
                             <div class="col-sm-4 mt-4">
-                                <input type="date" placeholder="Task Date" class="form-control"
+                                <input type="text" placeholder="Task Date" class="form-control datepicker"
                                     formControlName="task_date" required>
                             </div>
 

@@ -1725,7 +1725,7 @@ pcpVisible: Boolean | undefined;
         medicaid_id: medicaid_id 
       });
 
-      this.isLoading = false; // show loader
+      this.isLoading = false; // hide loader
     },
     error: (err) => {
       console.error('❌ Dashboard load failed:', err);
@@ -1764,6 +1764,7 @@ pcpVisible: Boolean | undefined;
   }
 
   add_alt_address_submit() { 
+      this.isLoading = true;  
       const formValues = this.altAddressFormGroup.value; 
       const user = this.auth.getUser();
       const added_by = user?.ID || 0; 
@@ -1785,9 +1786,10 @@ pcpVisible: Boolean | undefined;
       this.apiService.post('prismMultipleinsert', Payload).subscribe({
         next: (res) => {   
           this.apiService.post('prismMemberAllDetails', { medicaid_id: formValues.medicaid_id }).subscribe({
-            next: (res:any) => {
-              //console.log(res);
+            next: (res:any) => { 
              this.alt_address = res.data.altaddress || []; 
+             this.altAddressFormGroup.reset(); 
+             this.isLoading = true;
             },
             error: (err) => console.error(err)
           });
@@ -1797,7 +1799,7 @@ pcpVisible: Boolean | undefined;
           console.error('❌ Update API Error:', err);
         }
       });
-      this.altAddressFormGroup.reset();  
+       
   } 
    
 }

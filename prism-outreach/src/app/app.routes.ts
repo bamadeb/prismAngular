@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { Login } from './views/login/login';
 import { Dashboard } from './views/dashboard/dashboard';
 import { Starperformance } from './views/starperformance/starperformance';
-import { Gapsreport } from './views/gapsreport/gapsreport';
+import { GapsReportComponent  } from './views/gapsreport/gapsreport';
 import { RiskProfile } from './views/risk-profile/risk-profile';
 import { Users } from './views/users/users';
 import { Plans } from './views/plans/plans';
@@ -47,7 +47,7 @@ export const routes: Routes = [
     path: 'gapsreport',
     component: MainLayout,
     children: [ 
-      { path: '', component: Gapsreport , data: { title: 'RISKS GAP REPORT' }},
+      { path: '', component: GapsReportComponent  , data: { title: 'RISKS GAP REPORT' }},
     ]
   },{
     path: 'riskprofile',

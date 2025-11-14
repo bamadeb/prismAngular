@@ -1,147 +1,189 @@
-
 <main id="main" class="main" style="margin-top:50px!important;min-height:550px;">
-    <section class="section dashboard">
-        <div class="row">
-            <!-- Left side columns -->
-            <div class="col-lg-12">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-body">
-                                
-                                <div align="right" class="mb-4"> <a onclick="add_user();" style="text-decoration:underline;cursor:pointer;">+ ADD USER</a></div>
-                                        <table class="table table-sm table-borderless" id="members">
-                                            <thead>
-                                                    <tr>
-                                                        <th>FIRST NAME</th>
-                                                        <th>LAST NAME</th>
-                                                        <th>EMAIL</th>
-                                                        <th>DEPARTMENT</th>
-                                                        <th>ROLE</th>
-                                                        <th>STATUS</th>
-                                                        <th>ACTION</th>
-                                                    </tr>
-                                            </thead>
-                                            <tbody>
-                                                 
-                                                    <tr>
-                                                        <td class="text-uppercase">Akil</td>
-                                                        <td class="text-uppercase">Harmon</td>
-                                                        <td class="text-uppercase">akil.harmon@gmail.com</td>
-                                                        <td class="text-uppercase"></td>
-                                                        <td class="text-uppercase">Admin</td>
-                                                        <td class="text-uppercase">Active</td>
-                                                        <td class="text-uppercase"><a title="Update" href="javascript:void(0);" onclick="update_user(12);"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
-                                                    </tr>
-                                                
-                                                    <tr>
-                                                        <td class="text-uppercase">Jim</td>
-                                                        <td class="text-uppercase">Baker</td>
-                                                        <td class="text-uppercase">jimbaker@bakerandcompanyllc.com</td>
-                                                        <td class="text-uppercase"></td>
-                                                        <td class="text-uppercase">Management</td>
-                                                        <td class="text-uppercase">Active</td>
-                                                        <td class="text-uppercase"><a title="Update" href="javascript:void(0);" onclick="update_user(11);"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
-                                                    </tr>
-                                                
-                                                    <tr>
-                                                        <td class="text-uppercase">John</td>
-                                                        <td class="text-uppercase">Geer</td>
-                                                        <td class="text-uppercase">john@collectiveimpact.health</td>
-                                                        <td class="text-uppercase"></td>
-                                                        <td class="text-uppercase">Management</td>
-                                                        <td class="text-uppercase">Active</td>
-                                                        <td class="text-uppercase"><a title="Update" href="javascript:void(0);" onclick="update_user(10);"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
-                                                    </tr>
-                                                
-                                                    <tr>
-                                                        <td class="text-uppercase">Justin</td>
-                                                        <td class="text-uppercase">Harmon</td>
-                                                        <td class="text-uppercase">justin@collectiveimpact.health</td>
-                                                        <td class="text-uppercase">Benefits</td>
-                                                        <td class="text-uppercase">Benefits Specialist</td>
-                                                        <td class="text-uppercase">Active</td>
-                                                        <td class="text-uppercase"><a title="Update" href="javascript:void(0);" onclick="update_user(2);"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
-                                                    </tr>
-                                                
-                                                    <tr>
-                                                        <td class="text-uppercase">Lovell</td>
-                                                        <td class="text-uppercase">Harmon</td>
-                                                        <td class="text-uppercase">lovell.harmon@gmail.com</td>
-                                                        <td class="text-uppercase"></td>
-                                                        <td class="text-uppercase">Admin</td>
-                                                        <td class="text-uppercase">Active</td>
-                                                        <td class="text-uppercase"><a title="Update" href="javascript:void(0);" onclick="update_user(3);"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
-                                                    </tr>
-                                                
-                                                    <tr>
-                                                        <td class="text-uppercase">Nicole</td>
-                                                        <td class="text-uppercase">Johnson</td>
-                                                        <td class="text-uppercase">nicole@collectiveimpact.health</td>
-                                                        <td class="text-uppercase">Medical Management</td>
-                                                        <td class="text-uppercase">Navigator</td>
-                                                        <td class="text-uppercase">Active</td>
-                                                        <td class="text-uppercase"><a title="Update" href="javascript:void(0);" onclick="update_user(1);"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
-                                                    </tr>
-                                                
-                                                    <tr>
-                                                        <td class="text-uppercase">Padmalochan</td>
-                                                        <td class="text-uppercase">Pradhan</td>
-                                                        <td class="text-uppercase">pradhan.padma@gmail.com</td>
-                                                        <td class="text-uppercase">Medical Management</td>
-                                                        <td class="text-uppercase">Navigator</td>
-                                                        <td class="text-uppercase">Active</td>
-                                                        <td class="text-uppercase"><a title="Update" href="javascript:void(0);" onclick="update_user(1015);"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
-                                                    </tr>
-                                                
-                                                    <tr>
-                                                        <td class="text-uppercase">Solimar</td>
-                                                        <td class="text-uppercase">Lopez</td>
-                                                        <td class="text-uppercase">solimar@collectiveimpact.health</td>
-                                                        <td class="text-uppercase">Wellness Navigation</td>
-                                                        <td class="text-uppercase">Navigator</td>
-                                                        <td class="text-uppercase">Active</td>
-                                                        <td class="text-uppercase"><a title="Update" href="javascript:void(0);" onclick="update_user(1013);"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
-                                                    </tr>
-                                                
-                                                    <tr>
-                                                        <td class="text-uppercase">Terry</td>
-                                                        <td class="text-uppercase">Booker</td>
-                                                        <td class="text-uppercase">terry@collectiveimpact.health</td>
-                                                        <td class="text-uppercase"></td>
-                                                        <td class="text-uppercase">Management</td>
-                                                        <td class="text-uppercase">Inactive</td>
-                                                        <td class="text-uppercase"><a title="Update" href="javascript:void(0);" onclick="update_user(4);"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
-                                                    </tr>
-                                                
-                                                    <tr>
-                                                        <td class="text-uppercase">Test</td>
-                                                        <td class="text-uppercase">user</td>
-                                                        <td class="text-uppercase">testuser@gmail.com</td>
-                                                        <td class="text-uppercase">Disease Management</td>
-                                                        <td class="text-uppercase">Navigator</td>
-                                                        <td class="text-uppercase">Inactive</td>
-                                                        <td class="text-uppercase"><a title="Update" href="javascript:void(0);" onclick="update_user(1010);"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
-                                                    </tr>
-                                                
-                                                    <tr>
-                                                        <td class="text-uppercase">test1</td>
-                                                        <td class="text-uppercase">test1</td>
-                                                        <td class="text-uppercase">test1@gmail.com</td>
-                                                        <td class="text-uppercase"></td>
-                                                        <td class="text-uppercase">Navigator</td>
-                                                        <td class="text-uppercase">Active</td>
-                                                        <td class="text-uppercase"><a title="Update" href="javascript:void(0);" onclick="update_user(1014);"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
-                                                    </tr>
-                                                
-                                            </tbody>
-                                        </table>
+  <section class="section dashboard">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="dataTables_length" id="members_length"><label>Show <select name="members_length" aria-controls="members" class=""><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div>
+            <!-- 🔹 Add User + Search -->
+            <div class="d-flex flex-column align-items-end mb-4">
+              <a
+                (click)="openAddUserModal()"
+                class="add-user-link text-primary fw-semibold mb-2"
+                style="text-decoration:underline; cursor:pointer;">
+                + ADD USER
+              </a>
 
-                    </div>
-                </div>
-            </div><!-- End Left side columns -->
-        </div>
+              <input
+                type="text"
+                class="form-control w-25"
+                [(ngModel)]="searchTerm"
+                placeholder="Search...">
             </div>
+
+            <!-- 🔹 Loading Spinner -->
+            <div *ngIf="loading" class="text-center py-4">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
+
+            <!-- 🔹 Users Table -->
+            <div class="table-responsive" *ngIf="!loading">
+              <table class="table align-middle" id="members">
+                <thead>
+                  <tr>
+                    <th (click)="sortTable('firstName')">FIRST NAME</th>
+                    <th (click)="sortTable('lastName')">LAST NAME</th>
+                    <th (click)="sortTable('email')">EMAIL</th>
+                    <th (click)="sortTable('department')">DEPARTMENT</th>
+                    <th (click)="sortTable('role')">ROLE</th>
+                    <th (click)="sortTable('status')">STATUS</th>
+                    <th class="text-center">ACTION</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let user of filteredUsers(); let i = index">
+                    <td>{{ user.firstName }}</td>
+                    <td>{{ user.lastName }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.department }}</td>
+                    <td>{{ user.role }}</td>
+                    <td>
+                      <span
+                        class="badge"
+                        [ngClass]="{
+                          'bg-success': user.status.toLowerCase() === 'active',
+                          'bg-secondary': user.status.toLowerCase() === 'inactive'
+                        }">
+                        {{ user.status }}
+                      </span>
+                    </td>
+                    <td class="text-center">
+                      <i
+                        class="fa fa-pencil text-primary me-2"
+                        title="Edit User"
+                        style="cursor:pointer;"
+                        (click)="openEditUserModal(user)">
+                      </i>
+                    </td>
+                  </tr>
+
+                  <!-- Empty State -->
+                  <tr *ngIf="filteredUsers().length === 0">
+                    <td colspan="7" class="text-center text-muted py-3">No users found.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </div>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 </main>
+
+<!-- 🔹 Add / Edit User Modal -->
+<div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header border-0">
+        <h5 class="modal-title fw-semibold" id="addUserModalLabel">{{ isEditing ? 'UPDATE USER' : 'ADD USER' }}</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="closeAddUserModal()"></button>
+      </div>
+
+      <div class="modal-body">
+        <form #addForm="ngForm" (ngSubmit)="isEditing ? updateUser(addForm) : addUser(addForm)">
+          <div class="row g-3">
+
+            <div class="col-md-6">
+              <input type="text" class="form-control text-uppercase" placeholder="FIRST NAME" [(ngModel)]="newUser.firstName" name="firstName" required>
+            </div>
+
+            <div class="col-md-6">
+              <input type="text" class="form-control text-uppercase " placeholder="LAST NAME" [(ngModel)]="newUser.lastName" name="lastName">
+            </div>
+
+            <!-- Role Dropdown -->
+            <div class="col-md-6">
+            <select class="form-control text-uppercase placeholder-select" [(ngModel)]="newUser.role" name="role" required>
+              <option [ngValue]="null" disabled selected hidden>ROLE</option>
+              <option *ngFor="let r of roles" [ngValue]="r.id">{{ r.name }}</option>
+            </select>
+            </div>
+            <div class="col-md-6">
+            <!-- Department Dropdown -->
+            <select class="form-control text-uppercase placeholder-select" [(ngModel)]="newUser.department" name="department" required>
+              <option [ngValue]="null" disabled selected hidden>DEPARTMENT</option>
+              <option *ngFor="let d of departments" [ngValue]="d.id">{{ d.name }}</option>
+            </select>
+
+
+            </div>
+            <div class="col-md-6">
+              <input type="email" class="form-control text-uppercase " placeholder="EMAIL" [(ngModel)]="newUser.email" name="email" required [readonly]="isEditing">
+            </div>
+
+            <div class="col-md-6 position-relative">
+              <input
+                [type]="showPassword ? 'text' : 'password'"
+                class="form-control"
+                placeholder="PASSWORD"
+                [(ngModel)]="newUser.password"
+                name="password"
+                [readonly]="isEditing"
+                required
+                minlength="6"
+              />
+              <i
+                class="fa"
+                [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"
+                (click)="togglePassword()"
+                style="position:absolute;right:15px;top:18px;cursor:pointer;opacity:0.6;">
+              </i>
+            </div>
+            
+             
+            <!-- Status Dropdown -->
+            <div class="col-md-6">
+              <select 
+                class="form-select text-uppercase" 
+                [(ngModel)]="newUser.status" 
+                name="status" 
+                required>
+                <option value="0">ACTIVE</option>
+                <option value="1">INACTIVE</option>
+              </select>
+            </div>
+            
+          </div>
+
+          <div class="text-end mt-4">
+            <button type="submit" class="btn btn-primary px-4" [disabled]="!addForm.valid || loading">
+              {{ isEditing ? 'UPDATE USER' : 'SUBMIT' }}
+            </button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ✅ Toast Notification -->
+<div
+  *ngIf="toastMessage"
+  class="toast align-items-center text-white border-0 show position-fixed bottom-0 end-0 m-4"
+  [ngClass]="{
+    'bg-success': toastType === 'success',
+    'bg-danger': toastType === 'danger',
+    'bg-warning': toastType === 'warning'
+  }"
+  role="alert">
+  <div class="d-flex">
+    <div class="toast-body">{{ toastMessage }}</div>
+    <button type="button" class="btn-close btn-close-white me-2 m-auto" (click)="toastMessage = ''"></button>
+  </div>
+</div>

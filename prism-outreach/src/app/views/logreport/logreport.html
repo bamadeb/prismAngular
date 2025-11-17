@@ -1,4 +1,7 @@
-<div class="container mt-3">
+<main id="main" class="main" style="margin-top:50px!important;min-height:550px;">
+  <section class="section dashboard">
+    <div class="row">
+      <div class="col-lg-12">
 
   <div class="card">
     <div class="card-body">
@@ -45,7 +48,7 @@
   <div class="card mt-3">
     <div class="card-body">
 
-      <table class="table table-bordered text-uppercase">
+      <table class="table table-bordered text-uppercase" id="logreport">
         <thead>
         <tr>
           <th>MEDICAID ID</th>
@@ -57,11 +60,9 @@
           <th>NOTE</th>
         </tr>
         </thead>
-
         <tbody>
-            @for (log of logList; track log.medicaid_id) {
-            <tr>
-                <td>{{ log.medicaid_id }}</td>
+           <tr *ngFor="let log of logList">
+           <td>{{ log.medicaid_id }}</td>
                 <td>{{ log.Panel_Name }}</td>
                 <td>{{ log.action_type }}</td>
                 <td>{{ log.action_result }}</td>
@@ -70,13 +71,12 @@
                 {{ log.action_date !== '01/01/1900' ? log.action_date : '' }}
                 </td>
                 <td>{{ log.action_note }}</td>
-            </tr>
-            }
-
+          </tr> 
         </tbody>
       </table>
-
     </div>
   </div>
-
 </div>
+</div>
+</section>
+</main>

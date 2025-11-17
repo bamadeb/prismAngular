@@ -111,7 +111,7 @@ loadUsers() {
       });
 
       this.loading = false;
-      this.showToast('Users loaded successfully', 'success');
+      //this.showToast('Users loaded successfully', 'success');
     },
     error: (err) => {
       console.error('❌ Failed to load users:', err);
@@ -177,9 +177,7 @@ openEditUserModal(user: any) {
       this.showToast('Failed to load user details.', 'danger');
     }
   });
-}
-
-    
+}    
 
   // ✅ Add User Flow
   addUser(form: NgForm) {
@@ -196,7 +194,7 @@ openEditUserModal(user: any) {
 
         if (exists) {
           this.loading = false;
-          this.showToast('Username already exists.', 'warning');
+          //this.showToast('Username already exists.', 'warning');
         } else {
           // Step 2: Proceed to Insert User
           this.insertUser(form);

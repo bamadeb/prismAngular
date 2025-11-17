@@ -73,9 +73,9 @@ export class Dashboard implements OnInit {
   overallSummary: any = {};
   ownSummary: any = {};
   modalInstance: any;
-  action_activity_category: any = {};
-  action_ativity_type: any = {};
-  actionresult_followup_list: any = {};
+  action_activity_category: any[] = [];
+  action_ativity_type: any[] = [];
+  actionresult_followup_list: any[] = [];
   memberGapList: any[] = [];
   memberQualityList: any[] = [];
   memberTaskList: any[] = [];  

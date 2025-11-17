@@ -1806,8 +1806,31 @@ calculatePerformance(data: any) {
            riskObsUpdateArray.push({ ...commonData, id: gapId });
           //riskObsUpdateArray.push(commonData);
         }else{
-          
-          riskObsInsertArray.push(commonData);          
+          // ------------------------
+            // CHECK IF ANY FIELD HAS VALUE
+            // ------------------------
+            const observationFields = [
+              riskGap.Observation_Date,
+              riskGap.Observation_Code,
+              riskGap.CPT_Code_Modifier,
+              riskGap.Observation_Code_Set,
+              riskGap.Observation_Result,
+              riskGap.Service_Provider_NPI,
+              riskGap.Service_Provider_Taxonomy_Code,
+              riskGap.Service_Provider_Name,
+              riskGap.Service_Provider_Type,
+              riskGap.Service_Provider_RxProviderFlag,
+              riskGap.Provider_Group_NPI,
+              riskGap.Provider_Group_Taxonomy_Code,
+              riskGap.Provider_Group_Name,
+              riskGap.risk_note
+            ];
+
+            // TRUE if ANY value is non-null, non-empty
+            const hasAnyValue = observationFields.some(v => v !== null && v !== undefined && v !== "");
+            if (hasAnyValue) {
+              riskObsInsertArray.push(commonData);  
+            }        
         }
       });
     }
@@ -1852,8 +1875,31 @@ calculatePerformance(data: any) {
           riskObsUpdateArray.push({ ...qualityObsUpdate, id: gapId });
           //riskObsUpdateArray.push(riskObsUpdate);
         }else{
+            // ------------------------
+            // CHECK IF ANY FIELD HAS VALUE
+            // ------------------------
+            const observationFields = [
+              qualityGap.Observation_Date,
+              qualityGap.Observation_Code,
+              qualityGap.CPT_Code_Modifier,
+              qualityGap.Observation_Code_Set,
+              qualityGap.Observation_Result,
+              qualityGap.Service_Provider_NPI,
+              qualityGap.Service_Provider_Taxonomy_Code,
+              qualityGap.Service_Provider_Name,
+              qualityGap.Service_Provider_Type,
+              qualityGap.Service_Provider_RxProviderFlag,
+              qualityGap.Provider_Group_NPI,
+              qualityGap.Provider_Group_Taxonomy_Code,
+              qualityGap.Provider_Group_Name,
+              qualityGap.risk_note
+            ];
 
-          riskObsInsertArray.push(qualityObsUpdate);          
+            // TRUE if ANY value is non-null, non-empty
+            const hasAnyValue = observationFields.some(v => v !== null && v !== undefined && v !== "");
+            if (hasAnyValue) {
+              riskObsInsertArray.push(qualityObsUpdate);
+            }          
         }
         console.log(qualityObsUpdate);
       });

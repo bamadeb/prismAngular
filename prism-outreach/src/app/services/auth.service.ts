@@ -2,7 +2,7 @@ import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 
 const USER_KEY = 'app_user';
-const INACTIVITY_LIMIT = 10 * 60 * 1000; // 10 minutes in milliseconds
+const INACTIVITY_LIMIT = 60 * 60 * 1000; // 10 minutes in milliseconds
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private inactivityTimer: any;

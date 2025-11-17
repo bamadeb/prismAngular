@@ -24,11 +24,16 @@ interface Department {
 })
 export class Users implements AfterViewInit, OnInit {
 
-  private usersListUrl = 'https://e9vakopr4c.execute-api.us-east-1.amazonaws.com/dev/prismUserslist-dev';
-  private authUrl = 'https://e9vakopr4c.execute-api.us-east-1.amazonaws.com/dev/prismAuthentication-dev';
-  private insertUrl = 'https://e9vakopr4c.execute-api.us-east-1.amazonaws.com/dev/prismMultipleinsert-dev';
-  private updateUrl = 'https://e9vakopr4c.execute-api.us-east-1.amazonaws.com/dev/prismMultiplefieldupdate-dev';
-  private userByIdUrl = 'https://e9vakopr4c.execute-api.us-east-1.amazonaws.com/dev/prismUserListByRole-dev';
+
+  //private devurl = "https://e9vakopr4c.execute-api.us-east-1.amazonaws.com/dev/";
+  private produrl = "https://yeuovejy1b.execute-api.us-east-2.amazonaws.com/prod";
+  private env = 'prod';
+
+  private usersListUrl = this.produrl+'/prismUserslist-'+this.env;
+  private authUrl = this.produrl+'/prismAuthentication-'+this.env;
+  private insertUrl = this.produrl+'/prismMultipleinsert-'+this.env;
+  private updateUrl = this.produrl+'/prismMultiplefieldupdate-'+this.env;
+  private userByIdUrl = this.produrl+'/prismUserListByRole-'+this.env;
 
 
   users: any[] = [];

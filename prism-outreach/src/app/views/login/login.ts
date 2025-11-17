@@ -15,7 +15,7 @@ export class Login {
   [x: string]: any;
 username = '';
   password = '';
-  apiUrl = 'https://e9vakopr4c.execute-api.us-east-1.amazonaws.com/dev/prismAuthentication-dev'; // your backend API
+  //apiUrl = 'https://e9vakopr4c.execute-api.us-east-1.amazonaws.com/dev/prismAuthentication-dev'; // your backend API
   apires: ApiResponse = {
   statusCode: 0,
   data: [],

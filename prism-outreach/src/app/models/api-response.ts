@@ -14,6 +14,7 @@ export interface ApiResponseAllmyworkspace {
     ownRiskQualitySummary?: any[];
   }
 }
+
 export interface ApiResponseMemberGapsList {
   statusCode: number;
   data: {
@@ -81,4 +82,10 @@ export interface Altaddress {
   add_date: string;
   initial:string;
   
+}
+
+export interface ApiResponse {
+  data: any[];   // or your exact data structure
+  status?: string;
+  message?: string;
 }

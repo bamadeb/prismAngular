@@ -2,6 +2,8 @@ import { Component, AfterViewInit } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ApiResponse } from '../../models/api-response';
+import { ApiService } from '../../services/api.service';
 
 declare var $: any;
 
@@ -18,9 +20,9 @@ export class GapsReportComponent implements AfterViewInit {
   endDate: string = '';   // YYYY-MM-DD
 
   gapsData: any[] = [];
-  dataLoaded = false;
+  dataLoaded = false;   
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,private apiService: ApiService) {
 
     const today = new Date();
 
@@ -82,25 +84,43 @@ export class GapsReportComponent implements AfterViewInit {
 
     this.dataLoaded = false;
 
-    const apiUrl =
-      'https://e9vakopr4c.execute-api.us-east-1.amazonaws.com/dev/prismGetgapsobservationdata-dev';
+    //const apiUrl =
+      //'https://e9vakopr4c.execute-api.us-east-1.amazonaws.com/dev/prismGetgapsobservationdata-dev';
 
-    const body = {
+
+
+    const payload = {
       start_date: this.startDate,
       end_date: this.endDate
-    };
+    }; 
 
-    this.http.post<any>(apiUrl, body).subscribe({
-      next: (res) => {
-        this.gapsData = res?.data || [];
-        this.dataLoaded = true;
-      },
-      error: (err) => {
-        console.error('API Error:', err);
-        this.gapsData = [];
-        this.dataLoaded = true;
-      }
-    });
+  this.apiService.post<ApiResponse>('prismGetgapsobservationdata', payload)
+  .subscribe({
+    next: (res: ApiResponse) => {     
+      this.gapsData = res?.data || [];
+      this.dataLoaded = true;
+    },
+    error: (err: any) => {
+      alert('Server error. Please try again later.');
+      this.gapsData = [];
+      this.dataLoaded = true;
+    }
+  });
+
+    // this.http.post<ApiResponse>('prismGetgapsobservationdata', body).subscribe({
+    //         next: (res) => {
+
+    // // this.http.post<any>(apiUrl, body).subscribe({
+    // //   next: (res) => {
+    //     this.gapsData = res?.data || [];
+    //     this.dataLoaded = true;
+    //   },
+    //   error: (err) => {
+    //     console.error('API Error:', err);
+    //     this.gapsData = [];
+    //     this.dataLoaded = true;
+    //   }
+    // });
   }
 
   /** CSV DOWNLOAD */

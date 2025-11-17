@@ -7,8 +7,8 @@ import { ApiService } from '../../services/api.service';
 import { CommonModule } from '@angular/common';
 import { AfterViewInit } from '@angular/core';
 import { Modal } from 'bootstrap'; // ✅ Bootstrap Modal class (no jQuery)
- import { FormsModule,ReactiveFormsModule,FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
- import { ActivatedRoute } from '@angular/router';
+import { FormsModule,ReactiveFormsModule,FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 // import { ReactiveFormsModule } from '@angular/forms';
 import 'datatables.net';
 import { switchMap } from 'rxjs/operators';
@@ -214,7 +214,7 @@ export class Dashboard implements OnInit {
     
       
       this.addActionFormGroup = this.fb.group({
-          action_id: [11],
+          action_id: [18],
           panel_id: [17],
           action_date: ['',Validators.required],
           action_status: ['Success',Validators.required],
@@ -262,7 +262,7 @@ export class Dashboard implements OnInit {
     }
      //this.loadDashboard(this.userId);
     this.getAddActionMasterData();
-    this.setScheduledActionStatus('11');
+    this.setScheduledActionStatus('17');
     if (this.qualityGapsList && this.qualityGapsList.controls) {
       this.isObsFieldVisible = this.qualityGapsList.controls.map(() => false);
     } else {
@@ -282,9 +282,81 @@ export class Dashboard implements OnInit {
   }
   toggleObsField(index: number) {
     this.isObsFieldVisible[index] = !this.isObsFieldVisible[index];
+      setTimeout(() => {
+
+      const actionForm = this.addActionFormGroup;
+
+      $('.datepicker')
+        .datepicker({
+          format: 'mm/dd/yyyy',
+          autoclose: true,
+          todayHighlight: true
+        })
+        .on('changeDate', function (e: any) {
+
+          const input        = e.target as HTMLInputElement;
+          const selectedDate = e.format();
+
+          const controlName = input.getAttribute('data-control');  // "Observation_Date"
+          const arrayName   = input.getAttribute('data-array');    // "riskGapsList"
+          const index       = input.getAttribute('data-index');    // row number
+          const formType    = input.getAttribute('data-form');     // "action"
+
+          if (!controlName) return;
+
+          // FormArray field
+          if (arrayName && index !== null) {
+            const i = Number(index);
+
+            if (formType === 'action' && arrayName === 'qualityGapsList') {
+              actionForm.get(arrayName)
+                ?.get([i])
+                ?.get(controlName)
+                ?.patchValue(selectedDate);
+            }
+          }
+        });
+
+    }, 300);
   }
   toggleriskObsField(index: number) {
     this.isRiskFieldVisible[index] = !this.isRiskFieldVisible[index];
+    setTimeout(() => {
+
+      const actionForm = this.addActionFormGroup;
+
+      $('.datepicker')
+        .datepicker({
+          format: 'mm/dd/yyyy',
+          autoclose: true,
+          todayHighlight: true
+        })
+        .on('changeDate', function (e: any) {
+
+          const input        = e.target as HTMLInputElement;
+          const selectedDate = e.format();
+
+          const controlName = input.getAttribute('data-control');  // "Observation_Date"
+          const arrayName   = input.getAttribute('data-array');    // "riskGapsList"
+          const index       = input.getAttribute('data-index');    // row number
+          const formType    = input.getAttribute('data-form');     // "action"
+
+          if (!controlName) return;
+
+          // FormArray field
+          if (arrayName && index !== null) {
+            const i = Number(index);
+
+            if (formType === 'action' && arrayName === 'riskGapsList') {
+              actionForm.get(arrayName)
+                ?.get([i])
+                ?.get(controlName)
+                ?.patchValue(selectedDate);
+            }
+          }
+        });
+
+    }, 300);
   }
   toggleRiskGaps(): void {
     this.showRiskGaps = !this.showRiskGaps;
@@ -293,77 +365,89 @@ export class Dashboard implements OnInit {
     this.showQualityGaps = !this.showQualityGaps;
   }
   setRiskGapsData(riskGapsdata: any) {
-    // Clear existing transactions
-    this.riskGapsList.clear();
-  // Push each transaction dynamically
-    if (riskGapsdata && Array.isArray(riskGapsdata)) {
-      riskGapsdata.forEach((t: any) => {
-        this.riskGapsList.push(this.fb.group({
-          DIAG_CODE: [t.DIAG_CODE],
-          DIAG_DESC: [t.DIAG_DESC],
-          PROCESS_STATUS: [t.PROCESS_STATUS === 1],
-          risk_gap_id: [t.id],
-          Type: ['risk'],
-          Gap_Code: [t.Gap_Code],
-          Observation_Date: [
-            t.Observation_Date && t.Observation_Date !== '1900-01-01T00:00:00.000Z'
-              ? t.Observation_Date
-              : ''
-          ],
-          Observation_Year: [t.Observation_Year],
-          Observation_Code: [t.Observation_Code],
-          CPT_Code_Modifier: [t.CPT_Code_Modifier],
-          Observation_Code_Set: [t.Observation_Code_Set],
-          Observation_Result: [t.Observation_Result],
-          Service_Provider_NPI: [t.Service_Provider_NPI],
-          Service_Provider_Taxonomy_Code: [t.Service_Provider_Taxonomy_Code],
-          Service_Provider_Name: [t.Service_Provider_Name],
-          Service_Provider_Type: [t.Service_Provider_Type],
-          Service_Provider_RxProviderFlag: [t.Service_Provider_RxProviderFlag],
-          Provider_Group_NPI: [t.Provider_Group_NPI],
-          Provider_Group_Taxonomy_Code: [t.Provider_Group_Taxonomy_Code],
-          Provider_Group_Name: [t.Provider_Group_Name],
-          note: [t.note]
-        }));
-      });
-    }
+  // Clear existing transactions
+  this.riskGapsList.clear();
+
+  if (riskGapsdata && Array.isArray(riskGapsdata)) {
+    riskGapsdata.forEach((t: any) => {
+      this.riskGapsList.push(this.fb.group({
+        DIAG_CODE: [this.sanitize(t.DIAG_CODE)],
+        DIAG_DESC: [this.sanitize(t.DIAG_DESC)],
+        PROCESS_STATUS: [t.PROCESS_STATUS === 1],
+        risk_gap_id: [t.id],
+        Type: ['risk'],
+        Gap_Code: [this.sanitize(t.Gap_Code)],
+        Observation_Date: [
+          (t.Observation_Date && t.Observation_Date !== '1900-01-01T00:00:00.000Z' && t.Observation_Date !== '01/01/1900')
+            ? t.Observation_Date
+            : ''
+        ],
+        Observation_Year: [this.sanitize(t.Observation_Year)],
+        Observation_Code: [this.sanitize(t.Observation_Code)],
+        CPT_Code_Modifier: [this.sanitize(t.CPT_Code_Modifier)],
+        Observation_Code_Set: [this.sanitize(t.Observation_Code_Set)],
+        Observation_Result: [this.sanitize(t.Observation_Result)],
+        Service_Provider_NPI: [this.sanitize(t.Service_Provider_NPI)],
+        Service_Provider_Taxonomy_Code: [this.sanitize(t.Service_Provider_Taxonomy_Code)],
+        Service_Provider_Name: [this.sanitize(t.Service_Provider_Name)],
+        Service_Provider_Type: [this.sanitize(t.Service_Provider_Type)],
+        Service_Provider_RxProviderFlag: [this.sanitize(t.Service_Provider_RxProviderFlag)],
+        Provider_Group_NPI: [this.sanitize(t.Provider_Group_NPI)],
+        Provider_Group_Taxonomy_Code: [this.sanitize(t.Provider_Group_Taxonomy_Code)],
+        Provider_Group_Name: [this.sanitize(t.Provider_Group_Name)],
+        note: [this.sanitize(t.note)]
+      }));
+    });
+    console.log(this.riskGapsList);
   }
-  setQualityGapsData(qualityGapsdata: any) {
-    // Clear existing transactions
-    this.qualityGapsList.clear();
-  // Push each transaction dynamically
-    if (qualityGapsdata && Array.isArray(qualityGapsdata)) {
-      qualityGapsdata.forEach((t: any) => {
-        this.qualityGapsList.push(this.fb.group({
-          SUB_MEASURE: [t.SUB_MEASURE],
-          MEASURE_NAME: [t.MEASURE_NAME],
+}
+sanitize(value: any) {
+  return value === null || value === undefined || value === 'null' ? '' : value;
+}
+setQualityGapsData(qualityGapsdata: any) {
+  // Clear existing list
+  this.qualityGapsList.clear();
+
+  if (qualityGapsdata && Array.isArray(qualityGapsdata)) {
+    qualityGapsdata.forEach((t: any) => {
+      this.qualityGapsList.push(
+        this.fb.group({
+          SUB_MEASURE: [this.sanitize(t.SUB_MEASURE)],
+          MEASURE_NAME: [this.sanitize(t.MEASURE_NAME)],
           PROCESS_STATUS: [t.PROCESS_STATUS === 1],
           quality_gap_id: [t.id],
           Type: ['quality'],
-          Gap_Code: [t.Gap_Code],
+          Gap_Code: [this.sanitize(t.Gap_Code)],
+
+          // Handle invalid dates
           Observation_Date: [
-            t.Observation_Date && t.Observation_Date !== '1900-01-01T00:00:00.000Z'
+            t.Observation_Date &&
+            t.Observation_Date !== '1900-01-01T00:00:00.000Z' &&
+            t.Observation_Date !== '01/01/1900'
               ? t.Observation_Date
               : ''
           ],
-          Observation_Year: [t.Observation_Year],
-          Observation_Code: [t.Observation_Code],
-          CPT_Code_Modifier: [t.CPT_Code_Modifier],
-          Observation_Code_Set: [t.Observation_Code_Set],
-          Observation_Result: [t.Observation_Result],
-          Service_Provider_NPI: [t.Service_Provider_NPI],
-          Service_Provider_Taxonomy_Code: [t.Service_Provider_Taxonomy_Code],
-          Service_Provider_Name: [t.Service_Provider_Name],
-          Service_Provider_Type: [t.Service_Provider_Type],
-          Service_Provider_RxProviderFlag: [t.Service_Provider_RxProviderFlag],
-          Provider_Group_NPI: [t.Provider_Group_NPI],
-          Provider_Group_Taxonomy_Code: [t.Provider_Group_Taxonomy_Code],
-          Provider_Group_Name: [t.Provider_Group_Name],
-          note: [t.note]
-        }));
-      });
-    }
+
+          Observation_Year: [this.sanitize(t.Observation_Year)],
+          Observation_Code: [this.sanitize(t.Observation_Code)],
+          CPT_Code_Modifier: [this.sanitize(t.CPT_Code_Modifier)],
+          Observation_Code_Set: [this.sanitize(t.Observation_Code_Set)],
+          Observation_Result: [this.sanitize(t.Observation_Result)],
+          Service_Provider_NPI: [this.sanitize(t.Service_Provider_NPI)],
+          Service_Provider_Taxonomy_Code: [this.sanitize(t.Service_Provider_Taxonomy_Code)],
+          Service_Provider_Name: [this.sanitize(t.Service_Provider_Name)],
+          Service_Provider_Type: [this.sanitize(t.Service_Provider_Type)],
+          Service_Provider_RxProviderFlag: [this.sanitize(t.Service_Provider_RxProviderFlag)],
+          Provider_Group_NPI: [this.sanitize(t.Provider_Group_NPI)],
+          Provider_Group_Taxonomy_Code: [this.sanitize(t.Provider_Group_Taxonomy_Code)],
+          Provider_Group_Name: [this.sanitize(t.Provider_Group_Name)],
+          note: [this.sanitize(t.note)]
+        })
+      );
+    });
   }
+}
+
   ngAfterViewInit(): void {
     const modalEl = document.getElementById('addActionModal');
     if (modalEl) {
@@ -408,8 +492,16 @@ export class Dashboard implements OnInit {
     $('.datepicker').datepicker({
       format: 'mm/dd/yyyy',
       autoclose: true,
-      todayHighlight: true,
-      orientation: 'bottom'
+      todayHighlight: true
+    }).on('changeDate', (e: any) => {   // ← ARROW FUNCTION (no "this" issue)
+
+      const input = e.target as HTMLInputElement;
+      const controlName = input.getAttribute('formControlName');
+
+      if (controlName) {
+        this.addActionFormGroup.get(controlName)?.patchValue(e.format());
+      }
+
     });
   }
   formatDate(date: Date): string {
@@ -450,14 +542,24 @@ export class Dashboard implements OnInit {
     });
 
     // ✅ Reinitialize datepicker after DOM updates
-    setTimeout(() => {
-      $('.datepicker').datepicker({
-        format: 'mm/dd/yyyy',
-        autoclose: true,
-        todayHighlight: true,
-        orientation: 'bottom'
-      });
-    }, 200);
+  setTimeout(() => {
+
+    $('.datepicker').datepicker({
+      format: 'mm/dd/yyyy',
+      autoclose: true,
+      todayHighlight: true
+    }).on('changeDate', (e: any) => {   // ← ARROW FUNCTION (no "this" issue)
+
+      const input = e.target as HTMLInputElement;
+      const controlName = input.getAttribute('formControlName');
+
+      if (controlName) {
+        this.addActionFormGroup.get(controlName)?.patchValue(e.format());
+      }
+
+    });
+
+  }, 300);
 
   }
 
@@ -641,17 +743,27 @@ export class Dashboard implements OnInit {
 
   add_task_click(){ 
   this.task_add_update_form = !this.task_add_update_form
-     setTimeout(() => {
+    setTimeout(() => {
       $('.datepicker').datepicker({
         format: 'mm/dd/yyyy',
         autoclose: true,
-        todayHighlight: true,
-        orientation: 'bottom'
+        todayHighlight: true
+      }).on('changeDate', (e: any) => {   // ← ARROW FUNCTION (no "this" issue)
+
+        const input = e.target as HTMLInputElement;
+        const controlName = input.getAttribute('formControlName');
+        //alert(controlName);
+        if (controlName) {
+          this.addTaskFormGroup.get(controlName)?.patchValue(e.format());
+        }
+
       });
     }, 200);
   }
 
   add_update_task_submit() {
+    //alert(this.addTaskFormGroup.valid);
+    //console.log(this.addTaskFormGroup);
   if (this.addTaskFormGroup.valid) {
     this.isLoading = true;
      const formValue = this.addTaskFormGroup.value;
@@ -761,7 +873,7 @@ export class Dashboard implements OnInit {
 update_task(task_id: number): void { 
   const payload = { task_id: task_id };
   //console.log(payload);
-  
+  this.isLoading = true;
   this.apiService.post<ApiResponse>('prismGetTaskDetailsByID', payload).subscribe({
     next: (res) => {
       //console.log('✅ Task Details Response:', res);
@@ -786,13 +898,16 @@ update_task(task_id: number): void {
         
         this.add_task_click();
         this.task_add_update_form = true;
+        this.isLoading = false;
       } else {
         alert('⚠️ No task found for this ID');
+        this.isLoading = false;
       }
     },
     error: (err) => {
       console.error('❌ Failed to load task details:', err);
       alert('Server error. Please try again.');
+      this.isLoading = false;
     }
   });
 
@@ -1107,8 +1222,18 @@ formatDateToMDY(dateStr: string): string {
           if (res.data) {
             this.memberGapList = res.data.prismGapList || [];
             this.memberQualityList = res.data.prismQualityList || [];
+            this.memberGapList = (res.data.prismGapList || []).map(gap => ({
+              ...gap,
+              Observation_Date: this.formatDateToMDY(gap.Observation_Date)
+            }));
+            this.memberQualityList = (res.data.prismQualityList || []).map(qgap => ({
+              ...qgap,
+              Observation_Date: this.formatDateToMDY(qgap.Observation_Date)
+            }));            
+
+            //console.log(this.memberGapList);
             this.setRiskGapsData(this.memberGapList);
-            this.setQualityGapsData(res.data.prismQualityList);
+            this.setQualityGapsData(this.memberQualityList);
             //this.actionresult_followup_list = res.data;
           } else {
             console.warn('⚠️ No data found:', res);
@@ -1148,7 +1273,8 @@ formatDateToMDY(dateStr: string): string {
   }  
   setScheduledActionStatus(id: string) {
     
-    const payload = { scheduled_type: id };
+    const role_id = this.userRole;
+    const payload = { scheduled_type: id, role_id : role_id };
     //console.log(payload);
     this.apiService.post<ApiResponse>('prismActionresultfollowup', payload)
       .subscribe({
@@ -1637,6 +1763,7 @@ calculatePerformance(data: any) {
     const medicaid_id = formValues.medicaid_id;
     
     const diagCodes: string[] = [];
+    const qualitySubMeasures: string[] = [];
     const riskObsInsertArray: any[] = [];  
     const riskObsUpdateArray: any[] = [];
     if (formValues.riskGapsList && formValues.riskGapsList.length > 0) {
@@ -1694,16 +1821,16 @@ calculatePerformance(data: any) {
         
         const processStatus = qualityGap.PROCESS_STATUS;
        
-        const diagCode = qualityGap.DIAG_CODE;
+        const subMeasure = qualityGap.SUB_MEASURE;
         if (processStatus === true || processStatus === '1') {
-          if (diagCode) {
-            diagCodes.push(diagCode);
+          if (subMeasure) {
+            qualitySubMeasures.push(subMeasure);
           }
         }
           const qualityObsUpdate = {
             medicaid_id: medicaid_id,
             Type: qualityGap.Type,
-            Gap_Code: qualityGap.DIAG_CODE,
+            Gap_Code: qualityGap.SUB_MEASURE,
             Observation_Date: qualityGap.Observation_Date,
             Observation_Year: new Date(qualityGap.Observation_Date).getFullYear(),
             Observation_Code: qualityGap.Observation_Code,
@@ -1728,7 +1855,10 @@ calculatePerformance(data: any) {
 
           riskObsInsertArray.push(qualityObsUpdate);          
         }
+        console.log(qualityObsUpdate);
       });
+      console.log("Update array : ",riskObsUpdateArray);
+      console.log("Insert array : ",riskObsInsertArray);
     }
            // ✅ Create parameter object
       const paramsunsetq = {
@@ -1820,7 +1950,45 @@ calculatePerformance(data: any) {
                     console.error('❌ Error updating quality status:', updateErr);
                     alert('Failed to update quality status!');
                   }
+                  
               });
+              const subMeasureVal = qualitySubMeasures.length > 0 ? `'${qualitySubMeasures.join("','")}'` : '';
+              const qualityparamsupdate = {
+                medicaid_id: medicaid_id,
+                measur_code_val: subMeasureVal,
+                action_id: action_id
+              };
+
+              this.apiService.post('prismUpdatequalityStatus', qualityparamsupdate).subscribe({
+                  next: (updateRes: any) => {
+                    //console.log('✅ Risk status updated successfully:', updateRes);
+                    // ✅ Step 3: Update existing Observation rows
+                                if (riskObsUpdateArray.length > 0) {
+                                  const apiparamUpdate = {
+                                    table_name: "MEM_GAP_OBSERVATION_DATA",
+                                    id_field_name: "id",
+                                    updates: riskObsUpdateArray
+                                  };
+                                  //console.log("prismMultipleRowAndFieldUpdate :",apiparamUpdate);
+                                  this.apiService.post('prismMultipleRowAndFieldUpdate', apiparamUpdate)
+                                    .subscribe({
+                                      next: (updateResult: any) => {
+                                        //console.log("✅ Existing Observation Data updated successfully:", updateResult);
+                                      },
+                                      error: (updateErr) => {
+                                        console.error("❌ Error updating Observation Data:", updateErr);
+                                      }
+                                    });
+                                }
+
+                                
+                  },
+                  error: (updateErr) => {
+                    console.error('❌ Error updating quality status:', updateErr);
+                    alert('Failed to update quality status!');
+                  }
+                  
+              });              
             },
             error: (err) => {
               console.error('❌ Error inserting action:', err);

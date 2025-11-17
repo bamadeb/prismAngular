@@ -996,11 +996,11 @@
                                                     <div class="col-sm-8 mt-4">
                                                         <input placeholder="Next Action Date" type="text"
                                                             formControlName="next_action_date" id="next_action_date"
-                                                            class="form-control datepicker text-uppercase">
+                                                            class="form-control datepicker ">
                                                     </div>
 
                                                     <div class="col-sm-12 mt-4">
-                                                        <textarea class="form-control text-uppercase"
+                                                        <textarea class="form-control "
                                                             formControlName="next_action_note" id="next_action_note"
                                                             placeholder="Type your text..."></textarea>
                                                     </div>
@@ -1063,11 +1063,15 @@
                                                                 <div class="row">
                                                                     <div class="col-2 mb-2">
                                                                         <input
-                                                                            [value]="riskGap.get('risk_gap_id')?.value"
-                                                                            placeholder="Observation Date"
-                                                                            title="Observation Date" type="text"
-                                                                            formControlName="Observation_Date"
-                                                                            class="form-control datepicker" />
+                                                                        formControlName="Observation_Date"
+                                                                        class="form-control datepicker"
+                                                                        placeholder="Observation Date"
+                                                                        title="Observation Date"
+                                                                        data-form="action"
+                                                                        data-array="riskGapsList"
+                                                                        [attr.data-index]="i"
+                                                                        data-control="Observation_Date"
+                                                                        />
                                                                     </div>
 
                                                                     <div class="col-2 mb-2">
@@ -1199,12 +1203,23 @@
                                                                     [value]="qualityGap.get('quality_gap_id')?.value" />
                                                                 <div class="row">
                                                                     <div class="col-2 mb-2">
-                                                                        <input
+                                                                        <!-- <input
                                                                             [value]="qualityGap.get('risk_gap_id')?.value"
                                                                             placeholder="Observation Date"
                                                                             title="Observation Date" type="text"
                                                                             formControlName="Observation_Date"
-                                                                            class="form-control datepicker" />
+                                                                            class="form-control datepicker" /> -->
+
+                                                                            <input
+                                                                                formControlName="Observation_Date"
+                                                                                class="form-control datepicker"
+                                                                                placeholder="Observation Date"
+                                                                                title="Observation Date"
+                                                                                data-form="action"
+                                                                                data-array="qualityGapsList"
+                                                                                [attr.data-index]="i"
+                                                                                data-control="Observation_Date"
+                                                                                />
                                                                     </div>
 
                                                                     <div class="col-2 mb-2">

@@ -1017,7 +1017,7 @@
                                                                 <tr *ngFor="let task of memberTaskList"
                                                                     [style.background-color]="task.bg_color || ''">
                                                                     <td>{{ task.action_type || '' }}</td>
-                                                                    <td>{{ task.action_date | date: 'MM/dd/yyyy' }}</td>
+                                                                    <td [style.color]="task.bg_color || ''">{{ task.action_date | date: 'MM/dd/yyyy' }}</td>
                                                                     <td>{{ task.status || '' }}</td>
                                                                     <td>{{ task.initial || '' }}</td>
                                                                     <td>{{ task.action_note || '' }}</td>
@@ -1652,7 +1652,7 @@
                     <tbody>
                         <tr *ngFor="let task of taskList; let i = index">
                             <td>{{ task.action_type }}</td>
-                            <td>{{ task.task_date }}</td>
+                            <td [style.color]="task.bg_color || ''">{{ task.task_date }}</td>
                             <td>{{ task.status }}</td>
                             <td>{{ task.initial }}</td>
                             <td>{{ task.action_note }}</td>

@@ -27,6 +27,8 @@ export class Dashboard implements OnInit {
   userId: number | null = null; 
   userRole: number | null = null;
   selectedNavigator: number | null = null;
+  flashMessage: string | null = null;
+  addActionChangeFlag: number = 0; 
   apiRes: ApiResponseAllmyworkspace = {
     statusCode: 0,
     data: {    
@@ -564,6 +566,12 @@ setQualityGapsData(qualityGapsdata: any) {
   }
 
   closeModal(): void {
+    if(this.addActionChangeFlag==1){
+      this.addActionChangeFlag = 0;
+      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+        this.router.navigate(['/dashboard']);
+      });      
+    }
     this.modalInstance?.hide();
   }
   toggleActionView() {
@@ -1213,7 +1221,13 @@ formatDateToMDY(dateStr: string): string {
 
 ////////////////////////////////////////////////////////////////
 
+showFlash(msg: string) {
+  this.flashMessage = msg;
 
+  setTimeout(() => {
+    this.flashMessage = null;
+  }, 3000);  // hides after 3s
+}
   getMemberGapsList(medicaid_id: string){
     const payload = { medicaid_id: medicaid_id };
     //console.log(payload);
@@ -1391,10 +1405,10 @@ loadDashboard(user_id: number) {
           this.ngZone.runOutsideAngular(() => {
             setTimeout(() => {
               this.initializeDataTable('#members', true);
-              
+              this.isLoading = false;
             }, 300);
           });        
-        this.isLoading = false;
+        
         // 2️⃣ Call second API only after first completes
         return this.apiService.post<ApiResponseAllmyworkspace>('prismOutreachAllmyworkspaceSP', payload);
       })
@@ -1651,6 +1665,7 @@ calculatePerformance(data: any) {
     const action_id = formValues.update_action_id;
     //console.log(formValues);
     this.isLoading = true; // 🔹 show loader
+    this.addActionChangeFlag = 1;
     // Prepare the payload like Django expects
     if (!action_id) {    
         const insert_data = {
@@ -1763,6 +1778,8 @@ calculatePerformance(data: any) {
 
     this.apiService.post('prismMultipleinsert', logPayload).subscribe();
   } 
+  
+  
   private updateQualityAndRiskData(formValues: any, action_id: string): void {
     const medicaid_id = formValues.medicaid_id;
     
@@ -1810,8 +1827,31 @@ calculatePerformance(data: any) {
            riskObsUpdateArray.push({ ...commonData, id: gapId });
           //riskObsUpdateArray.push(commonData);
         }else{
-          
-          riskObsInsertArray.push(commonData);          
+          // ------------------------
+            // CHECK IF ANY FIELD HAS VALUE
+            // ------------------------
+            const observationFields = [
+              riskGap.Observation_Date,
+              riskGap.Observation_Code,
+              riskGap.CPT_Code_Modifier,
+              riskGap.Observation_Code_Set,
+              riskGap.Observation_Result,
+              riskGap.Service_Provider_NPI,
+              riskGap.Service_Provider_Taxonomy_Code,
+              riskGap.Service_Provider_Name,
+              riskGap.Service_Provider_Type,
+              riskGap.Service_Provider_RxProviderFlag,
+              riskGap.Provider_Group_NPI,
+              riskGap.Provider_Group_Taxonomy_Code,
+              riskGap.Provider_Group_Name,
+              riskGap.risk_note
+            ];
+
+            // TRUE if ANY value is non-null, non-empty
+            const hasAnyValue = observationFields.some(v => v !== null && v !== undefined && v !== "");
+            if (hasAnyValue) {
+              riskObsInsertArray.push(commonData);  
+            }        
         }
       });
     }
@@ -1856,7 +1896,31 @@ calculatePerformance(data: any) {
           riskObsUpdateArray.push({ ...qualityObsUpdate, id: gapId });
           //riskObsUpdateArray.push(riskObsUpdate);
         }else{
-          riskObsInsertArray.push(qualityObsUpdate);          
+            // ------------------------
+            // CHECK IF ANY FIELD HAS VALUE
+            // ------------------------
+            const observationFields = [
+              qualityGap.Observation_Date,
+              qualityGap.Observation_Code,
+              qualityGap.CPT_Code_Modifier,
+              qualityGap.Observation_Code_Set,
+              qualityGap.Observation_Result,
+              qualityGap.Service_Provider_NPI,
+              qualityGap.Service_Provider_Taxonomy_Code,
+              qualityGap.Service_Provider_Name,
+              qualityGap.Service_Provider_Type,
+              qualityGap.Service_Provider_RxProviderFlag,
+              qualityGap.Provider_Group_NPI,
+              qualityGap.Provider_Group_Taxonomy_Code,
+              qualityGap.Provider_Group_Name,
+              qualityGap.risk_note
+            ];
+
+            // TRUE if ANY value is non-null, non-empty
+            const hasAnyValue = observationFields.some(v => v !== null && v !== undefined && v !== "");
+            if (hasAnyValue) {
+              riskObsInsertArray.push(qualityObsUpdate);
+            }          
         }
         console.log(qualityObsUpdate);
       });
@@ -1915,38 +1979,41 @@ calculatePerformance(data: any) {
                                         if (this.userId !== null) {
                                           //this.loadDashboard(this.userId);
                                           //this.router.navigate(['/dashboard']);
-                                          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-                                            this.router.navigate(['/dashboard']);
-                                          });
+                                          // this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+                                          //   this.router.navigate(['/dashboard']);
+                                          // });
                                         }
                                         this.isLoading = false;
-                                        this.modalInstance?.hide();    
+                                        this.showFlash('Saved Successfully!');
+                                        //this.modalInstance?.hide();    
                                       },
                                       error: (insertErr) => {
                                         console.error("❌ Error inserting Observation Data:", insertErr);
                                         if (this.userId !== null) {
                                           //this.loadDashboard(this.userId);
                                           //this.router.navigate(['/dashboard']);
-                                          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-                                            this.router.navigate(['/dashboard']);
-                                          });
+                                          // this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+                                          //   this.router.navigate(['/dashboard']);
+                                          // });
 
                                         }
+                                        this.showFlash('Saved Successfully!');
                                         this.isLoading = false;
-                                        this.modalInstance?.hide();    
+                                        //this.modalInstance?.hide();    
                                       }
                                     });
                                 }else{
                                         if (this.userId !== null) {
                                           //this.loadDashboard(this.userId);
                                           //this.router.navigate(['/dashboard']);
-                                          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-                                            this.router.navigate(['/dashboard']);
-                                          });
+                                          // this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+                                          //   this.router.navigate(['/dashboard']);
+                                          // });
 
                                         }
+                                        this.showFlash('Saved Successfully!');
                                         this.isLoading = false;
-                                        this.modalInstance?.hide();    
+                                        //this.modalInstance?.hide();    
                                 }
                   },
                   error: (updateErr) => {

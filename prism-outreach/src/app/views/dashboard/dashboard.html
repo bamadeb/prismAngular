@@ -860,9 +860,10 @@
                                     APPOINTMENT
                                 </button>
                             </li>
+                            
                         </ul>
 
-                        <div class="tab-content mt-3" id="actionTabsContent">
+                        <div class="tab-content " id="actionTabsContent">
                             <!-- TO-DO / DONE TAB -->
                             <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="todo-tab">
                                 <!-- Your TO-DO form here -->
@@ -870,20 +871,19 @@
                                     (ngSubmit)="add_update_action_submit()">
                                     <div class="row mx-0">
                                         <!-- (content omitted for brevity) -->
-                                        <div class="col-sm-6 mt-3 p-2 mt-3 ">
-                                            <div class="border rounded p-3">
-                                                <div class="mb-2 text-uppercase" style="cursor:pointer"
+                                        <div class="col-sm-6  p-2 border-end">
+                                            <div class=" p-3">
+                                                <div class="mb-2 text-uppercase text-center text-decoration-underline" style="cursor:pointer"
                                                     (click)="toggleActionView()">
-                                                    <h4><b>Action</b></h4>
+                                                    <h4><b>Current Activity</b></h4>
                                                 </div>
 
                                                 <div class="row" id="action_view" *ngIf="isActionVisible">
                                                     <input type="hidden" formControlName="medicaid_id" />
-                                                    <div class="col-sm-4">
-                                                        <label class="form-label text-uppercase">Activity
-                                                            Category:</label>
+                                                    <div class="col-sm-12">
+                                                        <label class="form-label text-uppercase fw-bold">Activity Category:</label>
                                                     </div>
-                                                    <div class="col-sm-8">
+                                                    <div class="col-sm-12">
                                                         @for (reagon of action_activity_category; track reagon.id; let i
                                                         = $index) {
                                                         <div class="form-check form-check-inline">
@@ -895,10 +895,10 @@
                                                         }
                                                     </div>
 
-                                                    <div class="col-sm-4 mt-4">
-                                                        <label class="form-label text-uppercase">Activity Type:</label>
+                                                    <div class="col-sm-12 mt-4">
+                                                        <label class="form-label text-uppercase fw-bold">Activity Type:</label>
                                                     </div>
-                                                    <div class="col-sm-8 mt-4">
+                                                    <div class="col-sm-12 ">
                                                         @for (type of action_ativity_type; track type.id; let i =
                                                         $index) {
                                                         <div class="form-check form-check-inline">
@@ -967,18 +967,18 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-sm-6 mt-3 p-2 mt-3 ">
-                                            <div class="border rounded p-3">
-                                                <div class="mb-2 text-uppercase" style="cursor:pointer"
+                                        <div class="col-sm-6 p-2  ">
+                                            <div class=" p-3">
+                                                <div class="mb-2 text-uppercase text-center text-decoration-underline" style="cursor:pointer"
                                                     (click)="toggleNextActivityView()">
                                                     <h4><b>Next Activity</b></h4>
                                                 </div>
                                                 <div class="row" id="next_activity" *ngIf="isNextActivityVisible">
-                                                    <div class="col-sm-4 mt-4">
-                                                        <label class="form-label text-uppercase">Next Activity
+                                                    <div class="col-sm-12 ">
+                                                        <label class="form-label text-uppercase fw-bold">Next Activity
                                                             Type:</label>
                                                     </div>
-                                                    <div class="col-sm-8 mt-4">
+                                                    <div class="col-sm-12">
                                                         <div class="form-check form-check-inline"
                                                             *ngFor="let type of action_ativity_type">
                                                             <input class="form-check-input" type="radio"
@@ -989,10 +989,10 @@
                                                     </div>
 
                                                     <div class="col-sm-4 mt-4">
-                                                        <label class="form-label text-uppercase">Next Activity
+                                                        <label class="form-label text-uppercase fw-bold">Next Activity
                                                             Date:</label>
                                                     </div>
-                                                    <div class="col-sm-8 mt-4">
+                                                    <div class="col-sm-4 mt-4">
                                                         <input placeholder="Next Action Date" type="text"
                                                             formControlName="next_action_date" id="next_action_date"
                                                             class="form-control datepicker ">
@@ -1015,7 +1015,7 @@
                                                             <tbody>
                                                                 <!-- Show tasks when data exists -->
                                                                 <tr *ngFor="let task of memberTaskList"
-                                                                    [style.color]="task.bg_color || ''">
+                                                                    [style.background-color]="task.bg_color || ''">
                                                                     <td>{{ task.action_type || '' }}</td>
                                                                     <td>{{ task.action_date | date: 'MM/dd/yyyy' }}</td>
                                                                     <td>{{ task.status || '' }}</td>
@@ -1035,11 +1035,12 @@
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <div class="col-sm-12 p-2 mt-3">
-                                            <div class="border rounded p-3">
-                                                <div class=" mt-4">
-                                                    <div class="mb-2 text-uppercase" style="cursor:pointer"
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6 p-2 mt-3">
+                                            <div class=" p-3">
+                                                <div class=" ">
+                                                    <div class="mb-2 text-uppercase fw-bold" style="cursor:pointer"
                                                         (click)="toggleRiskGaps()">
                                                         <h4><b>Risk Gaps</b></h4>
                                                     </div>
@@ -1060,7 +1061,7 @@
                                                                 <input type="hidden" formControlName="risk_gap_id"
                                                                     [value]="riskGap.get('risk_gap_id')?.value" />
                                                                 <div class="row">
-                                                                    <div class="col-2 mb-2">
+                                                                    <div class="col-3 mb-2">
                                                                         <input
                                                                         formControlName="Observation_Date"
                                                                         class="form-control datepicker"
@@ -1073,42 +1074,42 @@
                                                                         />
                                                                     </div>
 
-                                                                    <div class="col-2 mb-2">
+                                                                    <div class="col-3 mb-2">
                                                                         <input placeholder="Observation Code"
                                                                             title="Observation Code" type="text"
                                                                             formControlName="Observation_Code"
                                                                             class="form-control" />
                                                                     </div>
 
-                                                                    <div class="col-2 mb-2">
+                                                                    <div class="col-3 mb-2">
                                                                         <input placeholder="CPT Code Modifier"
                                                                             title="CPT Code Modifier" type="text"
                                                                             formControlName="CPT_Code_Modifier"
                                                                             class="form-control" />
                                                                     </div>
 
-                                                                    <div class="col-2 mb-2">
+                                                                    <div class="col-3 mb-2">
                                                                         <input placeholder="Observation Code Set"
                                                                             title="Observation Code Set" type="text"
                                                                             formControlName="Observation_Code_Set"
                                                                             class="form-control" />
                                                                     </div>
 
-                                                                    <div class="col-2 mb-2">
+                                                                    <div class="col-3 mb-2">
                                                                         <input placeholder="Observation Result"
                                                                             title="Observation Result" type="text"
                                                                             formControlName="Observation_Result"
                                                                             class="form-control" />
                                                                     </div>
 
-                                                                    <div class="col-2 mb-2">
+                                                                    <div class="col-3 mb-2">
                                                                         <input placeholder="Service Provider NPI"
                                                                             title="Service Provider NPI" type="text"
                                                                             formControlName="Service_Provider_NPI"
                                                                             class="form-control" />
                                                                     </div>
 
-                                                                    <div class="col-2 mb-2">
+                                                                    <div class="col-3 mb-2">
                                                                         <input
                                                                             placeholder="Service Provider Taxonomy Code"
                                                                             title="Service Provider Taxonomy Code"
@@ -1117,21 +1118,21 @@
                                                                             class="form-control" />
                                                                     </div>
 
-                                                                    <div class="col-2 mb-2">
+                                                                    <div class="col-3 mb-2">
                                                                         <input placeholder="Service Provider Name"
                                                                             title="Service Provider Name" type="text"
                                                                             formControlName="Service_Provider_Name"
                                                                             class="form-control" />
                                                                     </div>
 
-                                                                    <div class="col-2 mb-2">
+                                                                    <div class="col-3 mb-2">
                                                                         <input placeholder="Service Provider Type"
                                                                             title="Service Provider Type" type="text"
                                                                             formControlName="Service_Provider_Type"
                                                                             class="form-control" />
                                                                     </div>
 
-                                                                    <div class="col-2 mb-2">
+                                                                    <div class="col-3 mb-2">
                                                                         <input
                                                                             placeholder="Service Provider RxProviderFlag"
                                                                             title="Service Provider RxProviderFlag"
@@ -1140,14 +1141,14 @@
                                                                             class="form-control" />
                                                                     </div>
 
-                                                                    <div class="col-2 mb-2">
+                                                                    <div class="col-3 mb-2">
                                                                         <input placeholder="Provider Group NPI"
                                                                             title="Provider Group NPI" type="text"
                                                                             formControlName="Provider_Group_NPI"
                                                                             class="form-control" />
                                                                     </div>
 
-                                                                    <div class="col-2 mb-2">
+                                                                    <div class="col-3 mb-2">
                                                                         <input
                                                                             placeholder="Provider Group Taxonomy Code"
                                                                             title="Provider Group Taxonomy Code"
@@ -1156,14 +1157,14 @@
                                                                             class="form-control" />
                                                                     </div>
 
-                                                                    <div class="col-2 mb-2">
+                                                                    <div class="col-3 mb-2">
                                                                         <input placeholder="Provider Group Name"
                                                                             title="Provider Group Name" type="text"
                                                                             formControlName="Provider_Group_Name"
                                                                             class="form-control" />
                                                                     </div>
 
-                                                                    <div class="col-10 mb-2">
+                                                                    <div class="col-9 mb-2">
                                                                         <textarea formControlName="note"
                                                                             placeholder="Note" title="Note"
                                                                             class="form-control"
@@ -1178,10 +1179,10 @@
 
                                             </div>
                                         </div>
-                                        <div class="col-sm-12 p-2 ">
-                                            <div class="border rounded p-3">
+                                        <div class="col-sm-6 p-2 ">
+                                            <div class=" p-3">
                                                 <div class=" mt-4">
-                                                    <div class="mb-2 text-uppercase" style="cursor:pointer"
+                                                    <div class="mb-2 text-uppercase fw-bold" style="cursor:pointer"
                                                         (click)="toggleQualityGaps()">
                                                         <h4><b>Quality Gaps</b></h4>
                                                     </div>
@@ -1201,7 +1202,7 @@
                                                                 <input type="hidden" formControlName="quality_gap_id"
                                                                     [value]="qualityGap.get('quality_gap_id')?.value" />
                                                                 <div class="row">
-                                                                    <div class="col-2 mb-2">
+                                                                    <div class="col-3 mb-2">
                                                                         <!-- <input
                                                                             [value]="qualityGap.get('risk_gap_id')?.value"
                                                                             placeholder="Observation Date"
@@ -1221,42 +1222,42 @@
                                                                                 />
                                                                     </div>
 
-                                                                    <div class="col-2 mb-2">
+                                                                    <div class="col-3 mb-2">
                                                                         <input placeholder="Observation Code"
                                                                             title="Observation Code" type="text"
                                                                             formControlName="Observation_Code"
                                                                             class="form-control" />
                                                                     </div>
 
-                                                                    <div class="col-2 mb-2">
+                                                                    <div class="col-3 mb-2">
                                                                         <input placeholder="CPT Code Modifier"
                                                                             title="CPT Code Modifier" type="text"
                                                                             formControlName="CPT_Code_Modifier"
                                                                             class="form-control" />
                                                                     </div>
 
-                                                                    <div class="col-2 mb-2">
+                                                                    <div class="col-3 mb-2">
                                                                         <input placeholder="Observation Code Set"
                                                                             title="Observation Code Set" type="text"
                                                                             formControlName="Observation_Code_Set"
                                                                             class="form-control" />
                                                                     </div>
 
-                                                                    <div class="col-2 mb-2">
+                                                                    <div class="col-3 mb-2">
                                                                         <input placeholder="Observation Result"
                                                                             title="Observation Result" type="text"
                                                                             formControlName="Observation_Result"
                                                                             class="form-control" />
                                                                     </div>
 
-                                                                    <div class="col-2 mb-2">
+                                                                    <div class="col-3 mb-2">
                                                                         <input placeholder="Service Provider NPI"
                                                                             title="Service Provider NPI" type="text"
                                                                             formControlName="Service_Provider_NPI"
                                                                             class="form-control" />
                                                                     </div>
 
-                                                                    <div class="col-2 mb-2">
+                                                                    <div class="col-3 mb-2">
                                                                         <input
                                                                             placeholder="Service Provider Taxonomy Code"
                                                                             title="Service Provider Taxonomy Code"
@@ -1265,21 +1266,21 @@
                                                                             class="form-control" />
                                                                     </div>
 
-                                                                    <div class="col-2 mb-2">
+                                                                    <div class="col-3 mb-2">
                                                                         <input placeholder="Service Provider Name"
                                                                             title="Service Provider Name" type="text"
                                                                             formControlName="Service_Provider_Name"
                                                                             class="form-control" />
                                                                     </div>
 
-                                                                    <div class="col-2 mb-2">
+                                                                    <div class="col-3 mb-2">
                                                                         <input placeholder="Service Provider Type"
                                                                             title="Service Provider Type" type="text"
                                                                             formControlName="Service_Provider_Type"
                                                                             class="form-control" />
                                                                     </div>
 
-                                                                    <div class="col-2 mb-2">
+                                                                    <div class="col-3 mb-2">
                                                                         <input
                                                                             placeholder="Service Provider RxProviderFlag"
                                                                             title="Service Provider RxProviderFlag"
@@ -1288,14 +1289,14 @@
                                                                             class="form-control" />
                                                                     </div>
 
-                                                                    <div class="col-2 mb-2">
+                                                                    <div class="col-3 mb-2">
                                                                         <input placeholder="Provider Group NPI"
                                                                             title="Provider Group NPI" type="text"
                                                                             formControlName="Provider_Group_NPI"
                                                                             class="form-control" />
                                                                     </div>
 
-                                                                    <div class="col-2 mb-2">
+                                                                    <div class="col-3 mb-2">
                                                                         <input
                                                                             placeholder="Provider Group Taxonomy Code"
                                                                             title="Provider Group Taxonomy Code"
@@ -1304,14 +1305,14 @@
                                                                             class="form-control" />
                                                                     </div>
 
-                                                                    <div class="col-2 mb-2">
+                                                                    <div class="col-3 mb-2">
                                                                         <input placeholder="Provider Group Name"
                                                                             title="Provider Group Name" type="text"
                                                                             formControlName="Provider_Group_Name"
                                                                             class="form-control" />
                                                                     </div>
 
-                                                                    <div class="col-10 mb-2">
+                                                                    <div class="col-9 mb-2">
                                                                         <textarea formControlName="note"
                                                                             placeholder="Note" title="Note"
                                                                             class="form-control"
@@ -1335,7 +1336,16 @@
 
                                     </div>
                                     <div class="row mb-3 mt-4">
-                                        <div class="col-sm-12 text-end">
+                                        <div class="col-sm-5 ">
+
+                                        </div>
+                                        <div class="col-sm-4 ">
+                                            <div *ngIf="flashMessage" class="alert alert-success">
+                                            {{ flashMessage }}
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3 text-end">
+                                            
                                             <button type="submit" class="btn btn-primary text-uppercase"> Submit
                                             </button>
                                         </div>

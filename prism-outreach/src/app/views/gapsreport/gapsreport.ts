@@ -25,17 +25,14 @@ export class GapsReportComponent implements AfterViewInit {
   constructor(private http: HttpClient,private apiService: ApiService) {
 
     const today = new Date();
-
     const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
     const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-
     this.startDate = this.formatDateForInput(firstDay);
     this.endDate = this.formatDateForInput(lastDay);
-
     this.searchData();
   }
 
-  ngAfterViewInit(): void {
+  ngAfterViewInit(): void {  
     // Activate jQuery UI DatePicker for START DATE
     $('#start_date').datepicker({
       dateFormat: 'mm/dd/yy',

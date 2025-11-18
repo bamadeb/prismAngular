@@ -73,9 +73,9 @@ export class Dashboard implements OnInit {
   overallSummary: any = {};
   ownSummary: any = {};
   modalInstance: any;
-  action_activity_category: any = {};
-  action_ativity_type: any = {};
-  actionresult_followup_list: any = {};
+  action_activity_category: any[] = [];
+  action_ativity_type: any[] = [];
+  actionresult_followup_list: any[] = [];
   memberGapList: any[] = [];
   memberQualityList: any[] = [];
   memberTaskList: any[] = [];  
@@ -739,6 +739,7 @@ setQualityGapsData(qualityGapsdata: any) {
 
    closePlanList(): void {
     this.planListModal?.hide();
+    (document.getElementById('action_ids') as HTMLSelectElement).value = '';
   }
 
   add_task_click(){ 
@@ -933,8 +934,7 @@ getAction(event: Event) {
 
 // Checkbox change event
   onCheckboxChange(event: Event, medicaid_id: string) {
-    const isChecked = (event.target as HTMLInputElement).checked;
-
+    const isChecked = (event.target as HTMLInputElement).checked; 
     if (isChecked) {
       this.selectedMedicaidIds.push(medicaid_id);
     } else {
@@ -980,36 +980,40 @@ getUser(event: Event) {
 
  closeTransfer(): void {
     this.transferModal?.hide();
+    (document.getElementById('action_ids') as HTMLSelectElement).value = '';
   }
 
-  updateOutreachmember(user_id:number){ 
-    const updateData = this.selectedMedicaidIds.map((medicaid_id) => ({
-      medicaid_id: medicaid_id,
-      Care_Coordinator_id: user_id
-    }));  
-    this.updateDataArray.push(updateData) 
-    if (this.updateDataArray){
-      const apiparamUpdate = {
-        table_name: 'MEM_OUTREACH_MEMBERS',
-        id_field_name: 'medicaid_id',
-        updates: this.updateDataArray['0']
-      };
-      //console.log(apiparamUpdate);
+  updateOutreachmember(user_id: number) {
 
-      // Update Outreach Member
-     this.apiService.post('prismMultipleRowAndFieldUpdate', apiparamUpdate)
-      .subscribe({
-        next: (updateResult: any) => {
-          //console.log("Data updated successfully:", updateResult);
-        },
-        error: (updateErr) => {
-          console.error("Error updating Observation Data:", updateErr);
-        }
-      });
+  // Create update array
+  const updateData1 = this.selectedMedicaidIds.map((medicaid_id) => ({
+    medicaid_id: medicaid_id,
+    Care_Coordinator_id: user_id
+  }));
 
-    }
-         
-  }
+  //console.log("Update Data:", updateData1);
+
+  const apiparamUpdate1 = {
+    table_name: 'MEM_OUTREACH_MEMBERS',
+    id_field_name: 'medicaid_id',
+    updates: updateData1   // send array directly
+  };
+
+  //console.log("API Payload:", apiparamUpdate1);
+
+  // Call API
+  this.apiService.post('prismMultipleRowAndFieldUpdate', apiparamUpdate1)
+    .subscribe({
+      next: (res) => {
+        //console.log("Updated Successfully:", res);
+      },
+      error: (err) => {
+        console.error("Update Failed:", err);
+      }
+    });
+
+}
+
 
   tranfer_member_submit(): void {
     const formValue = this.transferFormGroup.value;
@@ -1044,7 +1048,7 @@ getUser(event: Event) {
         insertDataArray: insertDataArray,
       };
 
-      //console.log('Inserting referral data:', payload);
+      console.log('Inserting referral data:', payload);
 
       // Insert into MEM_REFERRING
       this.apiService.post('prismMultipleinsert', payload).subscribe({
@@ -1071,7 +1075,7 @@ getUser(event: Event) {
           this.uncheckAllMembers();
           this.closeTransfer(); 
           // Navigation
-          window.location.href = '/dashboard';
+          //window.location.href = '/dashboard';
 
         },
         error: (err) => {
@@ -1852,7 +1856,6 @@ calculatePerformance(data: any) {
           riskObsUpdateArray.push({ ...qualityObsUpdate, id: gapId });
           //riskObsUpdateArray.push(riskObsUpdate);
         }else{
-
           riskObsInsertArray.push(qualityObsUpdate);          
         }
         console.log(qualityObsUpdate);

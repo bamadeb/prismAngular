@@ -37,6 +37,14 @@ export class Logreport implements OnInit {
       autoclose: true,
       todayHighlight: true,
       orientation: 'bottom'
+    }).on('changeDate', (e: any) => {  
+      
+      const input = e.target as HTMLInputElement;
+      const controlName = input.getAttribute('formControlName'); 
+      if (controlName) {
+        this.logForm.get(controlName)?.patchValue(e.format());
+      }
+
     });
   }
 

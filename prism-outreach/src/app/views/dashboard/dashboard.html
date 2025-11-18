@@ -1846,7 +1846,7 @@
                                 </a></div>
 
                             <div class="col-lg-1" style="padding: 0px 15px 0px 5px;"><a href="javascript:void(0);"
-                                    class="text-decoration-none" (click)="encounterVisible = !encounterVisible">
+                                    class="text-decoration-none">
                                     <div class="box13 d-flex align-items-center justify-content-center py-3 m-0">
                                         <div><i class="fa fa-bar-chart f30"></i><br>ENCOUNTERS </div>
                                     </div>
@@ -1897,12 +1897,15 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr style="text-transform: uppercase;">
-                                                    <td>Alternative Language</td>
-                                                    <td>Alt Language changed FRENCH</td>
-                                                    <td>Success</td>
-                                                    <td>Nicole Johnson</td>
-                                                    <td>10/29/2025 08:10</td>
+                                                <tr *ngIf="log_details.length == 0">
+                                                    <td colspan="3" align="center">No record found.</td>
+                                                </tr>   
+                                                <tr *ngFor="let log of log_details; let i = index" style="text-transform: uppercase;"> 
+                                                   <td>{{ log.log_name }}</td>
+                                                    <td>{{ log.action_type }}</td>
+                                                    <td>{{ log.log_status }}</td>
+                                                    <td>{{ log.name }}</td>
+                                                    <td>{{ log.add_date | date:'MM/dd/yyyy HH:mm' }}</td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -2251,7 +2254,7 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-6" *ngIf="encounterVisible">
+                    <div class="col-lg-6"  style="display: none;">
                         <div class="card">
                             <div class="card-body">
                                 <h4 align="center">ENCOUNTERS </h4>

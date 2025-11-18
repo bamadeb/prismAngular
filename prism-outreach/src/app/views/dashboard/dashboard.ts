@@ -116,6 +116,7 @@ export class Dashboard implements OnInit {
   all_language_master_list: any[] = [];
   member_alt_language_details: any[] = [];
   pcp_list: any[] = [];  
+  log_details: any[] = []; 
   callListModal: any;
   gapListModal: any;
   qualityListModal: any; 
@@ -2083,7 +2084,7 @@ isVisible: Boolean | undefined;
 addrVisible: Boolean | undefined;
 mobisVisible: Boolean | undefined;
 langVisible: Boolean | undefined;
-encounterVisible: Boolean | undefined;
+//encounterVisible: Boolean | undefined;
 pcpVisible: Boolean | undefined;
   showDetails(medicaid_id: string){ 
     this.isLoading = true; // show loader 
@@ -2092,7 +2093,7 @@ pcpVisible: Boolean | undefined;
     const addrVisible = true;
     const mobisVisible = true;
     const langVisible = true;
-    const encounterVisible = true;
+    //const encounterVisible = true;
     const pcpVisible = true;
 
     const payload = { medicaid_id: medicaid_id };
@@ -2105,6 +2106,7 @@ pcpVisible: Boolean | undefined;
       this.all_language_master_list = res.data.prismMasterLanguage || []; 
       this.member_alt_language_details = res.data.prismMemberaltlanguage || []; 
       this.pcp_list = res.data.prismMemberPCPList || []; 
+      this.log_details = res.data.logDetails || []; 
       //console.log(this.alt_address);
       const careCoordinatorId = this.memberDetails?.[0]?.Care_Coordinator_id || ''; 
       this.memberInfoFormGroup.patchValue({

@@ -400,7 +400,7 @@ export class Dashboard implements OnInit {
         note: [this.sanitize(t.note)]
       }));
     });
-    console.log(this.riskGapsList);
+    //console.log(riskGapsdata);
   }
 }
 sanitize(value: any) {
@@ -1056,7 +1056,7 @@ getUser(event: Event) {
         insertDataArray: insertDataArray,
       };
 
-      console.log('Inserting referral data:', payload);
+      //console.log('Inserting referral data:', payload);
 
       // Insert into MEM_REFERRING
       this.apiService.post('prismMultipleinsert', payload).subscribe({
@@ -1782,7 +1782,7 @@ calculatePerformance(data: any) {
   
   private updateQualityAndRiskData(formValues: any, action_id: string): void {
     const medicaid_id = formValues.medicaid_id;
-    
+    console.log(formValues);
     const diagCodes: string[] = [];
     const qualitySubMeasures: string[] = [];
     const riskObsInsertArray: any[] = [];  
@@ -1821,10 +1821,10 @@ calculatePerformance(data: any) {
             Provider_Group_Taxonomy_Code: riskGap.Provider_Group_Taxonomy_Code,
             Provider_Group_Name: riskGap.Provider_Group_Name,
             Source: "CIH",
-            note: riskGap.risk_note
+            note: riskGap.note
           };        
         if(gapId){
-           riskObsUpdateArray.push({ ...commonData, id: gapId });
+           riskObsUpdateArray.push({ ...commonData, id: gapId, updated_date: new Date() });
           //riskObsUpdateArray.push(commonData);
         }else{
           // ------------------------
@@ -1844,13 +1844,18 @@ calculatePerformance(data: any) {
               riskGap.Provider_Group_NPI,
               riskGap.Provider_Group_Taxonomy_Code,
               riskGap.Provider_Group_Name,
-              riskGap.risk_note
+              riskGap.note
             ];
 
             // TRUE if ANY value is non-null, non-empty
             const hasAnyValue = observationFields.some(v => v !== null && v !== undefined && v !== "");
             if (hasAnyValue) {
-              riskObsInsertArray.push(commonData);  
+              //riskObsInsertArray.push(commonData);
+              riskObsInsertArray.push({
+                ...commonData,
+                added_date: new Date()
+              });
+  
             }        
         }
       });
@@ -1890,10 +1895,10 @@ calculatePerformance(data: any) {
             Provider_Group_Taxonomy_Code: qualityGap.Provider_Group_Taxonomy_Code,
             Provider_Group_Name: qualityGap.Provider_Group_Name,
             Source: "CIH",
-            note: qualityGap.risk_note
+            note: qualityGap.note
           };        
         if(gapId){
-          riskObsUpdateArray.push({ ...qualityObsUpdate, id: gapId });
+          riskObsUpdateArray.push({ ...qualityObsUpdate, id: gapId, updated_date: new Date() });
           //riskObsUpdateArray.push(riskObsUpdate);
         }else{
             // ------------------------
@@ -1913,19 +1918,24 @@ calculatePerformance(data: any) {
               qualityGap.Provider_Group_NPI,
               qualityGap.Provider_Group_Taxonomy_Code,
               qualityGap.Provider_Group_Name,
-              qualityGap.risk_note
+              qualityGap.note
             ];
 
             // TRUE if ANY value is non-null, non-empty
             const hasAnyValue = observationFields.some(v => v !== null && v !== undefined && v !== "");
             if (hasAnyValue) {
-              riskObsInsertArray.push(qualityObsUpdate);
+              //riskObsInsertArray.push(qualityObsUpdate);
+              riskObsInsertArray.push({
+                ...qualityObsUpdate,
+                added_date: new Date()
+              });
+
             }          
         }
-        console.log(qualityObsUpdate);
+        //console.log(qualityObsUpdate);
       });
-      console.log("Update array : ",riskObsUpdateArray);
-      console.log("Insert array : ",riskObsInsertArray);
+      //console.log("Update array : ",riskObsUpdateArray);
+      //console.log("Insert array : ",riskObsInsertArray);
     }
            // ✅ Create parameter object
       const paramsunsetq = {
@@ -2141,7 +2151,7 @@ pcpVisible: Boolean | undefined;
         id_field_name: 'medicaid_id',
         id_field_value: formValue.medicaid_id
       };
-      console.log('Updating record:', payload);
+      //console.log('Updating record:', payload);
 
       this.apiService.post('prismMultiplefieldupdate', payload).subscribe({
         next: (res) => {  

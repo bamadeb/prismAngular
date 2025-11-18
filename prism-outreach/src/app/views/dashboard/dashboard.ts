@@ -27,6 +27,8 @@ export class Dashboard implements OnInit {
   userId: number | null = null; 
   userRole: number | null = null;
   selectedNavigator: number | null = null;
+  flashMessage: string | null = null;
+  addActionChangeFlag: number = 0; 
   apiRes: ApiResponseAllmyworkspace = {
     statusCode: 0,
     data: {    
@@ -73,9 +75,9 @@ export class Dashboard implements OnInit {
   overallSummary: any = {};
   ownSummary: any = {};
   modalInstance: any;
-  action_activity_category: any[] = [];
-  action_ativity_type: any[] = [];
-  actionresult_followup_list: any[] = [];
+  action_activity_category: any = {};
+  action_ativity_type: any = {};
+  actionresult_followup_list: any = {};
   memberGapList: any[] = [];
   memberQualityList: any[] = [];
   memberTaskList: any[] = [];  
@@ -564,6 +566,12 @@ setQualityGapsData(qualityGapsdata: any) {
   }
 
   closeModal(): void {
+    if(this.addActionChangeFlag==1){
+      this.addActionChangeFlag = 0;
+      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+        this.router.navigate(['/dashboard']);
+      });      
+    }
     this.modalInstance?.hide();
   }
   toggleActionView() {
@@ -1209,7 +1217,13 @@ formatDateToMDY(dateStr: string): string {
 
 ////////////////////////////////////////////////////////////////
 
+showFlash(msg: string) {
+  this.flashMessage = msg;
 
+  setTimeout(() => {
+    this.flashMessage = null;
+  }, 3000);  // hides after 3s
+}
   getMemberGapsList(medicaid_id: string){
     const payload = { medicaid_id: medicaid_id };
     //console.log(payload);
@@ -1387,10 +1401,10 @@ loadDashboard(user_id: number) {
           this.ngZone.runOutsideAngular(() => {
             setTimeout(() => {
               this.initializeDataTable('#members', true);
-              
+              this.isLoading = false;
             }, 300);
           });        
-        this.isLoading = false;
+        
         // 2️⃣ Call second API only after first completes
         return this.apiService.post<ApiResponseAllmyworkspace>('prismOutreachAllmyworkspaceSP', payload);
       })
@@ -1647,6 +1661,7 @@ calculatePerformance(data: any) {
     const action_id = formValues.update_action_id;
     //console.log(formValues);
     this.isLoading = true; // 🔹 show loader
+    this.addActionChangeFlag = 1;
     // Prepare the payload like Django expects
     if (!action_id) {    
         const insert_data = {
@@ -1958,38 +1973,41 @@ calculatePerformance(data: any) {
                                         if (this.userId !== null) {
                                           //this.loadDashboard(this.userId);
                                           //this.router.navigate(['/dashboard']);
-                                          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-                                            this.router.navigate(['/dashboard']);
-                                          });
+                                          // this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+                                          //   this.router.navigate(['/dashboard']);
+                                          // });
                                         }
                                         this.isLoading = false;
-                                        this.modalInstance?.hide();    
+                                        this.showFlash('Saved Successfully!');
+                                        //this.modalInstance?.hide();    
                                       },
                                       error: (insertErr) => {
                                         console.error("❌ Error inserting Observation Data:", insertErr);
                                         if (this.userId !== null) {
                                           //this.loadDashboard(this.userId);
                                           //this.router.navigate(['/dashboard']);
-                                          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-                                            this.router.navigate(['/dashboard']);
-                                          });
+                                          // this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+                                          //   this.router.navigate(['/dashboard']);
+                                          // });
 
                                         }
+                                        this.showFlash('Saved Successfully!');
                                         this.isLoading = false;
-                                        this.modalInstance?.hide();    
+                                        //this.modalInstance?.hide();    
                                       }
                                     });
                                 }else{
                                         if (this.userId !== null) {
                                           //this.loadDashboard(this.userId);
                                           //this.router.navigate(['/dashboard']);
-                                          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-                                            this.router.navigate(['/dashboard']);
-                                          });
+                                          // this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+                                          //   this.router.navigate(['/dashboard']);
+                                          // });
 
                                         }
+                                        this.showFlash('Saved Successfully!');
                                         this.isLoading = false;
-                                        this.modalInstance?.hide();    
+                                        //this.modalInstance?.hide();    
                                 }
                   },
                   error: (updateErr) => {

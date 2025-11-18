@@ -521,7 +521,13 @@ setQualityGapsData(qualityGapsdata: any) {
     //this.isLoading = true;
     //alert(this.isLoading);
     const today = new Date();
-
+      this.addActionFormGroup.patchValue({
+        action_note: ''
+      });
+      this.addActionFormGroup.patchValue({
+        action_result_id: ''
+      });
+//console.log(member_name);
     this.addActionFormGroup.patchValue({
       action_date: this.formatDate(today)   // mm/dd/yyyy
     });
@@ -1782,7 +1788,7 @@ calculatePerformance(data: any) {
   
   private updateQualityAndRiskData(formValues: any, action_id: string): void {
     const medicaid_id = formValues.medicaid_id;
-    console.log(formValues);
+    //console.log(formValues);
     const diagCodes: string[] = [];
     const qualitySubMeasures: string[] = [];
     const riskObsInsertArray: any[] = [];  
@@ -1993,9 +1999,14 @@ calculatePerformance(data: any) {
                                           //   this.router.navigate(['/dashboard']);
                                           // });
                                         }
+
                                         this.isLoading = false;
                                         this.showFlash('Saved Successfully!');
-                                        //this.modalInstance?.hide();    
+                                        this.modalInstance?.hide(); 
+                                        setTimeout(() => {
+                                            this.openModal(medicaid_id,this.member_name);
+                                        }, 300);
+                                            
                                       },
                                       error: (insertErr) => {
                                         console.error("❌ Error inserting Observation Data:", insertErr);
@@ -2009,8 +2020,10 @@ calculatePerformance(data: any) {
                                         }
                                         this.showFlash('Saved Successfully!');
                                         this.isLoading = false;
-                                        //this.modalInstance?.hide();    
-                                      }
+                                        this.modalInstance?.hide(); 
+                                        setTimeout(() => {
+                                            this.openModal(medicaid_id,this.member_name);
+                                        }, 300);                                      }
                                     });
                                 }else{
                                         if (this.userId !== null) {
@@ -2023,8 +2036,11 @@ calculatePerformance(data: any) {
                                         }
                                         this.showFlash('Saved Successfully!');
                                         this.isLoading = false;
-                                        //this.modalInstance?.hide();    
-                                }
+                                        this.modalInstance?.hide();
+                                        setTimeout(() => {
+                                            this.openModal(medicaid_id,this.member_name);
+                                        }, 300);
+                                      }
                   },
                   error: (updateErr) => {
                     console.error('❌ Error updating quality status:', updateErr);
@@ -2078,7 +2094,9 @@ calculatePerformance(data: any) {
 
     //console.log('✅ Quality/Risk data update process completed.');
   }
+// resetAddActionPopup(medicaid_id: string){
 
+// }
 isVisible: Boolean | undefined;
 addrVisible: Boolean | undefined;
 mobisVisible: Boolean | undefined;

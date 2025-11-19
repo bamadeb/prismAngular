@@ -1769,6 +1769,8 @@ calculatePerformance(data: any) {
     //alert(88);
   }
   private insertSystemLog(formData: any): void {
+    alert(this.userId);
+    alert(formData.action_note);
     const logPayload = {
       table_name: 'MEM_SYSTEM_LOG',
       insertDataArray: [
@@ -1778,7 +1780,7 @@ calculatePerformance(data: any) {
           log_name: formData.action_type_source,
           log_details: formData.action_note,
           log_status: formData.action_status,
-          log_by: sessionStorage.getItem('USER_ID'),
+          log_by: this.userId
         },
       ],
     };

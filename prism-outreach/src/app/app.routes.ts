@@ -119,6 +119,6 @@ export const routes: Routes = [
     // { path: 'processriskgap', component: Processriskgap , data: { title: 'PROCESS RISK GAPS FILE' }},
     // { path: 'processquality', component: Processquality , data: { title: 'PROCESS QUALITY GAPS FILE' }},
     // { path: 'fileprocesslogreport', component: Fileprocesslogreport , data: { title: 'FILE PROCESS LOG REPORT' }},
-    //{ path: 'memberdetails', component: Memberdetails , data: { title: 'MEMBER DETAILS' }},
+    // { path: 'memberdetails', component: Memberdetails , data: { title: 'MEMBER DETAILS' }},
     { path: '**', redirectTo: '' }
 ];

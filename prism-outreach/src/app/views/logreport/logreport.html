@@ -39,15 +39,12 @@
             </button>
           </div>
         </div>
-
       </form>
-
     </div>
   </div>
 
   <div class="card mt-3">
     <div class="card-body">
-
       <table class="table table-bordered text-uppercase" id="logreport">
         <thead>
         <tr>
@@ -61,17 +58,7 @@
         </tr>
         </thead>
         <tbody>
-           <tr *ngFor="let log of logList">
-           <td>{{ log.medicaid_id }}</td>
-                <td>{{ log.Panel_Name }}</td>
-                <td>{{ log.action_type }}</td>
-                <td>{{ log.action_result }}</td>
-                <td>{{ log.action_status }}</td>
-                <td>
-                {{ log.action_date !== '01/01/1900' ? log.action_date : '' }}
-                </td>
-                <td>{{ log.action_note }}</td>
-          </tr> 
+          
         </tbody>
       </table>
     </div>

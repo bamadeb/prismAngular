@@ -38,6 +38,6 @@ export class MainLayout {
     const title = active.snapshot.data?.['title'] || 'PRISM OUTREACH';
     this.pageTitle = title;
     this.titleService.setTitle(title);
-    console.log('✅ Page title detected:', this.pageTitle);
+    //console.log('✅ Page title detected:', this.pageTitle);
   }
 }

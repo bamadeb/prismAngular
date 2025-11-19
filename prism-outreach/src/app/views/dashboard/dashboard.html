@@ -1004,14 +1004,18 @@
                                                             placeholder="Type your text..."></textarea>
                                                     </div>
                                                     <div class="col-sm-12 mt-4">
-                                                        <table class="table">
-                                                            <tr>
-                                                                <th class="text-uppercase">Task Type</th>
-                                                                <th class="text-uppercase">Task Date</th>
-                                                                <th class="text-uppercase">Status</th>
-                                                                <th class="text-uppercase">Assign To</th>
-                                                                <th class="text-uppercase">Note</th>
-                                                            </tr>
+
+                                                        <table class="table table-bordered table-fixed-header">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="text-uppercase">Task Type</th>
+                                                                    <th class="text-uppercase">Task Date</th>
+                                                                    <th class="text-uppercase">Status</th>
+                                                                    <th class="text-uppercase" style="width:100px;">Assign To</th>
+                                                                    <th class="text-uppercase">Note</th>
+                                                                </tr>
+                                                            </thead>
+                                                            
                                                             <tbody>
                                                                 <!-- Show tasks when data exists -->
                                                                 <tr *ngFor="let task of memberTaskList"
@@ -1902,7 +1906,7 @@
                                                 </tr>   
                                                 <tr *ngFor="let log of log_details; let i = index" style="text-transform: uppercase;"> 
                                                    <td>{{ log.log_name }}</td>
-                                                    <td>{{ log.action_type }}</td>
+                                                    <td>{{ log.log_details }}</td>
                                                     <td>{{ log.log_status }}</td>
                                                     <td>{{ log.name }}</td>
                                                     <td>{{ log.add_date | date:'MM/dd/yyyy HH:mm' }}</td>

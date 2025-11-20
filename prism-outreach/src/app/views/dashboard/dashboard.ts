@@ -144,7 +144,13 @@ export class Dashboard implements OnInit {
   //navigatorList: any = {};      
   selectedCount: any;
   addTaskFormGroup!:FormGroup;
- 
+   // 🔹 Provider TIN → Name mapping
+  providerTinNameMapping: Record<string, string> = {
+    '200807794': 'Mercado Medical Practice',
+    '237082074': 'GPHA',
+    '273160687': 'Dr. Milbourne',
+  };
+
 
 
  /////////////////////////////////

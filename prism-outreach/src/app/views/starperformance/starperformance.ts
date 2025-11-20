@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service'; 
 import { ApiService } from '../../services/api.service';
 @Component({
   selector: 'app-starperformance',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './starperformance.html',
   styleUrl: './starperformance.css',
 })
@@ -29,7 +30,8 @@ export class Starperformance {
               //console.log('✅ Data inserted:', res);
               this.starReportList = res.data;
               //alert('Action saved successfully!');
-              console.log(this.starReportList);
+              //console.log(this.starReportList);
+              this.isLoading = false;
             },
             error: (err) => {
               console.error('❌ Error inserting action:', err);

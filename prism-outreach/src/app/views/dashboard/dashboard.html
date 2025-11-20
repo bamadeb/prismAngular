@@ -609,7 +609,7 @@
                                                     <th>#MEMBER ID</th>
                                                     <th>NAME/PHONE</th>
                                                     <th>PRACTICE</th>
-                                                    <th class="text-center" [style.width.%]="8">PCP VISIT</th>
+                                                    <th class="text-center" [style.width.%]="7">PCP VISIT</th>
                                                     <th class="text-center">PRIORITY</th>
                                                     <th class="text-center">#TASK</th>
                                                     <th class="text-center">#CALL</th>
@@ -619,9 +619,9 @@
                                                     <th class="text-center group-performance-td">COUNT</th>
                                                     <th class="text-center">COMPLETED</th>
                                                     <th class="text-center">%</th>
-                                                    <th class="group-performance-td text-center">ACTION</th>
+                                                    <th class="group-performance-td text-center" [style.width.%]="7">ACTION</th>
                                                 </tr>
-                                            </thead>
+                                            </thead> 
                                             <tbody>
                                                 <tr *ngFor="let member of members; let i = index">
                                                     <th class="text-primary">
@@ -633,7 +633,7 @@
                                                     <th class="text-primary">#{{ member.medicaid_id }}</th>
 
                                                     <td class="text-primary" style="text-transform: uppercase;">
-                                                        {{ member.FIRST_NAME }} {{ member.LAST_NAME }}<br />
+                                                       <i *ngIf="member.transfer_flag == 1" class="fa fa-exchange" aria-hidden="true"></i> {{ member.FIRST_NAME }} {{ member.LAST_NAME }}<br />
                                                         {{ member.OTHER_PHONE || '' }}
                                                     </td>
                                                     <td class="text-primary" style="text-transform: uppercase;">

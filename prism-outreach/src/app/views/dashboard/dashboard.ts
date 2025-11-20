@@ -1474,6 +1474,10 @@ private initializeDataTable(selector: string, disableFirstColumnSort: boolean = 
       search: "_INPUT_",
       searchPlaceholder: "Search",
     },
+    autoWidth: false,   // IMPORTANT,
+    columnDefs: [
+    { width: "7%", targets: 4 } // <-- PCP VISIT column width
+    ]
   };
 
   if (disableFirstColumnSort) {
@@ -1775,8 +1779,8 @@ calculatePerformance(data: any) {
     //alert(88);
   }
   private insertSystemLog(formData: any): void {
-    alert(this.userId);
-    alert(formData.action_note);
+   // alert(this.userId);
+    //alert(formData.action_note);
     const logPayload = {
       table_name: 'MEM_SYSTEM_LOG',
       insertDataArray: [

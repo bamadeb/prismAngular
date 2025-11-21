@@ -37,6 +37,7 @@
   display: block;
 }
 
+
 .table-fixed-header thead {
   display: table;
   width: 100%;
@@ -54,4 +55,7 @@
   display: table;
   width: 100%;
   table-layout: fixed;
+}
+.traffic-yellow{
+  color: #F7B500;
 }

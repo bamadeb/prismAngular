@@ -606,7 +606,7 @@
                                                 </tr>
                                                 <tr>
                                                     <th></th>
-                                                    <th>#MEMBER ID</th>
+                                                    <th>#MEM ID</th>
                                                     <th>NAME/PHONE</th>
                                                     <th>PRACTICE</th>
                                                     <th class="text-center" [style.width.%]="7">PCP VISIT</th>
@@ -633,11 +633,11 @@
                                                     <th class="text-primary">#{{ member.medicaid_id }}</th>
 
                                                     <td class="text-primary" style="text-transform: uppercase;">
-                                                       <i *ngIf="member.transfer_flag == 1" class="fa fa-exchange" aria-hidden="true"></i> {{ member.FIRST_NAME }} {{ member.LAST_NAME }}<br />
+                                                       <i *ngIf="member.transfer_flag == 1" class="fa fa-exchange traffic-yellow"  aria-hidden="true"></i> {{ member.FIRST_NAME }} {{ member.LAST_NAME }}<br />
                                                         {{ member.OTHER_PHONE || '' }}
                                                     </td>
                                                     <td class="text-primary" style="text-transform: uppercase;">
-                                                        {{ providerTinNameMapping[member.PCP_TAX_ID] }}
+                                                        {{ providerTinNameMapping[member.PCP_TAX_ID]?.slice(0, 5) }}..
                                                     </td>
 
                                                     <td class="text-center parent">

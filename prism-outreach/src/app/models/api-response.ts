@@ -89,3 +89,69 @@ export interface ApiResponse {
   status?: string;
   message?: string;
 }
+
+export interface ScoreObj {
+  score: number;
+  level: string;
+}
+
+export interface SpecificMap {
+  [date: string]: ScoreObj;
+}
+
+export interface SubCategoryMap {
+  [specific: string]: SpecificMap;
+}
+
+export interface CategoryMap {
+  [subCategory: string]: SubCategoryMap;
+}
+
+export interface MemberMap {
+  [category: string]: CategoryMap;
+}
+
+export interface UserMap {
+  [memberId: string]: MemberMap;
+}
+export interface RiskLevels {
+  [level: string]: any;  // or string if values are string
+}
+
+export interface RiskGrouped {
+  [member: string]: RiskLevels;
+}
+
+export interface UserRiskLevels {
+  user_name: string;
+  user_risk_lvls: TopRiskLevel[];
+}
+
+export interface TopRiskLevel {
+  risk_lvl_name: string;
+  risk_lvls: RiskLevel[];
+}
+
+export interface RiskLevel {
+  range_to: number;
+  range_from: number;
+  level: any;
+  medicaidId: string;
+  riskCnt: number;
+  last_action_date: string;   // ✅ Add this line
+  next_upcoming_date: string;  
+}
+
+export interface RiskResponse {
+  riskLevel: never[];
+  userlist: never[];
+  riskSummary: any;
+  userGroups: any[];
+  dateHeaders: string[];
+}
+
+
+
+
+
+

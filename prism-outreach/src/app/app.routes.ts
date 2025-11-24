@@ -14,6 +14,8 @@ import { Memberdetails } from './views/memberdetails/memberdetails';
 import { AuthLayout } from './layout/auth-layout/auth-layout';
 import { MainLayout } from './layout/main-layout/main-layout';
 import { Logreport } from './views/logreport/logreport';
+import { MemRiskProfile } from './views/mem-risk-profile/mem-risk-profile';
+import { LatestRiskProfile } from './views/latest-risk-profile/latest-risk-profile';
 
 export const routes: Routes = [
     {
@@ -55,6 +57,18 @@ export const routes: Routes = [
     component: MainLayout,
     children: [ 
       { path: '', component: RiskProfile , data: { title: 'MEMBER RISK PROFILE' }},
+    ]
+  },{
+    path: 'mem-riskprofile',
+    component: MainLayout,
+    children: [ 
+      { path: '', component: MemRiskProfile , data: { title: 'MEMBER RISK PROFILE' }},
+    ]
+  },{
+    path: 'latest-risk-profile',
+    component: MainLayout,
+    children: [ 
+      { path: '', component: LatestRiskProfile , data: { title: 'MEMBER RISK PROFILE' }},
     ]
   },{
     path: 'users',

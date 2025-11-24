@@ -1,0 +1,150 @@
+<main id="main" class="main">
+    <section class="section">
+        <div class="row align-items-top">
+            <div class="col-lg-12">
+                <!-- Search Card -->
+                <form (ngSubmit)="search()">
+                    <div class="card">
+                        <div class="card-body">
+                            @let summary = getGlobalRiskCategoryCount();
+
+                            <div class="row" style="font-size:14px;">
+                                @for (item of summary | keyvalue: sortRiskCategories; track item.key) {
+                                <div class="col-lg-2">
+                                    <div class="p-2" style="border-radius:6px;"
+                                        [ngStyle]="{ background: getRiskColor(item.key) }">
+
+                                        <div class="fw-bold text-uppercase">{{ item.key }}</div>
+                                        <div class="fs-4 fw-bold">{{ item.value }}</div>
+                                    </div>
+                                </div>
+                                }
+
+                                <div class="col-lg-2 p-2">
+                                    <select [(ngModel)]="selectedUser" name="user_id" class="w-100 text-uppercase">
+                                        <option value="">ALL USER</option>
+                                        <option *ngFor="let u of user_list" [value]="u.ID">{{ u.FistName }} {{
+                                            u.LastName }}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- GLOBAL RISK CATEGORY SUMMARY -->
+
+
+                    <div class="row text-center mb-3" style="font-size:14px;">
+                        <div class="col-lg-11">
+
+                        </div>
+                        <div class="col-lg-1">
+                            <button type="submit" id="btnsubmit" class="btn btn-primary">SEARCH</button>
+                        </div>
+
+
+                    </div>
+
+                </form>
+
+
+
+                <!-- RESULT TABLE -->
+                <table class="table table-sm" id="member_risk_profile_table">
+
+                    <thead>
+
+                        <tr>
+                            <th>MEMBER ID</th>
+                            <th>NAVIGATOR</th>
+                            <th>LAST CALL</th>
+                            <th>NEXT CALL</th>
+                            <th>RISK CATEGORY</th>
+                            <th>CATEGORY</th>
+                            <th>SUB-CATEGORY</th>
+                            <th>SPECIFIC</th>
+                            <th *ngFor="let h of dateHeaders">{{ h }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- USER GROUP -->
+                        <ng-container *ngFor="let user of userGroups; trackBy: trackByUser">
+                            <ng-container *ngIf="openUser[user.user_name]">
+                                <!-- RISK LEVEL GROUP -->
+                                <ng-container *ngFor="let lvl of user.risk_levels; trackBy: trackByRisk">
+                                    <ng-container *ngIf="openRisk[user.user_name + '::' + lvl.risk_lvl_name]">
+
+
+                                        <!-- MEMBER ROWS -->
+                                        <ng-container *ngFor="let member of lvl.members; trackBy: trackByMember">
+                                            <tr (click)="toggleMember(member.medicaidId)" style="cursor:pointer;">
+                                                <td>#{{ member.medicaidId }}</td>
+                                                <td class="text-uppercase">{{ user.user_name }}</td>
+                                                <td>{{ formatDate(member.last_action_date) }}</td>
+                                                <td>{{ formatDate(member.next_upcoming_date) }}</td>
+                                                <td>{{ lvl.risk_lvl_name }}</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+
+                                                <!-- totals per date -->
+                                                <td *ngFor="let d of dateHeaders" class="text-center">
+                                                    {{ member.totalPerDate[d] ?? 0 }}
+                                                </td>
+                                            </tr>
+
+                                            <!-- MEMBER ITEMS (expanded) -->
+                                            <ng-container *ngIf="openMember[member.medicaidId]">
+                                                <tr *ngFor="let it of member.items; trackBy: trackByItem">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>{{ it.category }}</td>
+                                                    <td>{{ it.sub_category }}</td>
+                                                    <td>{{ it.specific }}</td>
+
+                                                    <!-- item scores mapped to dateHeaders order -->
+                                                    <td *ngFor="let s of it.scores_list" class="text-center">
+                                                        <ng-container [ngSwitch]="s.level">
+                                                            <div *ngSwitchCase="'Low'"
+                                                                class="bg-success text-white text-center"
+                                                                style="height:20px;border-radius:5px;">
+                                                                {{ s.score }}
+                                                            </div>
+                                                            <div *ngSwitchCase="'Medium'"
+                                                                class="bg-warning text-white text-center"
+                                                                style="height:20px;border-radius:5px;">
+                                                                {{ s.score }}
+                                                            </div>
+                                                            <div *ngSwitchCase="'High'"
+                                                                class="bg-danger text-white text-center"
+                                                                style="height:20px;border-radius:5px;">
+                                                                {{ s.score }}
+                                                            </div>
+                                                            <div *ngSwitchDefault>
+                                                                <span *ngIf="s.score">{{ s.score }}</span>
+                                                            </div>
+                                                        </ng-container>
+                                                    </td>
+                                                </tr>
+                                            </ng-container>
+                                        </ng-container>
+                                    </ng-container>
+                                </ng-container>
+                            </ng-container>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <div *ngIf="isLoading" class="text-center p-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+</main>

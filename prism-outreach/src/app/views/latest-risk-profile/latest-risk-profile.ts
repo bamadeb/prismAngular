@@ -56,6 +56,7 @@ export class LatestRiskProfile implements OnInit, OnDestroy {
   openRisk: Record<string, boolean> = {};
   openMember: Record<string, boolean> = {};
   riskOrder: any;
+  
 
   constructor(private api: ApiService, private cdr: ChangeDetectorRef) {}
 
@@ -78,6 +79,8 @@ export class LatestRiskProfile implements OnInit, OnDestroy {
     this.openMember = {};
   }
 
+  
+
   search() {
     // reset and load
     this.resetState();
@@ -85,6 +88,8 @@ export class LatestRiskProfile implements OnInit, OnDestroy {
   }
 
   loadData(user_id: number) {
+    const now = new Date();
+    console.log("API Call Start:", now);
     this.isLoading = true;
     this.api.post<ApiResponse>('prismMemberriskprofile', { user_id })
       .pipe(takeUntil(this.destroy$))
@@ -92,7 +97,7 @@ export class LatestRiskProfile implements OnInit, OnDestroy {
         next: (res: any) => {
           if (!res?.data) {
             alert('No data found.');
-            this.isLoading = false;
+            
             return;
           }
           // raw arrays
@@ -100,11 +105,16 @@ export class LatestRiskProfile implements OnInit, OnDestroy {
           this.user_list = res.data.userlist ?? [];
           this.riskLevel = res.data.riskLevel ?? [];
 
-          // Build optimized structure
-          this.buildStructures(monthly_score_data);
-         // this.initDataTable();
-          this.isLoading = false;
+          const now = new Date();
+          console.log("API Call End:", now);
+          // Build optimized structure          
+          this.buildStructures(monthly_score_data);          
+         // this.initDataTable(); 
           this.cdr.markForCheck();
+          this.isLoading = false;
+          const now3 = new Date();
+          console.log("End:", now3); 
+          
         },
         error: () => {
           alert('Server error. Please try again later.');
@@ -122,6 +132,9 @@ export class LatestRiskProfile implements OnInit, OnDestroy {
    */
   
   private buildStructures(rows: any[]) {
+    const now1 = new Date();
+    console.log("Component Loop Start:", now1);
+
     // Maps for quick accumulation
     const dateSet = new Set<string>();
     type UserMap = Record<string, {
@@ -243,7 +256,13 @@ export class LatestRiskProfile implements OnInit, OnDestroy {
         memberCount,
         risk_levels: finalLevels
       });
+      const now2 = new Date();
+      console.log("Sorting start:", now2);
+
       this.buildRiskOrder();
+
+      const now4 = new Date();
+      console.log("Sorting end:", now4);
 
       // default open state for UI
       this.openUser[userName] = true;
@@ -254,6 +273,9 @@ export class LatestRiskProfile implements OnInit, OnDestroy {
 
     // sort userGroups alphabetically
     this.userGroups.sort((a, b) => a.user_name.localeCompare(b.user_name));
+
+    const now5 = new Date();
+    console.log("Component Loop End:", now5);
   }
 
   // Template helpers
@@ -327,15 +349,13 @@ export class LatestRiskProfile implements OnInit, OnDestroy {
 // }
 
 // Desired order (top to bottom)
-// riskOrder = [
-//   'IN CRISIS L3',
-//   'STRUGGLING L2',
-//   'AT RISK L1',
-//   'STABLE HEALTHY L2',
-//   'STABLE HEALTHY L1'
-// ];
+ 
 
 sortRiskCategories(a: KeyValue<string, number>, b: KeyValue<string, number>): number {
+  if (!this.riskOrder || this.riskOrder.length === 0) {
+    return 0; // do not sort yet
+  }
+  
   const posA = this.riskOrder.indexOf(a.key);
   const posB = this.riskOrder.indexOf(b.key);
 

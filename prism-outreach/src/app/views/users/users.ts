@@ -27,8 +27,8 @@ export class Users implements AfterViewInit, OnInit {
 
   private apiurl = "https://e9vakopr4c.execute-api.us-east-1.amazonaws.com/dev/";
   private env = 'dev';
-  //private apiurl = "https://yeuovejy1b.execute-api.us-east-2.amazonaws.com/prod";
-  //private env = 'prod';
+  // private apiurl = "https://yeuovejy1b.execute-api.us-east-2.amazonaws.com/prod";
+  // private env = 'prod';
 
   private usersListUrl = this.apiurl+'/prismUserslist-'+this.env;
   private authUrl = this.apiurl+'/prismAuthentication-'+this.env;
@@ -126,6 +126,10 @@ loadUsers() {
     },
   });
 }
+
+
+
+
 
   // ✅ Open Add User Modal
   openAddUserModal() {

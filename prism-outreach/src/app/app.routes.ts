@@ -16,6 +16,7 @@ import { MainLayout } from './layout/main-layout/main-layout';
 import { Logreport } from './views/logreport/logreport';
 import { MemRiskProfile } from './views/mem-risk-profile/mem-risk-profile';
 import { LatestRiskProfile } from './views/latest-risk-profile/latest-risk-profile';
+import { ProcessCihPcr } from './views/process-cih-pcr/process-cih-pcr';
 
 export const routes: Routes = [
     {
@@ -52,19 +53,30 @@ export const routes: Routes = [
     children: [ 
       { path: '', component: GapsReportComponent  , data: { title: 'RISKS GAP REPORT' }},
     ]
-  },{
-    path: 'riskprofile',
+  },
+  {
+    path: 'process-cih-pcr',
     component: MainLayout,
     children: [ 
-      { path: '', component: RiskProfile , data: { title: 'MEMBER RISK PROFILE' }},
+      { path: '', component: ProcessCihPcr  , data: { title: 'PROCESS CIH PCR FILE' }},
     ]
-  },{
-    path: 'mem-riskprofile',
-    component: MainLayout,
-    children: [ 
-      { path: '', component: MemRiskProfile , data: { title: 'MEMBER RISK PROFILE' }},
-    ]
-  },{
+  },
+  
+  // {
+  //   path: 'riskprofile',
+  //   component: MainLayout,
+  //   children: [ 
+  //     { path: '', component: RiskProfile , data: { title: 'MEMBER RISK PROFILE' }},
+  //   ]
+  // },{
+  //   path: 'mem-riskprofile',
+  //   component: MainLayout,
+  //   children: [ 
+  //     { path: '', component: MemRiskProfile , data: { title: 'MEMBER RISK PROFILE' }},
+  //   ]
+  // },
+  
+  {
     path: 'latest-risk-profile',
     component: MainLayout,
     children: [ 

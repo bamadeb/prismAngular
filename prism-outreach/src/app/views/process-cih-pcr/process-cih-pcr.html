@@ -1,0 +1,229 @@
+
+<main id="main" class="main" style="margin-top:50px!important;min-height:550px;">
+    <section class="section dashboard">
+        <div class="row">
+         <!-- Left side columns -->
+         <div class="col-lg-12">
+           <div class="card">
+                     <div class="card-body">
+
+                         <div class="row align-items-center">
+                            <!-- Upload form -->
+                        <div class="col-lg-6">
+                    <form [formGroup]="processMembersFormGroup" (ngSubmit)="qualityFileSubmit()" enctype="multipart/form-data">
+                        <div class="row g-2 align-items-center">
+                            <div class="col-lg-4 text-uppercase">
+                            Select CIH PCR File
+                            </div>
+
+                            <div class="col-lg-4 ">
+                            <input
+                                type="file"
+                                formControlName="file"
+                                (change)="onFileSelect($event)"
+                                accept=".csv"
+                                class="form-control"
+                                required
+                            />
+                            <div class="text-danger mt-1" *ngIf="processMembersFormGroup.invalid && (processMembersFormGroup.dirty || processMembersFormGroup.touched)">
+                                File is required.
+                            </div>
+                            </div>
+
+                            <div class="col-lg-4 text-uppercase">
+                            <button
+                            type="submit"
+                            class="btn btn-primary w-100 text-uppercase"
+                            [disabled]="isUpload || !processMembersFormGroup.valid"
+                            >
+                            @if (isUpload) {
+                                <span class="spinner-border spinner-border-sm me-2"></span> Uploading...
+                            } @else {
+                                Upload
+                            }
+                            </button>
+                            </div>
+                        </div>
+                        </form>
+
+                    </div>
+    
+                    <!-- <div class="col-lg-6  text-uppercase">
+                        <a href="/sample_file/Member_sample_file.csv" target="_blank">MEMBER SAMPLE FILE</a>
+                    </div> -->
+
+                    <!-- ✅ Show if we have uploaded temp members -->
+                    @if (totalRecords > 0) {
+                        <!-- Member info -->
+                        <div class="col-lg-3 text-uppercase">
+                        <div>Total members: {{ totalRecords }}</div>
+
+                         
+                        </div>
+
+                        <!-- Process button -->
+                        <div class="col-lg-2">
+                        <!-- <button
+                            type="button"
+                            class="btn btn-success w-100 text-uppercase"
+                            (click)="processMembers()"
+                            [disabled]="isProcessing"
+                        >
+                        @if (isProcessing) {
+                            <span class="spinner-border spinner-border-sm me-2"></span> Processing...
+                        } @else {
+                            Process
+                        }
+                        </button> -->
+                        </div>
+                    } @else {
+                        <!-- Sample file link -->
+                        <div class="col-lg-6 text-uppercase">
+                        <!-- <a href="/sample_file/Member_sample_file.csv" target="_blank">
+                            MEMBER SAMPLE FILE
+                        </a> -->
+                        </div>
+                    }
+    
+                    <!-- Messages -->
+                    <div class="col-lg-6">
+                        
+                    </div>
+                </div>
+
+
+            </div>
+           </div>
+         </div>
+        </div>
+<!-- ✅ Show table only if there are temp members -->
+<div class="row" *ngIf="tempMemberList && tempMemberList.length > 0">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-body">
+
+        <table id="cihTable" class="table table-striped table-bordered">
+          <thead>
+            <tr>
+                <th>MEASURE_KEY</th>
+                <th>SUBMEASURE_KEY</th>
+                <th>MEMBER_NAME</th>
+                <th>AGE</th>
+                <th>BIRTH_DATE</th>
+                <th>PHONE_NUMBER</th>
+                <th>ADDRESSLINE1</th>
+                <th>ADDRESSLINE2</th>
+                <th>CITY</th>
+                <th>STATECODE</th>
+                <th>ZIPCODE</th>
+                <th>PCP_ID</th>
+                <th>PCP_NPI</th>
+                <th>PCP_TIN</th>
+                <th>PCP_Name</th>
+                <th>PCP_GROUP</th>
+                <th>CLSSDT</th>
+                <th>DENOM</th>
+                <th>DISCHARGE_CC_DESC_1</th>
+                <th>DISCHARGE_CC_DESC_2</th>
+                <th>DISCHARGE_CC_DESC_3</th>
+                <th>DISCH_ORDER</th>
+                <th>INDEX_ADMIT_DT</th>
+                <th>INDEX_DISCH_DT</th>
+                <th>INDEX_STAY</th>
+                <th>MEMBERKEY</th>
+                <th>NUMER</th>
+                <th>READMISSION</th>
+                <th>READMT_ADMIT_DT</th>
+                <th>READMT_DISCH_DT</th>
+                <th>STATUS</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let member of tempMemberList">
+              <td>{{ member.MEASURE_KEY }}</td>
+              <td>{{ member.SUBMEASURE_KEY }}</td>
+              <td>{{ member.MEMBER_NAME }}</td>
+              <td>{{ member.AGE }}</td>
+              <td>{{ member.BIRTH_DATE | date: 'MM/dd/yyyy' }}</td>
+              <td>{{ member.PHONE_NUMBER }}</td>
+              <td>{{ member.ADDRESSLINE1 }}</td> 
+              <td>{{ member.ADDRESSLINE2 }}</td>
+              <td>{{ member.CITY }}</td>
+              <td>{{ member.STATECODE }}</td>
+              <td>{{ member.ZIPCODE }}</td>
+              <td>{{ member.PCP_ID }}</td> 
+              <td>{{ member.PCP_NPI }}</td> 
+              <td>{{ member.PCP_TIN }}</td>
+
+              <td>{{ member.PCP_Name }}</td>
+              <td>{{ member.PCP_GROUP }}</td>
+              <td>{{ member.CLSSDT | date: 'MM/dd/yyyy' }}</td>
+              <td>{{ member.DENOM }}</td>
+              <td>{{ member.DISCHARGE_CC_DESC_1 }}</td>
+              <td>{{ member.DISCHARGE_CC_DESC_2 }}</td>
+              <td>{{ member.DISCHARGE_CC_DESC_3 }}</td>
+              <td>{{ member.DISCH_ORDER }}</td>
+              <td>{{ member.INDEX_ADMIT_DT | date: 'MM/dd/yyyy' }}</td>
+              <td>{{ member.INDEX_DISCH_DT | date: 'MM/dd/yyyy' }}</td>
+              <td>{{ member.INDEX_STAY }}</td>
+              <td>{{ member.MEMBERKEY }}</td>
+              <td>{{ member.NUMER }}</td>
+              <td>{{ member.READMISSION }}</td>
+              <td>{{ member.READMT_ADMIT_DT | date: 'MM/dd/yyyy' }}</td>
+              <td>{{ member.READMT_DISCH_DT | date: 'MM/dd/yyyy' }}</td>
+              <td></td> 
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- ✅ Optional Summary -->
+        <!-- <div class="mt-3 text-uppercase fw-bold">
+          Total Records: {{ totalRecords }} |
+          Existing Members: {{ exist_count }} |
+          Errors: {{ error_count }}
+        </div> -->
+      </div>
+    </div>
+  </div>
+</div>
+       
+<!-- ✅ Show only if processLogList has items -->
+@if (processLogList.length > 0) {
+  <div class="row mt-4">
+    <div class="col-lg-3"></div>
+
+    <div class="col-lg-6">
+      <div class="card shadow-sm rounded-3">
+        <div class="card-body">
+          <h3 class="text-uppercase mb-3 text-center">Member File Upload Process Details</h3>
+
+          <table class="table table-sm table-borderless align-middle" id="tempMemberList1">
+            <thead class="table-light">
+              <tr>
+                <th>PROCESS MESSAGE</th>
+                <th>COUNT</th>
+                <th>DATE / TIME</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              @for (log of processLogList; track log) {
+                <tr [ngStyle]="{ color: log.LOG_TYPE === 'Error' ? 'red' : 'inherit' }">
+                  <td>{{ log.MESSAGE }}</td>
+                  <td>{{ log.RECORD_COUNT || '' }}</td>
+                  <td>{{ log.LOG_DATE | date: 'short' }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-3"></div>
+  </div>
+}
+       
+    </section>
+</main>

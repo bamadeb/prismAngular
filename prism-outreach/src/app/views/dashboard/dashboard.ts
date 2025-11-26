@@ -65,7 +65,8 @@ export class Dashboard implements OnInit {
     statusCode: 0,
       data: {    
         prismGapList: [],
-        prismQualityList: []
+        prismQualityList: [],
+         prismCihPcrList: []
       },
     };
   members: any[] = [];
@@ -80,6 +81,7 @@ export class Dashboard implements OnInit {
   actionresult_followup_list: any[] = [];
   memberGapList: any[] = [];
   memberQualityList: any[] = [];
+  cihpcrList: any[] = [];
   memberTaskList: any[] = [];  
   isActionVisible = true;
   isNextActivityVisible = true;
@@ -1253,6 +1255,7 @@ showFlash(msg: string) {
           if (res.data) {
             this.memberGapList = res.data.prismGapList || [];
             this.memberQualityList = res.data.prismQualityList || [];
+            this.cihpcrList = res.data.prismCihPcrList || [];
             this.memberGapList = (res.data.prismGapList || []).map(gap => ({
               ...gap,
               Observation_Date: this.formatDateToMDY(gap.Observation_Date)
@@ -1262,7 +1265,7 @@ showFlash(msg: string) {
               Observation_Date: this.formatDateToMDY(qgap.Observation_Date)
             }));            
 
-            //console.log(this.memberGapList);
+            console.log(this.cihpcrList);
             this.setRiskGapsData(this.memberGapList);
             this.setQualityGapsData(this.memberQualityList);
             //this.actionresult_followup_list = res.data;

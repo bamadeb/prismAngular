@@ -884,10 +884,11 @@
 
                                                 <div class="row" id="action_view" *ngIf="isActionVisible">
                                                     <input type="hidden" formControlName="medicaid_id" />
+                                                    <!-- <div class="col-sm-12">
+                                                       
+                                                    </div> -->
                                                     <div class="col-sm-12">
-                                                        <label class="form-label text-uppercase fw-bold">Activity Category:</label>
-                                                    </div>
-                                                    <div class="col-sm-12">
+                                                         <label class="form-label text-uppercase fw-bold">Category: &nbsp;&nbsp;</label>
                                                         @for (reagon of action_activity_category; track reagon.id; let i
                                                         = $index) {
                                                         <div class="form-check form-check-inline">
@@ -899,10 +900,11 @@
                                                         }
                                                     </div>
 
-                                                    <div class="col-sm-12 mt-4">
-                                                        <label class="form-label text-uppercase fw-bold">Activity Type:</label>
-                                                    </div>
+                                                    <!-- <div class="col-sm-12 mt-4">
+                                                        <label class="form-label text-uppercase fw-bold">Type:</label>
+                                                    </div> -->
                                                     <div class="col-sm-12 ">
+                                                          <label class="form-label text-uppercase fw-bold" style="margin-right: 40px;">Type: &nbsp;&nbsp;</label>
                                                         @for (type of action_ativity_type; track type.id; let i =
                                                         $index) {
                                                         <div class="form-check form-check-inline">
@@ -914,7 +916,7 @@
                                                         }
                                                     </div>
 
-                                                    <div class="col-sm-3 mt-4">
+                                                    <div class="col-sm-3 mt-2">
                                                         <input placeholder="Action Date" type="text"
                                                             formControlName="action_date" id="action_date"
                                                             class="form-control datepicker text-uppercase" required />
@@ -924,7 +926,7 @@
                                                         </div>    
                                                     </div>
 
-                                                    <div class="col-sm-3 mt-4">
+                                                    <div class="col-sm-3 mt-2">
                                                         <select class="form-control form-select text-uppercase darrow"
                                                             formControlName="action_status" id="action_status" required>
                                                             <option value="Scheduled">Scheduled</option>
@@ -937,7 +939,7 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-sm-6 mt-4">
+                                                    <div class="col-sm-6 mt-2">
                                                         <select class="form-control form-select text-uppercase darrow"
                                                             formControlName="action_result_id" id="action_result_id"
                                                             required>
@@ -954,7 +956,7 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-sm-12 mt-4">
+                                                    <div class="col-sm-12 mt-2">
                                                         <textarea class="form-control" formControlName="action_note"
                                                             id="action_note" required
                                                             placeholder="Type your text..."></textarea>
@@ -963,7 +965,7 @@
                                                                 This field is required.
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-12 mt-4">
+                                                    <div class="col-sm-12 mt-2">
                                                         <input class="form-control" disabled type="file"
                                                             name="file_visit_update" accept="application/pdf">
                                                     </div>
@@ -978,11 +980,12 @@
                                                     <h4><b>Next Activity</b></h4>
                                                 </div>
                                                 <div class="row" id="next_activity" *ngIf="isNextActivityVisible">
-                                                    <div class="col-sm-12 ">
+                                                    <!-- <div class="col-sm-12 ">
                                                         <label class="form-label text-uppercase fw-bold">Next Activity
                                                             Type:</label>
-                                                    </div>
+                                                    </div> -->
                                                     <div class="col-sm-12">
+                                                         <label class="form-label text-uppercase fw-bold">Next Type: &nbsp;&nbsp;</label>
                                                         <div class="form-check form-check-inline"
                                                             *ngFor="let type of action_ativity_type">
                                                             <input class="form-check-input" type="radio"
@@ -992,22 +995,21 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-sm-4 mt-4">
-                                                        <label class="form-label text-uppercase fw-bold">Next Activity
-                                                            Date:</label>
+                                                    <div class="col-sm-3 mt-2">
+                                                        <label class="form-label text-uppercase fw-bold">Next Date:</label>
                                                     </div>
-                                                    <div class="col-sm-4 mt-4">
-                                                        <input placeholder="Next Action Date" type="text"
+                                                    <div class="col-sm-4 mt-2">
+                                                        <input placeholder="NEXT ACTION DATE" type="text"
                                                             formControlName="next_action_date" id="next_action_date"
                                                             class="form-control datepicker ">
                                                     </div>
 
-                                                    <div class="col-sm-12 mt-4">
+                                                    <div class="col-sm-12 mt-2">
                                                         <textarea class="form-control "
                                                             formControlName="next_action_note" id="next_action_note"
                                                             placeholder="Type your text..."></textarea>
                                                     </div>
-                                                    <div class="col-sm-12 mt-4">
+                                                    <div class="col-sm-12 mt-2">
 
                                                         <table class="table table-bordered table-fixed-header">
                                                             <thead>
@@ -1042,6 +1044,58 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                             <div class=" p-3">
+                                                <h4><b>PCR DATA</b></h4>
+                                                
+                                                <table class="table table-bordered">
+                                                    <thead style="font-size: 12px;">
+                                                        <tr>
+                                                            <th width="9%">DISCHARGE<br>CC_DESC_1</th>
+                                                            <th width="9%">DISCHARGE<br>CC_DESC_2</th>
+                                                            <th width="9%">DISCHARGE<br>CC_DESC_3</th>
+                                                            <th width="9%">DISCH_ORDER</th>
+                                                            <th width="9%">INDEX_ADMIT_DT</th>
+                                                            <th width="9%">INDEX_DISCH_DT</th>
+                                                            <th width="9%">INDEX_STAY</th>
+                                                            <th width="9%">NUMER</th>
+                                                            <th width="9%">READMISSION</th>
+                                                            <th width="9%">READMT_ADMIT_DT</th>
+                                                            <th width="9%">READMT_DISCH_DT</th>
+                                                        </tr>
+                                                    </thead>
+                                                    </table>
+
+                                                    <div class="tbody-scroll"> 
+                                                    <table class="table table-bordered"> 
+                                                    <tbody>
+                                                        <tr *ngIf="cihpcrList?.length === 0">
+                                                            <td colspan="11" class="text-center">No record found</td>
+                                                        </tr>
+
+                                                        <tr *ngFor="let pcr of cihpcrList; let i = index">
+                                                            <td width="9%">{{pcr.DISCHARGE_CC_DESC_1}}</td>
+                                                            <td width="9%">{{pcr.DISCHARGE_CC_DESC_2}}</td>
+                                                            <td width="9%">{{pcr.DISCHARGE_CC_DESC_3}}</td>
+                                                            <td width="9%">{{pcr.DISCH_ORDER}}</td>
+                                                            <td width="9%">{{pcr.INDEX_ADMIT_DT}}</td>
+                                                            <td width="9%">{{pcr.INDEX_DISCH_DT}}</td>
+                                                            <td width="9%">{{pcr.INDEX_STAY}}</td>
+                                                            <td width="9%">{{pcr.NUMER}}</td>
+                                                            <td width="9%">{{pcr.READMISSION}}</td>
+                                                            <td width="9%">{{pcr.READMT_ADMIT_DT}}</td>
+                                                            <td width="9%">{{pcr.READMT_DISCH_DT}}</td>
+                                                        </tr>
+                                                    </tbody>                                       
+                                                </table>
+                                                </div>    
+                                                
+
+                                             </div>
+                                            
                                         </div>
                                     </div>
                                     <div class="row">

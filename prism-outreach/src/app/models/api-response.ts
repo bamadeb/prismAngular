@@ -18,6 +18,7 @@ export interface ApiResponseAllmyworkspace {
 export interface ApiResponseMemberGapsList {
   statusCode: number;
   data: {
+    prismCihPcrList: never[];
     prismGapList?: any[];
     prismQualityList?: any[];
   }

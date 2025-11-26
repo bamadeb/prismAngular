@@ -59,3 +59,23 @@
 .traffic-yellow{
   color: #F7B500;
 }
+
+.table-wrapper {
+  width: 100%;
+}
+
+.tbody-scroll {
+  max-height: 180px;   /* Adjust height as needed */
+  overflow-y: auto;
+}
+
+.tbody-scroll table {
+  border-top: none; /* Prevent double border */
+}
+
+.table thead th {
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 2;
+}

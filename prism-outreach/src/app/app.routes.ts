@@ -14,7 +14,7 @@ import { Memberdetails } from './views/memberdetails/memberdetails';
 import { AuthLayout } from './layout/auth-layout/auth-layout';
 import { MainLayout } from './layout/main-layout/main-layout';
 import { Logreport } from './views/logreport/logreport';
-import { MemRiskProfile } from './views/mem-risk-profile/mem-risk-profile';
+//import { MemRiskProfile } from './views/mem-risk-profile/mem-risk-profile';
 import { LatestRiskProfile } from './views/latest-risk-profile/latest-risk-profile';
 import { ProcessCihPcr } from './views/process-cih-pcr/process-cih-pcr';
 
@@ -61,6 +61,12 @@ export const routes: Routes = [
       { path: '', component: ProcessCihPcr  , data: { title: 'PROCESS CIH PCR FILE' }},
     ]
   },
+  {
+    path: 'riskprofile',
+    component: MainLayout,
+    children: [ 
+      { path: '', component: RiskProfile , data: { title: 'MEMBER RISK PROFILE' }},
+    ]},
   
   // {
   //   path: 'riskprofile',

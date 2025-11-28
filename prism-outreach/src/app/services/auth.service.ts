@@ -1,6 +1,12 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
-
+import { environment } from '../../environments/environment';
+import * as CryptoJS from 'crypto-js';
+import {
+  CognitoIdentityProviderClient,
+  InitiateAuthCommand,
+  RespondToAuthChallengeCommand
+} from "@aws-sdk/client-cognito-identity-provider";
 const USER_KEY = 'app_user';
 const INACTIVITY_LIMIT = 60 * 60 * 1000; // 10 minutes in milliseconds
 @Injectable({ providedIn: 'root' })
@@ -78,6 +84,130 @@ export class AuthService {
   logout(): void {
     this.clearUser();
     sessionStorage.clear();
+    localStorage.clear();
     this.router.navigate(['/']); // works now
+  }
+
+  // Congito 
+  private client = new CognitoIdentityProviderClient({
+    region: environment.cognito.region
+  });  
+
+private calculateSecretHash(username: string): string {
+    const message = username + environment.cognito.clientId;
+    const secretKey = environment.cognito.clientSecret;
+    const hash = CryptoJS.HmacSHA256(message, secretKey);
+    return CryptoJS.enc.Base64.stringify(hash);
+  }
+
+  // ------------------------
+  // LOGIN
+  // ------------------------
+  async login(username: string, password: string) {
+    const secretHash = this.calculateSecretHash(username);
+
+    const command = new InitiateAuthCommand({
+      AuthFlow: "USER_PASSWORD_AUTH",
+      ClientId: environment.cognito.clientId,
+      AuthParameters: {
+        USERNAME: username,
+        PASSWORD: password,
+        SECRET_HASH: secretHash
+      }
+    });
+
+    const result: any = await this.client.send(command);
+
+    const tokens = result.AuthenticationResult;
+    if (tokens) {
+      this.storeTokens(tokens, username);
+    }
+
+    return tokens;
+  }
+
+  // ------------------------
+  // REFRESH TOKEN
+  // ------------------------
+  async refreshToken(): Promise<string | null> {
+    const refreshToken = localStorage.getItem('refresh_token');
+    const username = localStorage.getItem('username');
+
+    if (!refreshToken || !username) return null;
+
+    const secretHash = this.calculateSecretHash(username);
+
+    const command = new InitiateAuthCommand({
+      AuthFlow: "REFRESH_TOKEN_AUTH",
+      ClientId: environment.cognito.clientId,
+      AuthParameters: {
+        REFRESH_TOKEN: refreshToken,
+        SECRET_HASH: secretHash
+      }
+    });
+
+    try {
+      const result: any = await this.client.send(command);
+
+      if (result.AuthenticationResult) {
+        this.storeTokens(result.AuthenticationResult, username);
+        return result.AuthenticationResult.IdToken;
+      }
+    } catch (err) {
+      console.error("Refresh Token Error:", err);
+    }
+
+    return null;
+  }
+
+  // ------------------------
+  // STORE TOKENS
+  // ------------------------
+  storeTokens(tokens: any, username: string) {
+
+    const idToken = tokens.IdToken;
+    const decoded: any = JSON.parse(atob(idToken.split('.')[1]));
+
+    const cognitoUsername = decoded['sub'];   // REAL USERNAME
+
+    localStorage.setItem('access_token', tokens.AccessToken);
+    localStorage.setItem('id_token', idToken);
+
+    // ❗ Store Cognito username instead of email
+    localStorage.setItem('username', cognitoUsername);
+
+    if (tokens.RefreshToken) {
+      localStorage.setItem('refresh_token', tokens.RefreshToken);
+    }
+
+    const expiry = Date.now() + tokens.ExpiresIn * 1000;
+    localStorage.setItem('token_expiry', expiry.toString());
+  }
+
+
+  // storeTokens(tokens: any, username: string) {
+  //   localStorage.setItem('access_token', tokens.AccessToken);
+  //   localStorage.setItem('id_token', tokens.IdToken);
+  //   localStorage.setItem('username', username);
+
+  //   if (tokens.RefreshToken) {
+  //     localStorage.setItem('refresh_token', tokens.RefreshToken);
+  //   }
+
+  //   const expiry = Date.now() + tokens.ExpiresIn * 1000;
+  //   localStorage.setItem('token_expiry', expiry.toString());
+  // }
+
+  isTokenExpired(): boolean {
+    const expiry = localStorage.getItem('token_expiry');
+    if (!expiry) return true;
+    return Date.now() > Number(expiry);
+  }
+
+  getAccessToken() {
+    return localStorage.getItem('access_token');
+  }
+  getIdToken() {
+    return localStorage.getItem('id_token');
   }
 }

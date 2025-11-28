@@ -5,6 +5,7 @@ import { ApiResponse } from '../../models/api-response';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { ApiService } from '../../services/api.service';
+
 @Component({
   selector: 'app-login',
   imports: [FormsModule],
@@ -12,47 +13,69 @@ import { ApiService } from '../../services/api.service';
   styleUrl: './login.css',
 })
 export class Login {
-  [x: string]: any;
-username = '';
-  password = '';
-  //apiUrl = 'https://e9vakopr4c.execute-api.us-east-1.amazonaws.com/dev/prismAuthentication-dev'; // your backend API
-  apires: ApiResponse = {
-  statusCode: 0,
-  data: [],
-  };
-  constructor(private apiService: ApiService, private http: HttpClient, private router: Router, private auth: AuthService) {}
 
-  loginUser() {
+  username = '';
+  password = '';
+  errorMsg: string = '';
+  isLoading: boolean = false;
+
+  apires: ApiResponse = {
+    statusCode: 0,
+    data: [],
+  };
+
+  constructor(
+    private apiService: ApiService,
+    private http: HttpClient,
+    private router: Router,
+    private auth: AuthService
+  ) {}
+
+  async loginUser() {
+    this.clearError();
+    this.isLoading = true;
+
     const payload = {
       username: this.username,
       password: this.password,
     };
 
+    try {
+      await this.auth.login(this.username, this.password);
 
-    this.apiService.post<ApiResponse>('prismAuthentication', payload)
-      .subscribe({
-        next: (res) => {
-          if (res.data && res.data.length > 0) {
-            const user = res.data[0];
-            this.auth.setUser(user);
-            console.log('✅ Login success:', res);
-            const loginuser = this.auth.getUser();
-            const user_role = loginuser.role_id;
-            if(user_role == 7){
-              this.router.navigate(['/users']);
-            }else{
-              this.router.navigate(['/dashboard']);
+      this.apiService.post<ApiResponse>('prismAuthentication', payload)
+        .subscribe({
+          next: (res) => {
+            this.isLoading = false;
+
+            if (res.data && res.data.length > 0) {
+              const user = res.data[0];
+              this.auth.setUser(user);
+
+              const roleId = user.role_id;
+
+              if (roleId == 7) {
+                this.router.navigate(['/users']);
+              } else {
+                this.router.navigate(['/dashboard']);
+              }
+            } else {
+              this.errorMsg = 'Invalid login credentials';
             }
-
-          } else {
-            alert('Invalid login credentials');
+          },
+          error: () => {
+            this.isLoading = false;
+            this.errorMsg = 'Invalid login credentials';
           }
-        },
-        error: (err) => {
-          console.error('❌ Login failed:', err);
-          alert('Server error. Please try again later.');
-        }
-      });
+        });
 
+    } catch (err) {
+      this.isLoading = false;
+      this.errorMsg = 'Invalid login credentials';
+    }
+  }
+
+  clearError() {
+    this.errorMsg = '';
   }
 }

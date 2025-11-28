@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import * as bootstrap from 'bootstrap';
-
+import { ApiService } from '../../services/api.service';
+import { ApiResponse } from '../../models/api-response';
 interface Role {
   id: number;
   name: string;
@@ -54,7 +55,7 @@ export class Users implements AfterViewInit, OnInit {
 
   private addUserModal: bootstrap.Modal | null = null;
 
-  constructor(private http: HttpClient) {}
+  constructor(private apiService: ApiService,private http: HttpClient) {}
 
   ngAfterViewInit() {
     const modalEl = document.getElementById('addUserModal');
@@ -141,7 +142,8 @@ loadUsers() {
       password: '',
       role: null,
       department: null,
-      status: '0'
+      status: '0',
+      cognito_username: ''
     };
     this.addUserModal?.show();
   }
@@ -170,6 +172,7 @@ openEditUserModal(user: any) {
       // ✅ Fill form with API response
       this.newUser = {
         id: userData.ID,
+        cognito_username: userData.cognito_username,
         firstName: userData.FistName || '',
         lastName: userData.LastName || '',
         email: userData.EmailID || '',
@@ -219,43 +222,98 @@ openEditUserModal(user: any) {
   }
 
 // ✅  Add New user Insert Flow 
-private insertUser(form: NgForm) {
-  const selectedDept = this.departments.find(d => d.id == this.newUser.department);
-  const insertData = {
-    FistName: this.newUser.firstName,
-    LastName: this.newUser.lastName,
-    role_id: this.newUser.role,
-    EmailID: this.newUser.email,
-    Password: this.newUser.password,
-    member_status: this.newUser.status,
+private async insertUser(form: NgForm) {
+  this.loading = true;
 
-    department_id: selectedDept ? selectedDept.id : null   // ✅ department id, not ID
-  };
-//  console.log('🟡 Insert Data:', insertData);
-  const payload = {
-    table_name: 'MEM_USERS',
-    insertDataArray: [insertData]
+  const selectedDept = this.departments.find(
+    d => d.id == this.newUser.department
+  );
+
+  const cognitoPayload = {
+    email: this.newUser.email,
+    password: this.newUser.password
   };
 
-  this.http.post<any>(this.insertUrl, payload).subscribe({
-    next: (res: any) => {
-      console.log('✅ Insert Response:', res);
-      this.loading = false;
-      if (res?.status === 'success' || res?.message?.toLowerCase().includes('success')) {
+  try {
+    // ⏳ WAIT for Cognito user creation
+    const cognitoUsername = await this.createCognitoUser(cognitoPayload);
+    console.log("FINAL cognitoUsername:", cognitoUsername);
+
+    // Now insert into DB
+    const insertData = {
+      FistName: this.newUser.firstName,
+      LastName: this.newUser.lastName,
+      role_id: this.newUser.role,
+      EmailID: this.newUser.email,
+      Password: this.newUser.password,
+      member_status: this.newUser.status,
+      cognito_username: cognitoUsername,   // ✅ STORE HERE
+      department_id: selectedDept ? selectedDept.id : null
+    };
+
+    const payload = {
+      table_name: "MEM_USERS",
+      insertDataArray: [insertData]
+    };
+
+    this.http.post<any>(this.insertUrl, payload).subscribe({
+      next: (res) => {
+        this.loading = false;
         this.showToast('User added successfully.', 'success');
         this.loadUsers();
         this.closeAddUserModal();
         form.resetForm();
-      } else {
-        this.showToast('Failed to add user.', 'danger');
+      },
+      error: (err) => {
+        this.loading = false;
+        console.error(err);
+        this.showToast('Error adding user.', 'danger');
       }
-    },
-    error: (err) => {
-      console.error('❌ Insert failed:', err);
-      this.loading = false;
-      this.showToast('Error adding user.', 'danger');
-    }
+    });
+
+  } catch (error) {
+    this.loading = false;
+    console.error("Cognito create error", error);
+    this.showToast("Error creating Cognito user.", "danger");
+  }
+}
+
+private createCognitoUser(payload: any): Promise<string> {
+  return new Promise((resolve, reject) => {
+    this.apiService.post<ApiResponse>('prismCreateCognitoUser', payload)
+      .subscribe({
+        next: (res) => {
+          const parsed =
+            typeof res.data === 'string' ? JSON.parse(res.data) : res.data;
+
+          const cognitoUsername = parsed.user.cognitoUsername;
+          console.log("cognitoUsername:", cognitoUsername);
+
+          resolve(cognitoUsername); // ✅ Return value
+        },
+        error: (err) => {
+          reject(err);
+        }
+      });
   });
+}
+private updateCognitoUser(username: string,attributes: any,newPassword: string) {
+  const cognitoPayload = {
+    username: username,
+    attributes: attributes,
+    newPassword: newPassword
+  };  
+  
+    this.apiService.post<ApiResponse>('prismUpdateCognitoUser', cognitoPayload)
+      .subscribe({
+        next: (res) => {
+          
+        },
+        error: (err) => {
+          //reject(err);
+        }
+      });
+  
 }
 
 // ✅ Update User Flow 
@@ -268,6 +326,7 @@ updateUser(form: NgForm) {
   const updateData = {
     FistName: this.newUser.firstName,
     LastName: this.newUser.lastName,
+    Password: this.newUser.password,
     role_id: Number(this.newUser.role),
     member_status: Number(this.newUser.status), 
     department_id: selectedDept ? selectedDept.id : null
@@ -289,6 +348,7 @@ updateUser(form: NgForm) {
       this.loading = false;
       if (res?.statusCode === 200) {
         this.showToast('User updated successfully.', 'success');
+        this.updateCognitoUser(this.newUser.cognito_username,{},this.newUser.password);
         this.loadUsers();
         this.closeAddUserModal();
       } else {

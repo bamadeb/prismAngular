@@ -35,7 +35,7 @@ export class Starperformance {
             },
             error: (err) => {
               console.error('❌ Error inserting action:', err);
-              alert('Failed to save action!');
+              alert('Failed to load star performance report');
             },
         });
     }

@@ -225,7 +225,7 @@ export class Processmember implements OnInit {
       this.resetFileInput();
     } catch (error) {
       console.error('Error reading or uploading CSV:', error);
-      alert('Error processing file. Please check your CSV format.');
+      alert('Error processing member file. Please check your CSV format.');
       this.isUpload = false;
     }finally {
       console.log("finally");

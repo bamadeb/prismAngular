@@ -117,7 +117,7 @@ export class LatestRiskProfile implements OnInit, OnDestroy {
           
         },
         error: () => {
-          alert('Server error. Please try again later.');
+          alert('Error in load member risk profile. Please try again later.');
           this.isLoading = false;
           this.cdr.markForCheck();
         }

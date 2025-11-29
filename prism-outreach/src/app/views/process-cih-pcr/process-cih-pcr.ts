@@ -181,7 +181,7 @@ export class ProcessCihPcr implements OnInit, AfterViewInit {
               this.isUpload = false;
             },
             error: () => {
-              alert('Failed to load quality gaps!');
+              alert('Failed to load pcr data!');
               this.isUpload = false;
             }
           });
@@ -333,7 +333,7 @@ private initializeDataTable(selector: string, disableFirstColumnSort: boolean = 
 
     } catch (err: any) {
       console.error('❌ Error processing members:', err);
-      alert('Error processing members. Please check logs or try again.');
+      alert('Error processing pcr data. Please check logs or try again.');
       this.isProcessing = false;
     }
   }

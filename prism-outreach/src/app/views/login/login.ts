@@ -50,7 +50,7 @@ username = '';
         },
         error: (err) => {
           console.error('❌ Login failed:', err);
-          alert('Server error. Please try again later.');
+          alert('Error in call authentication api. Please try again later.');
         }
       });
 

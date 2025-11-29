@@ -623,7 +623,7 @@ setQualityGapsData(qualityGapsdata: any) {
       },
       error: (err) => {
         console.error('❌ Dashboard load failed:', err);
-        alert('Server error. Please try again later.');
+        alert('Error in load call list. Please try again later.');
       }
     }); 
     
@@ -655,7 +655,7 @@ setQualityGapsData(qualityGapsdata: any) {
       },
       error: (err) => {
         console.error('❌ Dashboard load failed:', err);
-        alert('Server error. Please try again later.');
+        alert('Error in load gap list. Please try again later.');
       }
     }); 
 
@@ -686,7 +686,7 @@ setQualityGapsData(qualityGapsdata: any) {
       },
       error: (err) => {
         console.error('❌ Dashboard load failed:', err);
-        alert('Server error. Please try again later.');
+        alert('Error in load quality list. Please try again later.');
       }
     }); 
 
@@ -718,7 +718,7 @@ setQualityGapsData(qualityGapsdata: any) {
       },
       error: (err) => {
         console.error('❌ Dashboard load failed:', err);
-        alert('Server error. Please try again later.');
+        alert('Error in load benefits list. Please try again later.');
       }
     }); 
 
@@ -750,7 +750,7 @@ setQualityGapsData(qualityGapsdata: any) {
     },
     error: (err) => {
       console.error('❌ Dashboard load failed:', err);
-      alert('Server error. Please try again later.');
+      alert('Error in update task. Please try again later.');
     }
   });     
      this.taskListModal?.show();
@@ -930,7 +930,7 @@ update_task(task_id: number): void {
     },
     error: (err) => {
       console.error('❌ Failed to load task details:', err);
-      alert('Server error. Please try again.');
+      alert('Error in updating task. Please try again.');
       this.isLoading = false;
     }
   });
@@ -995,7 +995,7 @@ getUser(event: Event) {
       },
       error: (err) => {
         console.error('❌ Dashboard load failed:', err);
-        alert('Server error. Please try again later.');
+        alert('Error in get user data. Please try again later.');
       }
     });
 
@@ -1103,7 +1103,7 @@ getUser(event: Event) {
         },
         error: (err) => {
           console.error('❌ Insert API error:', err);
-          alert('Error during transfer. Please try again.');
+          alert('Error during transfer member. Please try again.');
         },
       }); 
 
@@ -1120,7 +1120,7 @@ add_system_log(LogArray: { medicaid_id: string; log_name: string; log_details: s
         next: (res) => {},
         error: (err) => {
           console.error('❌ Insert API error:', err);
-          alert('Error during transfer. Please try again.');
+          alert('Error during log insert. Please try again.');
         },
       });
 }
@@ -1201,7 +1201,7 @@ assign_plan_submit(): void {
         },
         error: (err) => {
           console.error('❌ Insert API error:', err);
-          alert('Error during insertion. Please try again.');
+          alert('Error during insertion of plan. Please try again.');
         },
       });
     })
@@ -1345,7 +1345,7 @@ showFlash(msg: string) {
         },
         error: (err) => {
           console.error('❌ Dashboard load failed:', err);
-          alert('Server error. Please try again later.');
+          alert('Error in load add action call. Please try again later.');
         }
       });
   }
@@ -1459,7 +1459,7 @@ loadDashboard(user_id: number) {
       },
       error: (err) => {
         console.error('❌ Dashboard load failed:', err);
-        alert('Server error. Please try again later.');
+        alert('Error in load mywork page. Please try again later.');
         this.isLoading = false;
       }
     });
@@ -1507,7 +1507,7 @@ loadtaskdata(){
       },
       error: (err) => {
         console.error('❌ Dashboard load failed:', err);
-        alert('Server error. Please try again later.');
+        alert('Error in load task page. Please try again later.');
       }
     });  
 }
@@ -1737,7 +1737,7 @@ calculatePerformance(data: any) {
             },
             error: (err) => {
               console.error('❌ Error inserting action:', err);
-              alert('Failed to save action!');
+              alert('Failed to save create a action!');
             },
         });
         
@@ -1768,7 +1768,7 @@ calculatePerformance(data: any) {
                 },
                 error: (err) => {
                   console.error('❌ Error updating action:', err);
-                  alert('Failed to update action!');
+                  alert('Failed to update a action!');
                 },
                 complete: () => {
                   this.isLoading = false;
@@ -2088,7 +2088,7 @@ calculatePerformance(data: any) {
                                         //console.log("✅ Existing Observation Data updated successfully:", updateResult);
                                       },
                                       error: (updateErr) => {
-                                        console.error("❌ Error updating Observation Data:", updateErr);
+                                        console.error("❌ Error updating observation data:", updateErr);
                                       }
                                     });
                                 }
@@ -2104,7 +2104,7 @@ calculatePerformance(data: any) {
             },
             error: (err) => {
               console.error('❌ Error inserting action:', err);
-              alert('Failed to save action!');
+              alert('Failed to save a action!');
             },
         });
 

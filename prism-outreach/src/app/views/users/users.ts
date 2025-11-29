@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import * as bootstrap from 'bootstrap';
+import { ApiService } from '../../services/api.service';
+import { ApiResponse } from '../../models/api-response';
 
 interface Role {
   id: number;
@@ -24,19 +26,6 @@ interface Department {
 })
 export class Users implements AfterViewInit, OnInit {
 
-
-  private apiurl = "https://e9vakopr4c.execute-api.us-east-1.amazonaws.com/dev/";
-  private env = 'dev';
-  // private apiurl = "https://yeuovejy1b.execute-api.us-east-2.amazonaws.com/prod";
-  // private env = 'prod';
-
-  private usersListUrl = this.apiurl+'/prismUserslist-'+this.env;
-  private authUrl = this.apiurl+'/prismAuthentication-'+this.env;
-  private insertUrl = this.apiurl+'/prismMultipleinsert-'+this.env;
-  private updateUrl = this.apiurl+'/prismMultiplefieldupdate-'+this.env;
-  private userByIdUrl = this.apiurl+'/prismUserListByRole-'+this.env;
-
-
   users: any[] = [];
   roles: Role[] = [];
   departments: Department[] = [];
@@ -53,8 +42,9 @@ export class Users implements AfterViewInit, OnInit {
   sortDirection: 'asc' | 'desc' = 'asc';
 
   private addUserModal: bootstrap.Modal | null = null;
+  
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,private apiService: ApiService,) {}
 
   ngAfterViewInit() {
     const modalEl = document.getElementById('addUserModal');
@@ -70,9 +60,10 @@ export class Users implements AfterViewInit, OnInit {
 // ✅ Load Users + Roles + Departments
 loadUsers() {
   this.loading = true;
-  const headers = { 'Content-Type': 'application/json' };
-
-  this.http.post<any>(this.usersListUrl, {}, { headers }).subscribe({
+  const payload = {};
+  
+  this.apiService.post<ApiResponse>('prismUserslist', payload)
+  .subscribe({
     next: (res: any) => {
       console.log('✅ Users API Response:', res);
       const data = res?.data || {};
@@ -154,7 +145,8 @@ openEditUserModal(user: any) {
 
   const payload = { user_id: user.ID };
 
-  this.http.post<any>(this.userByIdUrl, payload).subscribe({
+  this.apiService.post<ApiResponse>('prismUserListByRole', payload)
+  .subscribe({
     next: (res) => {
       this.loading = false;
       const userData = res?.data?.[0];
@@ -198,8 +190,9 @@ openEditUserModal(user: any) {
     // Step 1: Check if Email Exists
     const emailCheckPayload = { username: this.newUser.email };
 
-    this.http.post<any>(this.authUrl, emailCheckPayload).subscribe({
-      next: (authRes: any) => {
+    this.apiService.post<ApiResponse>('prismAuthentication', emailCheckPayload)
+    .subscribe({
+      next: (authRes) => {
         const exists = authRes?.data && Array.isArray(authRes.data) && authRes.data.length > 0;
 
         if (exists) {
@@ -237,8 +230,9 @@ private insertUser(form: NgForm) {
     insertDataArray: [insertData]
   };
 
-  this.http.post<any>(this.insertUrl, payload).subscribe({
-    next: (res: any) => {
+  this.apiService.post<ApiResponse>('prismMultipleinsert', payload)
+  .subscribe({
+    next: (res) => {
       console.log('✅ Insert Response:', res);
       this.loading = false;
       if (res?.status === 'success' || res?.message?.toLowerCase().includes('success')) {
@@ -281,9 +275,10 @@ updateUser(form: NgForm) {
     id_field_value: this.newUser.id
   };
 
-  console.log('🟡 Update Payload:', payload);
-
-  this.http.post<any>(this.updateUrl, payload).subscribe({
+  //console.log('🟡 Update Payload:', payload); 
+  
+  this.apiService.post<ApiResponse>('prismMultiplefieldupdate', payload)
+  .subscribe({
     next: (res: any) => {
       console.log('✅ Update Response:', res);
       this.loading = false;

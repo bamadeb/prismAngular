@@ -272,7 +272,7 @@ async qualityFileSubmit(): Promise<void> {
 
   } catch (error) {
     console.error("Unexpected Error:", error);
-    alert("Unexpected error while processing file.");
+    alert("Unexpected error while processing quality gaps file.");
     this.isUpload = false;
   }
 }

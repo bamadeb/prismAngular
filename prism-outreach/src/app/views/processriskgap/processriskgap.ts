@@ -132,7 +132,7 @@ export class Processriskgap implements OnInit {
         },
         error: (err) => {
           console.error('Error fetching temp risk gaps:', err);
-          alert('Failed to load temporary risk gaps!');
+          alert('Failed to load risk gaps data into temporary file!');
           this.isUpload = false;
         }
       });
@@ -201,7 +201,7 @@ export class Processriskgap implements OnInit {
 
     } catch (err) {
       console.error('Error processing risk gaps:', err);
-      alert('Error processing risk gaps. Please try again.');
+      alert('Error processing risk gaps file. Please try again.');
       this.isProcessing = false;
     }
   }

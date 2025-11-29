@@ -1,6 +1,7 @@
 export interface ApiResponse {
     statusCode: number;
     data: any[];
+    //body: any[];
 }
 export interface ApiResponseAllmyworkspace {
   statusCode: number;

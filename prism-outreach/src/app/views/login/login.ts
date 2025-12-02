@@ -22,6 +22,7 @@ export class Login {
   apires: ApiResponse = {
     statusCode: 0,
     data: [],
+    insertedIds:0
   };
 
   constructor(

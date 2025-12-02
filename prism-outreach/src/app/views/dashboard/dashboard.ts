@@ -52,6 +52,7 @@ export class Dashboard implements OnInit {
   commonApiRes: ApiResponse = {
     statusCode: 0,
     data: [],
+    insertedIds:0,
   };  
   actionMaster: AddActionMasterData = {
     statusCode: 0,

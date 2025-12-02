@@ -18,8 +18,8 @@ post<T>(endpoint: string, payload: any): Observable<T> {
 
     return this.http.post<T>(url, payload, { headers, observe: 'response' }).pipe(
       tap((response: HttpResponse<T>) => {
-        console.log('✅ POST URL:', url);
-        console.log('✅ POST Headers:', response.headers.keys().map(key => `${key}: ${response.headers.get(key)}`));
+        //console.log('✅ POST URL:', url);
+        //console.log('✅ POST Headers:', response.headers.keys().map(key => `${key}: ${response.headers.get(key)}`));
       }),
       map((response: HttpResponse<T>) => response.body as T),
       catchError(err => {

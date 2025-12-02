@@ -1,4 +1,5 @@
 export interface ApiResponse {
+    insertedIds: number;
     statusCode: number;
     data: any[];
     //body: any[];

@@ -1,68 +1,153 @@
-
-
 <main id="main" class="main" style="margin-top:50px!important;min-height:550px;">
-    <section class="section dashboard">
-        <div class="row">
-            <!-- Left side columns -->
-            <div class="col-lg-12">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-body">
-                                
-                                <div align="right" class="mb-4"> <a onclick="add_plan();" style="text-decoration:underline;cursor:pointer;">+ ADD PLAN</a></div>
-                                        <table class="table table-sm table-borderless" id="members">
-                                            <thead>
-                                                    <tr>
-                                                        <th>PLAN NAME</th>
-                                                        <th>START DATE</th>
-                                                        <th>END DATE</th>
-                                                        <th>FILE NAME</th>
-                                                        <th>FILE TYPE</th>
-                                                        <th>STATUS</th>
-                                                        <th>ACTION</th>
-                                                    </tr>
-                                            </thead>
-                                            <tbody>
-                                                 
-                                                    <tr>
-                                                        <td class="text-uppercase">PLAN-1</td>
-                                                        <td class="text-uppercase">10/06/2025</td>
-                                                        <td class="text-uppercase">10/20/2025</td>
-                                                        <td class="text-uppercase">2025 KeystoneVIP Benefits (JKH Final).pdf</td>
-                                                        <td class="text-uppercase">.pdf</td>
-                                                        <td class="text-uppercase">  Active </td>
-                                                        <td class="text-uppercase"><a title="Update" href="javascript:void(0);" onclick="update_plan(1,'PLAN-1','10/06/2025','10/20/2025',0,1);"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
-                                                    </tr>
-                                                
-                                                    <tr>
-                                                        <td class="text-uppercase">PLAN-2</td>
-                                                        <td class="text-uppercase">10/15/2025</td>
-                                                        <td class="text-uppercase">10/30/2025</td>
-                                                        <td class="text-uppercase">2025.pdf</td>
-                                                        <td class="text-uppercase">.pdf</td>
-                                                        <td class="text-uppercase">  Active </td>
-                                                        <td class="text-uppercase"><a title="Update" href="javascript:void(0);" onclick="update_plan(15,'PLAN-2','10/15/2025','10/30/2025',0,10);"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
-                                                    </tr>
-                                                
-                                                    <tr>
-                                                        <td class="text-uppercase">PLAN-2</td>
-                                                        <td class="text-uppercase">10/15/2025</td>
-                                                        <td class="text-uppercase">10/30/2025</td>
-                                                        <td class="text-uppercase">2025.pdf</td>
-                                                        <td class="text-uppercase">.pdf</td>
-                                                        <td class="text-uppercase"> Inactive </td>
-                                                        <td class="text-uppercase"><a title="Update" href="javascript:void(0);" onclick="update_plan(15,'PLAN-2','10/15/2025','10/30/2025',1,11);"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
-                                                    </tr>
-                                                
-                                            </tbody>
-                                        </table>
-
-                    </div>
-                </div>
-            </div><!-- End Left side columns -->
-        </div>
+  <section class="section dashboard">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">            
+            <!-- 🔹 Add User + Search -->
+            <div class="d-flex flex-column align-items-end mb-4">
+              <a
+                (click)="openAddUserModal()"
+                class="add-user-link text-primary fw-semibold mb-2"
+                style="text-decoration:underline; cursor:pointer;">
+                + ADD PLAN
+              </a> 
             </div>
+
+            <!-- 🔹 Loading Spinner -->
+            <div *ngIf="loading" class="text-center py-4">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
+
+            <!-- 🔹 Users Table -->
+            <div class="table-responsive" *ngIf="!loading">
+              <table class="table align-middle" id="members">
+                <thead>
+                  <tr>
+                    <th>PLAN NAME</th>
+                    <th>START DATE</th>
+                    <th>END DATE</th>
+                    <th width="40%">FILE NAME</th>
+                    <!-- <th>FILE TYPE</th>  -->
+                    <th>STATUS</th>
+                    <th>ACTION</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let p of plandetailslist; let i = index">
+                    <td>{{ p.plan_name }}</td>
+                    <td>{{ p.start_date }}</td>
+                    <td>{{ p.end_date }}</td>
+                    <td>{{ p.file_name }}</td>
+                    <!-- <td>{{ p.file_type }}</td> -->
+                    <td>
+                         <span [ngClass]="p.status == 0 ? 'text-success' : 'text-danger'">
+                                {{ p.status == 0 ? 'Active' : 'Inactive' }}
+                            </span>
+                    </td>
+                    <td class="text-center">
+                      <i
+                        class="fa fa-pencil text-primary me-2"
+                        title="Edit User"
+                        style="cursor:pointer;"
+                        (click)="openEditUserModal(p)">
+                      </i>
+                    </td>
+                  </tr>
+
+                  <!-- Empty State -->
+                  <tr *ngIf="!plandetailslist || plandetailslist.length === 0">
+                    <td colspan="7" class="text-center text-muted py-3">No plans found.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </div>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 </main>
+
+<!-- 🔹 Add / Edit User Modal -->
+<div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header border-0">
+        <h5 class="modal-title fw-semibold" id="addUserModalLabel">{{ isEditing ? 'UPDATE PLAN' : 'ADD PLAN' }}</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="closeAddUserModal()"></button>
+      </div>
+
+      <div class="modal-body">
+        <form #addForm="ngForm" (ngSubmit)="isEditing ? updatePlan(addForm) : addPlan(addForm)">
+          <div class="row g-3">
+
+            <div class="col-md-6" *ngIf="!isHidden"> 
+                <select class="form-control text-uppercase placeholder-select" [(ngModel)]="planArray.plan_id" name="plan_id"  
+                (change)="onPlanChange(planArray.plan_id)">
+                    <option value="">NEW</option>
+                    <option *ngFor="let d of planlist" [value]="d.id">{{ d.plan_name }} ({{ d.start_date }} - {{ d.end_date }})</option>
+                </select> 
+            </div>            
+
+            <div class="col-md-6" *ngIf="!isplanHidden">
+              <input type="text" class="form-control text-uppercase" placeholder="PLAN NAME" [(ngModel)]="planArray.plan_name" name="plan_name" required>
+            </div>
+
+            <div class="col-md-6" *ngIf="!isplanHidden">
+              <input type="text" class="form-control text-uppercase datepicker " placeholder="START DATE" [(ngModel)]="planArray.start_date" name="start_date" required >
+            </div>
+
+            <div class="col-md-6" *ngIf="!isplanHidden">
+              <input type="text" class="form-control text-uppercase datepicker " placeholder="END DATE" [(ngModel)]="planArray.end_date" name="end_date" required >
+            </div> 
+
+            <div class="col-md-6">
+              <input type="file" class="form-control" #fileInput (change)="onFileSelect($event)"  name="file_name" [required]="isAddMode">
+            </div>            
+             
+            <!-- Status Dropdown -->
+            <div class="col-md-6">
+              <select 
+                class="form-select text-uppercase" 
+                [(ngModel)]="planArray.status" 
+                name="status" 
+                required>
+                <option value="0">ACTIVE</option>
+                <option value="1">INACTIVE</option>
+              </select>
+            </div>
+            
+          </div>
+
+          <div class="text-end mt-4">
+            <button type="submit" class="btn btn-primary px-4" >
+             SUBMIT
+            </button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ✅ Toast Notification -->
+<div
+  *ngIf="toastMessage"
+  class="toast align-items-center text-white border-0 show position-fixed bottom-0 end-0 m-4"
+  [ngClass]="{
+    'bg-success': toastType === 'success',
+    'bg-danger': toastType === 'danger',
+    'bg-warning': toastType === 'warning'
+  }"
+  role="alert">
+  <div class="d-flex">
+    <div class="toast-body">{{ toastMessage }}</div>
+    <button type="button" class="btn-close btn-close-white me-2 m-auto" (click)="toastMessage = ''"></button>
+  </div>
+</div>

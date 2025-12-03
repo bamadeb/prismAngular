@@ -2322,6 +2322,20 @@ pcpVisible: Boolean | undefined;
       });       
   } 
 
+  copyToClipboard(text: string) { 
+  navigator.clipboard.writeText(text)
+    .then(() => {
+      console.log('Copied: ' + text);
+      //this.showCopyToast(); // optional toast message
+    })
+    .catch(err => {
+      console.error('Clipboard copy failed:', err);
+    });
+}
+  showCopyToast() {
+    throw new Error('Method not implemented.');
+  }
+
   updateMemberAltAddr(medicaid_id: string, latest_alt_address: string) {
     alert(medicaid_id+'===='+latest_alt_address);
   const memberIndex = this.members.findIndex(m => m.medicaid_id === medicaid_id);

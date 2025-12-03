@@ -646,7 +646,7 @@ noPatient(medicaid_id: string,name: string){
           ///////////////////// Log entry end ///////////////////// 
 
                 this.isLoading = false;
-               // window.location.href = '/dashboard';
+                window.location.reload();
               },
               error: (err) => {
                 console.error('❌ Update API Error:', err);
@@ -2322,22 +2322,35 @@ pcpVisible: Boolean | undefined;
       });       
   } 
 
-  copyToClipboard(text: string) { 
-  navigator.clipboard.writeText(text)
-    .then(() => {
-      console.log('Copied: ' + text);
-      //this.showCopyToast(); // optional toast message
-    })
-    .catch(err => {
-      console.error('Clipboard copy failed:', err);
-    });
-}
-  showCopyToast() {
-    throw new Error('Method not implemented.');
+copyToClipboard(text: string) {
+  if (navigator && navigator.clipboard && navigator.clipboard.writeText) {
+    // Modern supported browser
+    navigator.clipboard.writeText(text)
+      .then(() => {})
+      .catch(() => {
+        this.fallbackCopy(text);
+      });
+  } else {
+    // Fallback
+    this.fallbackCopy(text);
   }
+}
+
+fallbackCopy(text: string) {
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.style.position = 'fixed';
+  textarea.style.opacity = '0';
+  document.body.appendChild(textarea);
+  textarea.select();
+  document.execCommand('copy');
+  document.body.removeChild(textarea);
+}
+
+  
 
   updateMemberAltAddr(medicaid_id: string, latest_alt_address: string) {
-    alert(medicaid_id+'===='+latest_alt_address);
+    //alert(medicaid_id+'===='+latest_alt_address);
   const memberIndex = this.members.findIndex(m => m.medicaid_id === medicaid_id);
 
   if (memberIndex !== -1) {

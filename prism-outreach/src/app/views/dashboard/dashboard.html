@@ -594,8 +594,9 @@
                                     </div>
 
                                     <!-- MEMBERS TAB -->
+
                                     <div class="tab-pane show active" id="profile" role="tabpanel"
-                                        aria-labelledby="profile-tab">
+                                        aria-labelledby="profile-tab"> 
                                         <table class="table table-borderless " id="members" style="width:100%">
                                             <thead>
                                                 <tr class="group-header">
@@ -606,8 +607,8 @@
                                                 </tr>
                                                 <tr>
                                                     <th></th>
-                                                    <th>#MEM ID</th>
-                                                    <th>NAME/PHONE</th>
+                                                    <th>#MEM ID/NAME/DOB</th>
+                                                    <th>ADDRESS/PHONE</th>
                                                     <th>PRACTICE</th>
                                                     <th class="text-center" [style.width.%]="7">PCP VISIT</th>
                                                     <th class="text-center">PRIORITY</th>
@@ -619,9 +620,10 @@
                                                     <th class="text-center group-performance-td">COUNT</th>
                                                     <th class="text-center">COMPLETED</th>
                                                     <th class="text-center">%</th>
-                                                    <th class="group-performance-td text-center" [style.width.%]="7">ACTION</th>
+                                                    <th class="group-performance-td text-center" [style.width.%]="6">ACTION</th>
                                                 </tr>
                                             </thead> 
+
                                             <tbody>
                                                 <tr *ngFor="let member of members; let i = index">
                                                     <th class="text-primary">
@@ -630,11 +632,23 @@
                                                             (change)="onCheckboxChange($event, member.medicaid_id)" />
                                                     </th>
 
-                                                    <th class="text-primary">#{{ member.medicaid_id }}</th>
+                                                    <td class="text-primary text-uppercase">#{{ member.medicaid_id }}<br> 
+                                                        <span *ngIf="member?.SEX === 'M'">
+                                                            <i class="fa fa-male" aria-hidden="true"></i>
+                                                        </span>
+                                                        <span *ngIf="member?.SEX === 'F'">
+                                                            <i class="fa fa-female" aria-hidden="true"></i>
+                                                        </span>
+                                                       
+                                                       
+                                                        {{ member.FIRST_NAME }} {{ member.LAST_NAME }}
+                                                        <br> <span *ngIf="member?.BIRTH">({{ member.BIRTH }})</span></td>
 
                                                     <td class="text-primary" style="text-transform: uppercase;">
-                                                       <i *ngIf="member.transfer_flag == 1" class="fa fa-exchange traffic-yellow"  aria-hidden="true"></i> {{ member.FIRST_NAME }} {{ member.LAST_NAME }}<br />
-                                                        {{ member.OTHER_PHONE || '' }}
+                                                       <i *ngIf="member.transfer_flag == 1" class="fa fa-exchange traffic-yellow"  aria-hidden="true"></i>
+                                                       <i class="fa fa-map-marker" aria-hidden="true"></i> {{ member.OTHER_ADDR1 }}<br />
+                                                        <span *ngIf="member?.OTHER_PHONE"><i class="fa fa-phone" aria-hidden="true"></i> {{ member.OTHER_PHONE | phoneFormat }}</span> 
+                                                        
                                                     </td>
                                                     <td class="text-primary" style="text-transform: uppercase;">
                                                         {{ providerTinNameMapping[member.PCP_TAX_ID]?.slice(0, 5) }}..

@@ -9,13 +9,14 @@ import { AfterViewInit } from '@angular/core';
 import { Modal } from 'bootstrap'; // ✅ Bootstrap Modal class (no jQuery)
 import { FormsModule,ReactiveFormsModule,FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { PhoneFormatPipe } from '../../pipes/phone-format.pipe';
 // import { ReactiveFormsModule } from '@angular/forms';
 import 'datatables.net';
 import { switchMap } from 'rxjs/operators';
 declare var $: any;
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule,FormsModule,ReactiveFormsModule],
+  imports: [CommonModule,FormsModule,ReactiveFormsModule,PhoneFormatPipe],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })

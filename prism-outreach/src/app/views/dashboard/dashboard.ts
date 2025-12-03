@@ -2249,10 +2249,18 @@ pcpVisible: Boolean | undefined;
                 action_type: 'ADD ALTERNATIVE ADDRESS'
             }; 
             this.add_system_log([LogArray]);
-          ///////////////////// Log entry end /////////////////////             
-            //  this.altAddressFormGroup.reset(); 
-            //  this.isLoading = false;
-             window.location.reload();
+            ///////////////////// Log entry end /////////////////////       
+            // 🔥 Update dashboard list WITHOUT reloading page
+            this.updateMemberAltAddr(
+              formValues.medicaid_id,
+              formValues.alt_address
+            );
+
+              this.altAddressFormGroup.reset(); 
+              this.isLoading = false;
+              this.closeMemberdetails();
+            /////  window.location.reload();
+             
             },
             error: (err) => console.error(err)
           });
@@ -2263,6 +2271,42 @@ pcpVisible: Boolean | undefined;
         }
       });       
   } 
+
+  updateMemberAltAddr(medicaid_id: string, latest_alt_address: string) {
+    alert(medicaid_id+'===='+latest_alt_address);
+  const memberIndex = this.members.findIndex(m => m.medicaid_id === medicaid_id);
+
+  if (memberIndex !== -1) {
+    this.members[memberIndex].latest_alt_address = latest_alt_address;
+  }
+
+  // Refresh DataTable
+  this.ngZone.runOutsideAngular(() => {
+    setTimeout(() => {
+      this.initializeDataTable('#members', true);
+    }, 200);
+  });
+
+  this.cdRef.detectChanges();
+}
+
+updateMemberAltPhone(medicaid_id: string, latest_alt_phone: string) {
+  const memberIndex = this.members.findIndex(m => m.medicaid_id === medicaid_id);
+
+  if (memberIndex !== -1) {
+    this.members[memberIndex].latest_alt_phone = latest_alt_phone;
+  }
+
+  // Refresh DataTable
+  this.ngZone.runOutsideAngular(() => {
+    setTimeout(() => {
+      this.initializeDataTable('#members', true);
+    }, 200);
+  });
+
+  this.cdRef.detectChanges();
+}
+
 
   add_alt_phone_submit(){
       this.isLoading = true;  
@@ -2298,12 +2342,18 @@ pcpVisible: Boolean | undefined;
             }; 
             this.add_system_log([LogArray]);
           ///////////////////// Log entry end /////////////////////
+          // 🔥 Update dashboard list WITHOUT reloading page
+            this.updateMemberAltPhone(
+              formValues.medicaid_id,
+              formValues.alt_phone_no
+            );
 
              //console.log(this.member_alt_phone_details);
-             //this.altPhoneFormGroup.reset(); 
+             this.altPhoneFormGroup.reset(); 
              //$('#alt_phone_no').val('');
-             //this.isLoading = false;
-             window.location.reload();
+             this.isLoading = false;
+             this.closeMemberdetails();
+             //window.location.reload();
             },
             error: (err) => console.error(err)
           });

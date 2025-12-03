@@ -27,6 +27,7 @@ export class Dashboard implements OnInit {
   selectedMedicaidIds: string[] = [];
   userId: number | null = null; 
   userRole: number | null = null;
+  loginUserId: number | null = null;
   selectedNavigator: number | null = null;
   flashMessage: string | null = null;
   addActionChangeFlag: number = 0; 
@@ -39,7 +40,8 @@ export class Dashboard implements OnInit {
       overallRiskQualitySummary: [],
       ownRiskQualitySummary: [],
       recentActivity:[],
-      referralList:[]
+      referralList:[],
+      NoLongerPatientList:[]
     },
   };
     apiResTask: ApiResponseTaskdata = {
@@ -112,6 +114,7 @@ export class Dashboard implements OnInit {
   recentActivity: any[] = [];  
   referralList: any[] = [];    
   planList: any[] = [];  
+  NoLongerPatientList: any[] = [];
   updateDataArray: any[] = [];
   userList: any[] = [];
   memberDetails: any[] = [];
@@ -178,6 +181,7 @@ export class Dashboard implements OnInit {
       //   return;
       // }
       this.userRole = user.role_id;
+      this.loginUserId = user.ID;
       this.addTaskFormGroup = this.fb.group({
         task_next_panel_id: ['', Validators.required],
         task_date: ['', Validators.required],
@@ -604,7 +608,53 @@ setQualityGapsData(qualityGapsdata: any) {
   onQualityChecked(){
 
   }
+noPatient(medicaid_id: string,name: string){
+  const confirmed = confirm(`Are you sure ${name} is no longer a patient?`);
+    
+    if (confirmed) {
+      //alert(medicaid_id);
+      // ➜ Add your API call or logic here
+      this.isLoading = true;
+            const updateData = { 
+              NO_LONGER_PATIENT_FLAG: 1,
+              NO_LONGER_PATIENT_DATE: new Date().toISOString().slice(0, 10)
+            };
 
+            const payload = {
+              updateData: updateData,
+              table_name: 'MEM_MEMBERS',
+              id_field_name: 'RECIP_NO',
+              id_field_value: medicaid_id
+            };
+
+            //console.log('Updating record:', payload);
+
+            this.apiService.post('prismMultiplefieldupdate', payload).subscribe({
+              next: (res) => {
+                //console.log('Update Response:', res);
+                 ////////////////// Log entry start //////////////////////
+              const LogArray = {
+                  medicaid_id: medicaid_id,
+                  log_name: 'UPDATE MEMBER',
+                  log_details: 'Mark as No Longer Patient - '+ medicaid_id,
+                  log_status: 'Success',
+                  log_by: this.loginUserId,
+                  action_type: 'UPDATE MEMBER'
+              }; 
+              console.log(LogArray);
+              this.add_system_log([LogArray]);
+          ///////////////////// Log entry end ///////////////////// 
+
+                this.isLoading = false;
+               // window.location.href = '/dashboard';
+              },
+              error: (err) => {
+                console.error('❌ Update API Error:', err);
+                this.isLoading = false;
+              }
+            });      
+    }
+}
 /////////////////////////////////////////////////////////////////
 //////// Show Call List ///////////
   showCallList(medicaid_id: number,fname: string,lname: string): void { 
@@ -1443,7 +1493,7 @@ loadDashboard(user_id: number) {
           this.recentActivity = res.data.recentActivity || [];
           this.referralList = res.data.referralList || [];
           this.planList = res.data.planList || [];
-
+          this.NoLongerPatientList = res.data.NoLongerPatientList || [];
           this.calculatePerformance(res.data);
 
           // Reinitialize DataTables

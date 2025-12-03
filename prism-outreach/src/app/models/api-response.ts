@@ -14,6 +14,7 @@ export interface ApiResponseAllmyworkspace {
     members?: any[];
     overallRiskQualitySummary?: any[];
     ownRiskQualitySummary?: any[];
+    NoLongerPatientList?: any[];
   }
 }
 

@@ -3,7 +3,7 @@ import { Login } from './views/login/login';
 import { Dashboard } from './views/dashboard/dashboard';
 import { Starperformance } from './views/starperformance/starperformance';
 import { GapsReportComponent  } from './views/gapsreport/gapsreport';
-import { RiskProfile } from './views/risk-profile/risk-profile';
+//import { RiskProfile } from './views/risk-profile/risk-profile';
 import { Users } from './views/users/users';
 import { Plans } from './views/plans/plans';
 import { Processmember } from './views/processmember/processmember';
@@ -61,12 +61,12 @@ export const routes: Routes = [
       { path: '', component: ProcessCihPcr  , data: { title: 'PROCESS CIH PCR FILE' }},
     ]
   },
-  {
-    path: 'riskprofile',
-    component: MainLayout,
-    children: [ 
-      { path: '', component: RiskProfile , data: { title: 'MEMBER RISK PROFILE' }},
-    ]},
+  // {
+  //   path: 'riskprofile',
+  //   component: MainLayout,
+  //   children: [ 
+  //     { path: '', component: RiskProfile , data: { title: 'MEMBER RISK PROFILE' }},
+  //   ]},
   
   // {
   //   path: 'riskprofile',

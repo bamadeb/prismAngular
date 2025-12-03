@@ -2249,10 +2249,10 @@ pcpVisible: Boolean | undefined;
                 action_type: 'ADD ALTERNATIVE ADDRESS'
             }; 
             this.add_system_log([LogArray]);
-          ///////////////////// Log entry end /////////////////////
-
-             this.altAddressFormGroup.reset(); 
-             this.isLoading = false;
+          ///////////////////// Log entry end /////////////////////             
+            //  this.altAddressFormGroup.reset(); 
+            //  this.isLoading = false;
+             window.location.reload();
             },
             error: (err) => console.error(err)
           });
@@ -2301,8 +2301,9 @@ pcpVisible: Boolean | undefined;
 
              //console.log(this.member_alt_phone_details);
              //this.altPhoneFormGroup.reset(); 
-             $('#alt_phone_no').val('');
-             this.isLoading = false;
+             //$('#alt_phone_no').val('');
+             //this.isLoading = false;
+             window.location.reload();
             },
             error: (err) => console.error(err)
           });

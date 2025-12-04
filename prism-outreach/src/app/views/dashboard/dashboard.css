@@ -79,3 +79,29 @@
   background: #fff;
   z-index: 2;
 }
+.hover-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+}
+
+.hover-text {
+  cursor: pointer;
+}
+
+.hover-edit {
+  display: none;        /* Hidden normally */
+  cursor: pointer;
+  color: #007bff;
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+}
+
+.hover-container:hover .hover-edit {
+  display: inline-block;   /* Show only on hover */
+}
+
+.hover-edit:hover {
+  opacity: 1;
+}

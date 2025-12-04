@@ -13,6 +13,7 @@ import { PhoneFormatPipe } from '../../pipes/phone-format.pipe';
 // import { ReactiveFormsModule } from '@angular/forms';
 import 'datatables.net';
 import { switchMap } from 'rxjs/operators';
+//import { AltAddress } from '../../shared/alt-address/alt-address';
 declare var $: any;
 @Component({
   selector: 'app-dashboard',
@@ -31,6 +32,7 @@ export class Dashboard implements OnInit {
   selectedNavigator: number | null = null;
   flashMessage: string | null = null;
   addActionChangeFlag: number = 0; 
+  addrHover = false;
   apiRes: ApiResponseAllmyworkspace = {
     statusCode: 0,
     data: {    
@@ -133,6 +135,8 @@ export class Dashboard implements OnInit {
   planListModal: any;
   confirmModal: any;
   memberDetailsModal: any;
+  altAddressModal: any;
+  altPhoneModal: any;
    // Data for call list modal
   selectedProviderName: string = '';
   selectedMedicaidId: string = ''; 
@@ -212,13 +216,15 @@ export class Dashboard implements OnInit {
       medicaid_id: [''],
       preferred_call_time: ['10.30 PM']
     });
+    const todaymdy= this.formatDateToYMD(new Date().toISOString());
+    //console.log(todaymdy);
      this.altAddressFormGroup = this.fb.group({
       medicaid_id: [''],
       alt_address: [''],
       alt_city: [''],
       alt_state: [''],
       alt_zip: [''],
-      created_date: ['']
+      created_date: [todaymdy]
     });
 
      this.altPhoneFormGroup = this.fb.group({
@@ -513,6 +519,12 @@ setQualityGapsData(qualityGapsdata: any) {
      // 🔹 New Plan List modal
     const memberdetailsListEl = document.getElementById('memberDetailsModal');
     if (memberdetailsListEl) this.memberDetailsModal = new Modal(memberdetailsListEl);
+     // 🔹 New Plan List modal
+    const altAddressListEl = document.getElementById('alt_address_Modal');
+    if (altAddressListEl) this.altAddressModal = new Modal(altAddressListEl);
+     // 🔹 New Plan List modal
+    const altPhoneListEl = document.getElementById('alt_phone_Modal');
+    if (altPhoneListEl) this.altPhoneModal = new Modal(altPhoneListEl);
 
 
         // Initialize Bootstrap Datepicker
@@ -537,7 +549,65 @@ setQualityGapsData(qualityGapsdata: any) {
     const yyyy = date.getFullYear();
     return `${mm}/${dd}/${yyyy}`;
   }
+  openEditAddress(medicaid_id: string){
+    //alert(medicaid_id);
+    this.isLoading = true; // show loader
+    const payload = { medicaid_id: medicaid_id };
 
+    this.apiService.post<ApiResponse>('prismMemberAltAddressList', payload)
+      .subscribe({
+        next: (res) => {     
+          if (res.data) { 
+          //this.callList = res.data || [];  
+          this.alt_address = res.data || [];           
+          this.isLoading = false; // show loader 
+          } else {
+            console.warn('⚠️ No data found:', res);
+          }
+        },
+        error: (err) => {
+          console.error('❌ Error in load alt address:', err);
+          //alert('Error in load call list. Please try again later.');
+        }
+      });     
+      const todaymdy= this.formatDateToYMD(new Date().toISOString());
+      this.altAddressFormGroup.patchValue({
+        medicaid_id: medicaid_id,
+        created_date: todaymdy 
+      });
+
+    this.altAddressModal?.show();
+  }
+  openEditPhone(medicaid_id: string){
+    //alert(medicaid_id);
+    this.isLoading = true; // show loader
+    const payload = { medicaid_id: medicaid_id };
+
+    this.apiService.post<ApiResponse>('prismMemberAltPhoneList', payload)
+      .subscribe({
+        next: (res) => {     
+          if (res.data) { 
+          //this.callList = res.data || [];  
+          //this.alt_address = res.data || [];
+          this.member_alt_phone_details = res.data || [];            
+          this.isLoading = false; // show loader 
+          } else {
+            console.warn('⚠️ No data found:', res);
+          }
+        },
+        error: (err) => {
+          console.error('❌ Error in load alt phone:', err);
+          //alert('Error in load call list. Please try again later.');
+        }
+      });     
+
+      this.altPhoneFormGroup.patchValue({
+        medicaid_id: medicaid_id 
+      });
+
+    this.altPhoneModal?.show();
+
+  }
   openModal(medicaid_id: string, member_name: string): void {
     this.modalInstance?.show();
     // this.isActionVisible = true;
@@ -1294,6 +1364,16 @@ formatDateToMDY(dateStr: string): string {
   const year = date.getFullYear();
 
   return `${month}/${day}/${year}`; // m/d/Y format
+}
+formatDateToYMD(dateStr: string): string {
+  if (!dateStr) return '';
+
+  const date = new Date(dateStr);
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const year = date.getFullYear();
+
+  return `${year}-${month}-${day}`; // m/d/Y format
 }
 
 ////////////////////////////////////////////////////////////////
@@ -2185,7 +2265,7 @@ pcpVisible: Boolean | undefined;
     this.isLoading = true; // show loader 
     //alert(medicaid_id);
     const isVisible = true; 
-    const addrVisible = true;
+    const addrVisible: boolean = false;
     const mobisVisible = true;
     const langVisible = true;
     //const encounterVisible = true;
@@ -2234,7 +2314,12 @@ pcpVisible: Boolean | undefined;
   closeMemberdetails(): void {
     this.memberDetailsModal?.hide();
   }
-
+  closeAltAddressModal(): void {
+    this.altAddressModal?.hide();
+  }
+  closeAltPhoneModal(): void {
+    this.altPhoneModal?.hide();
+  }
   update_member_info_submit() { 
       this.isLoading = true;  
       const formValue = this.memberInfoFormGroup.value;  
@@ -2319,6 +2404,7 @@ pcpVisible: Boolean | undefined;
               this.altAddressFormGroup.reset(); 
               this.isLoading = false;
               this.closeMemberdetails();
+               this.closeAltAddressModal();
             /////  window.location.reload();
              
             },
@@ -2440,6 +2526,8 @@ updateMemberAltPhone(medicaid_id: string, latest_alt_phone: string) {
              //$('#alt_phone_no').val('');
              this.isLoading = false;
              this.closeMemberdetails();
+             this.closeAltPhoneModal();
+            
              //window.location.reload();
             },
             error: (err) => console.error(err)

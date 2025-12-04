@@ -654,15 +654,60 @@
                                                         </span>
                                                         <span (click)="copyToClipboard(member.FIRST_NAME + ' ' + member.LAST_NAME)"><b>{{ member.FIRST_NAME }} {{ member.LAST_NAME }}</b></span>
                                                         <br> <span *ngIf="member?.BIRTH" (click)="copyToClipboard(member.BIRTH)"> <i class="fa fa-calendar" aria-hidden="true"></i>&nbsp;  <span style="font-size: 17px;">{{ member.BIRTH }}</span></span>
+
                                                     </td>
 
-                                                    <td class="text-primary" style="text-transform: uppercase;">
+                                                    <!-- <td class="text-primary" style="text-transform: uppercase;">
                                                        <i *ngIf="member.transfer_flag == 1" class="fa fa-exchange traffic-yellow"  aria-hidden="true"></i>
                                                        <i class="fa fa-home" aria-hidden="true"></i>
                                                        <span *ngIf="member?.OTHER_PHONE" (click)="copyToClipboard(member.latest_alt_address || member.OTHER_ADDR1)"> {{ member.latest_alt_address || member.OTHER_ADDR1 }}</span><br />
                                                        <span *ngIf="member?.OTHER_PHONE" (click)="copyToClipboard(member.latest_alt_phone || member.OTHER_PHONE)"><i class="fa fa-phone" aria-hidden="true"></i>&nbsp; <b>{{ member.latest_alt_phone || member.OTHER_PHONE | phoneFormat }}</b></span> 
                                                         
-                                                    </td>
+                                                    </td> -->
+                                                    <td class="text-primary" style="text-transform: uppercase;">
+
+                                                    <i *ngIf="member.transfer_flag == 1"
+                                                        class="fa fa-exchange traffic-yellow"
+                                                        aria-hidden="true"></i>
+
+                                                    <!-- ADDRESS -->
+                                                    <span class="hover-container" *ngIf="member?.OTHER_ADDR1">
+
+                                                        <span class="hover-text"
+                                                                (click)="copyToClipboard(member.latest_alt_address || member.OTHER_ADDR1)">
+                                                            <i class="fa fa-home"></i>
+                                                            {{ member.latest_alt_address || member.OTHER_ADDR1 }}
+                                                        </span>
+
+                                                        <!-- EDIT ICON ON HOVER -->
+                                                        <span class="hover-edit"
+                                                                (click)="openEditAddress(member.medicaid_id)">
+                                                            <i class="fa fa-pencil"></i>
+                                                        </span>
+
+                                                    </span>
+
+                                                    <br/>
+
+                                                    <!-- PHONE -->
+                                                    <span class="hover-container" *ngIf="member?.OTHER_PHONE">
+
+                                                        <span class="hover-text"
+                                                                (click)="copyToClipboard(member.latest_alt_phone || member.OTHER_PHONE)">
+                                                            <i class="fa fa-phone"></i>&nbsp;
+                                                            <b>{{ member.latest_alt_phone || member.OTHER_PHONE | phoneFormat }}</b>
+                                                        </span>
+
+                                                        <!-- EDIT ICON ON HOVER -->
+                                                        <span class="hover-edit"
+                                                                (click)="openEditPhone(member.medicaid_id)">
+                                                            <i class="fa fa-pencil"></i>
+                                                        </span>
+
+                                                    </span>
+
+                                                    </td> 
+
                                                     <td class="text-primary text-dark" style="text-transform: uppercase;">
                                                         {{ providerTinNameMapping[member.PCP_TAX_ID]?.slice(0, 5) }}..
                                                     </td>
@@ -1877,6 +1922,7 @@
     </div>
 </div>
 
+
 <!--CONFIRM MODAL FOR NO LONGER PATIENT START -->
 <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModal">
     <div class="modal-dialog" style="width:90%;">
@@ -1903,6 +1949,149 @@
     </div>
 </div>
 
+<!-- ALT ADDRESS MODAL START -->
+<div class="modal fade" id="alt_address_Modal" tabindex="-1" aria-labelledby="alt_address_Modal" aria-hidden="true">
+    <div class="modal-dialog modal-xl"> <!-- Use modal-xl for ~90% width -->
+        <div class="modal-content"> 
+ 
+            <!-- Header -->
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fa fa-plus me-2"></i>
+                    <span class="text-uppercase">ALT ADDRESS</span>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    (click)="closeAltAddressModal()"></button>
+            </div>
+            <!-- Body -->
+            <div class="modal-body" id="assign_form">
+                <div >
+                    <div class="row">
+                            <div class="col-lg-5">
+                                    <form [formGroup]="altAddressFormGroup" (ngSubmit)="add_alt_address_submit()">
+                                        
+                                    <input type="hidden" formControlName="medicaid_id" value="medicaid_id">
+                                    <div class="col-lg-12  mt-3">
+                                        <input type="text" formControlName="alt_address" placeholder="Alternate Address" class="form-control" required="" style="text-transform:uppercase;">
+                                    </div>
+                                    <div class="col-lg-12  mt-3">
+                                        <input type="text" formControlName="alt_city" placeholder="Alternate City" class="form-control" required="" style="text-transform:uppercase;">
+                                    </div>
+                                    <div class="col-lg-12  mt-3">
+                                        <input type="text" formControlName="alt_state" placeholder="Alternate State" class="form-control" required="" style="text-transform:uppercase;">
+                                    </div>
+                                    <div class="col-lg-12  mt-3">
+                                        <input type="text" formControlName="alt_zip" placeholder="Alternate Zip" class="form-control" required="" style="text-transform:uppercase;">
+                                    </div>
+                                    <div class="col-lg-12  mt-3 mb-3">
+                                        <input type="date" class="form-control" formControlName="created_date" placeholder="Added Date" style="text-transform:uppercase;">
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <input class="btn btn-primary" type="submit" value="SAVE">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-lg-7">
+                                <div class="tbl_scorll">
+                                    <table class="table table-sm" style="font-size:14px;">
+                                        <thead>
+                                        <tr>
+                                            <th>ADDRESS</th>
+                                            <th>ADDED DATE</th>
+                                            <th width="22%">ADDED BY</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>                                                            
+                                            <tr *ngIf="alt_address.length == 0">
+                                                <td colspan="3" align="center">No record found.</td>
+                                            </tr>   
+                                            
+                                            <tr *ngFor="let alt of alt_address; let i = index">
+                                                <td class="text-uppercase">{{ alt.alt_address }}, {{ alt.alt_city }}, {{ alt.alt_state }}, {{ alt.alt_zip }}</td>
+                                                <td class="text-uppercase">{{ alt.add_date }}</td>
+                                                <td class="text-uppercase">{{ alt.initial }}</td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- ALT PHONE MODAL START -->
+<div class="modal fade" id="alt_phone_Modal" tabindex="-1" aria-labelledby="alt_phone_Modal" aria-hidden="true">
+    <div class="modal-dialog modal-xl"> <!-- Use modal-xl for ~90% width -->
+        <div class="modal-content">
+
+            <!-- Header -->
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fa fa-plus me-2"></i>
+                    <span class="text-uppercase">ALT ADDRESS</span>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    (click)="closeAltPhoneModal()"></button>
+            </div>
+            <!-- Body -->
+            <div class="modal-body" id="assign_form">
+                <div class="row">
+                                            <div class="col-lg-4">
+                                                <form [formGroup]="altPhoneFormGroup" (ngSubmit)="add_alt_phone_submit()">
+                                                    <input type="hidden" formControlName="medicaid_id" value="medicaid_id">
+                                                    <div class="col-lg-12  mt-3">
+                                                        <input type="text"
+                                                            placeholder="Alternate Phone No"
+                                                            formControlName="alt_phone_no"
+                                                            id="alt_phone_no"
+                                                            class="form-control text-uppercase"
+                                                            onkeyup="formatPhoneNumber(this.value);" maxlength="10" pattern="\(\d{3}\) \d{3}-\d{4}" title="Enter phone number in format: (123) 456-7890"  inputmode="numeric" required>
+
+                                                    </div>
+                                                    <div class="col-lg-12  mt-3" align="right">
+                                                        <input class="btn btn-primary" type="submit" value="SAVE">
+                                                    </div>
+
+                                                </form>
+                                            </div>
+                                            <div class="col-lg-8">
+                                                <div class="tbl_scorll">
+                                                    <table class="table table-sm" style="font-size:14px;">
+                                                        <thead>
+                                                        <tr>
+                                                            <th class="text-uppercase;">Alt Phone No</th>
+                                                            <th class="text-uppercase;">Added By (INITIAL)</th>
+                                                            <th class="text-uppercase;">Added Date</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>                                                        
+                                                             <tr *ngIf="member_alt_phone_details.length == 0">
+                                                                    <td colspan="3" align="center">No record found.</td>
+                                                                </tr>   
+                                                                
+                                                                <tr *ngFor="let alt_phone of member_alt_phone_details; let i = index">
+                                                                    <td class="text-uppercase">{{ alt_phone.alt_phone_no }}</td>
+                                                                    <td class="text-uppercase">{{ alt_phone.FistName }}</td>
+                                                                    <td class="text-uppercase">{{ alt_phone.add_date }}</td>
+                                                                </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+ 
 <!-- MEMBER DETAILS MODAL START -->
 <div class="modal fade" id="memberDetailsModal" tabindex="-1" aria-labelledby="memberDetailsModal" aria-hidden="true">
     <div class="modal-dialog modal-xl" style="width: 100%;">
@@ -2237,6 +2426,14 @@
                             </div>
                         </div>
                     </div>
+<!--                     
+                    <app-alt-address
+                        [addrVisible]="!!addrVisible"
+                        [altAddressFormGroup]="altAddressFormGroup"
+                        [alt_address]="alt_address"
+                        (submitAltAddress)="add_alt_address_submit()">
+                        </app-alt-address> -->
+
                     <div class="col-lg-6" *ngIf="mobisVisible">
                         <div class="card">
                             <div class="card-body">

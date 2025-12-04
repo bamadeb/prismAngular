@@ -634,13 +634,17 @@
                                                     <th class="text-primary">
                                                         <input type="checkbox" class="form-check-input rowCheckbox"
                                                             [value]="member.medicaid_id"
-                                                            (change)="onCheckboxChange($event, member.medicaid_id)" />
+                                                            (change)="onCheckboxChange($event, member.medicaid_id)" style="border: 1px solid #0d6efd !important;" /><br>
+                                                            <a href="javascript:void(0);"
+                                                            (click)="showDetails(member.medicaid_id)"
+                                                            title="Member Details" style="text-decoration:none;">D</a><br>
+                                                            <a href="javascript:void(0);"
+                                                            (click)="openModal(member.medicaid_id, member.FIRST_NAME + ' ' + member.LAST_NAME)">
+                                                            <i title="Add Action" class="fa fa-plus"></i>
+                                                        </a>
                                                     </th>
 
-                                                    <td class="text-primary text-uppercase"><b>#{{ member.medicaid_id }}</b>  
-                                                        (<a href="javascript:void(0);"
-                                                            (click)="showDetails(member.medicaid_id)"
-                                                            title="Member Details" style="text-decoration:none;">D</a>)
+                                                    <td class="text-primary text-uppercase text-dark">#{{ member.medicaid_id }}                                                          
                                                         <br> 
                                                         <span *ngIf="member?.SEX === 'M'">
                                                             <i class="fa fa-male" aria-hidden="true"></i>&nbsp;  
@@ -648,19 +652,18 @@
                                                         <span *ngIf="member?.SEX === 'F'">
                                                             <i class="fa fa-female" aria-hidden="true"></i>&nbsp;
                                                         </span>
-                                                       
-                                                       
-                                                        <span (click)="copyToClipboard(member.FIRST_NAME + ' ' + member.LAST_NAME)">{{ member.FIRST_NAME }} {{ member.LAST_NAME }}</span>
-                                                        <br> <span *ngIf="member?.BIRTH" (click)="copyToClipboard(member.BIRTH)"> <i class="fa fa-calendar" aria-hidden="true"></i> ({{ member.BIRTH }})</span></td>
+                                                        <span (click)="copyToClipboard(member.FIRST_NAME + ' ' + member.LAST_NAME)"><b>{{ member.FIRST_NAME }} {{ member.LAST_NAME }}</b></span>
+                                                        <br> <span *ngIf="member?.BIRTH" (click)="copyToClipboard(member.BIRTH)"> <i class="fa fa-calendar" aria-hidden="true"></i>&nbsp;  <span style="font-size: 17px;">{{ member.BIRTH }}</span></span>
+                                                    </td>
 
                                                     <td class="text-primary" style="text-transform: uppercase;">
                                                        <i *ngIf="member.transfer_flag == 1" class="fa fa-exchange traffic-yellow"  aria-hidden="true"></i>
                                                        <i class="fa fa-home" aria-hidden="true"></i>
                                                        <span *ngIf="member?.OTHER_PHONE" (click)="copyToClipboard(member.latest_alt_address || member.OTHER_ADDR1)"> {{ member.latest_alt_address || member.OTHER_ADDR1 }}</span><br />
-                                                       <span *ngIf="member?.OTHER_PHONE" (click)="copyToClipboard(member.latest_alt_phone || member.OTHER_PHONE)"><i class="fa fa-phone" aria-hidden="true"></i> {{ member.latest_alt_phone || member.OTHER_PHONE | phoneFormat }}</span> 
+                                                       <span *ngIf="member?.OTHER_PHONE" (click)="copyToClipboard(member.latest_alt_phone || member.OTHER_PHONE)"><i class="fa fa-phone" aria-hidden="true"></i>&nbsp; <b>{{ member.latest_alt_phone || member.OTHER_PHONE | phoneFormat }}</b></span> 
                                                         
                                                     </td>
-                                                    <td class="text-primary" style="text-transform: uppercase;">
+                                                    <td class="text-primary text-dark" style="text-transform: uppercase;">
                                                         {{ providerTinNameMapping[member.PCP_TAX_ID]?.slice(0, 5) }}..
                                                     </td>
 
@@ -720,12 +723,7 @@
                                                     <td class="text-center group-performance-td">
                                                         <!-- <a target="_blank" [routerLink]="['/memberdetails', member.medicaid_id]">
                                                         <i title="Member Details" class="fa fa-eye"></i>
-                                                    </a>&nbsp;&nbsp; -->
-
-                                                        <a href="javascript:void(0);"
-                                                            (click)="openModal(member.medicaid_id, member.FIRST_NAME + ' ' + member.LAST_NAME)">
-                                                            <i title="Add Action" class="fa fa-plus"></i>
-                                                        </a>&nbsp;&nbsp;
+                                                    </a>&nbsp;&nbsp; --> 
 
                                                         <a href="javascript:void(0);"
                                                             (click)="showBenefits(member.medicaid_id, member.FIRST_NAME, member.LAST_NAME)"
@@ -733,7 +731,7 @@
                                                         &nbsp;&nbsp;
 
                                                         <a href="javascript:void(0);"
-                                                            (click)="noPatient(member.medicaid_id,  member.FIRST_NAME +' '+ member.LAST_NAME)"
+                                                            (click)="openConfirm(member.medicaid_id,  member.FIRST_NAME +' '+ member.LAST_NAME,member.BIRTH,member.latest_alt_phone || member.OTHER_PHONE )"
                                                             title="Member Details"><i class="fa fa-times" aria-hidden="true" title="No Longer Patient" style="color: red;"></i></a>
 
 
@@ -771,9 +769,9 @@
                                         </table>
                                     </div>
 
-<!-- No Longer Patient LIST TAB -->
+                                    <!-- No Longer Patient LIST TAB -->
                                     <div class="tab-pane " id="nopatient" role="tabpanel" aria-labelledby="nopatient-tab">
-                                        <table class="display table table-striped dataTable" id="transferList">
+                                        <table class="display table table-striped dataTable" id="no_longer_patient">
                                             <thead>
                                                 <tr>
                                                     <th>#MEMBER ID</th>
@@ -1879,6 +1877,32 @@
     </div>
 </div>
 
+<!--CONFIRM MODAL FOR NO LONGER PATIENT START -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModal">
+    <div class="modal-dialog" style="width:90%;">
+        <div class="modal-content">
+            <!-- Header -->
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <!-- <i class="fa fa-plus"></i> -->
+                    <span>Confirm Action</span>
+                </h5>
+                <button type="button" class="btn-close" (click)="closeConfirmModal()"></button>
+            </div>
+            <!-- <form [formGroup]="transferFormGroup" (ngSubmit)="tranfer_member_submit()">  -->
+                <div class="modal-body">
+                    <div class="text-center"><b>{{fullName}}, <i aria-hidden="true" class="fa fa-phone"></i> {{phone | phoneFormat}}, <i aria-hidden="true" class="fa fa-calendar"></i> {{birth}}</b></div>
+                    <p class="text-center">Are you sure, she/he is no longer a patient?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" (click)="noPatient()">Yes</button>
+                    <button type="button" class="btn btn-secondary" (click)="closeConfirmModal()">No</button>
+                </div>
+             <!-- </form> -->
+            </div> 
+    </div>
+</div>
+
 <!-- MEMBER DETAILS MODAL START -->
 <div class="modal fade" id="memberDetailsModal" tabindex="-1" aria-labelledby="memberDetailsModal" aria-hidden="true">
     <div class="modal-dialog modal-xl" style="width: 100%;">
@@ -2384,3 +2408,25 @@
         </div>
     </div>
 </div>
+
+
+<!-- Custom Confirm Modal -->
+<!-- <div class="modal fade" id="confirmModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4 shadow-lg border-0">
+      <div class="modal-header bg-danger text-white rounded-top-4">
+        <h5 class="modal-title">Confirm Action</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <p id="confirmMessage" class="fs-5"></p>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary px-4" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-danger px-4" id="confirmYesBtn">Yes</button>
+      </div>
+    </div>
+  </div>
+</div> -->

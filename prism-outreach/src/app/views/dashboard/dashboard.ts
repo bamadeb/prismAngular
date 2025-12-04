@@ -131,6 +131,7 @@ export class Dashboard implements OnInit {
   taskListModal: any;
   transferModal: any;
   planListModal: any;
+  confirmModal: any;
   memberDetailsModal: any;
    // Data for call list modal
   selectedProviderName: string = '';
@@ -157,6 +158,10 @@ export class Dashboard implements OnInit {
     '237082074': 'GPHA',
     '273160687': 'Dr. Milbourne',
   };
+  birth: any;
+  fullName: any;
+  phone: any;
+  
 
 
 
@@ -500,6 +505,11 @@ setQualityGapsData(qualityGapsdata: any) {
     const planListEl = document.getElementById('planListModal');
     if (planListEl) this.planListModal = new Modal(planListEl);
 
+    // 🔹 New Confirm modal
+    const confirmEl = document.getElementById('confirmModal');
+    if (confirmEl) this.confirmModal = new Modal(confirmEl);
+    //, { backdrop: 'static' }
+
      // 🔹 New Plan List modal
     const memberdetailsListEl = document.getElementById('memberDetailsModal');
     if (memberdetailsListEl) this.memberDetailsModal = new Modal(memberdetailsListEl);
@@ -608,52 +618,52 @@ setQualityGapsData(qualityGapsdata: any) {
   onQualityChecked(){
 
   }
-noPatient(medicaid_id: string,name: string){
-  const confirmed = confirm(`Are you sure ${name} is no longer a patient?`);
-    
-    if (confirmed) {
-      //alert(medicaid_id);
+  openConfirm(medicaid_id: string,fullName: string,birth:any,phone:string){
+      this.fullName = fullName;
+      this.medicaid_id = medicaid_id;
+      this.birth = birth;
+      this.phone = phone;  
+      this.confirmModal?.show();
+  }  
+noPatient(){  
       // ➜ Add your API call or logic here
       this.isLoading = true;
-            const updateData = { 
-              NO_LONGER_PATIENT_FLAG: 1,
-              NO_LONGER_PATIENT_DATE: new Date().toISOString().slice(0, 10)
-            };
+      const updateData = { 
+        NO_LONGER_PATIENT_FLAG: 1,
+        NO_LONGER_PATIENT_DATE: new Date().toISOString().slice(0, 10)
+      };
 
-            const payload = {
-              updateData: updateData,
-              table_name: 'MEM_MEMBERS',
-              id_field_name: 'RECIP_NO',
-              id_field_value: medicaid_id
-            };
-
-            //console.log('Updating record:', payload);
-
-            this.apiService.post('prismMultiplefieldupdate', payload).subscribe({
-              next: (res) => {
-                //console.log('Update Response:', res);
-                 ////////////////// Log entry start //////////////////////
-              const LogArray = {
-                  medicaid_id: medicaid_id,
-                  log_name: 'UPDATE MEMBER',
-                  log_details: 'Mark as No Longer Patient - '+ medicaid_id,
-                  log_status: 'Success',
-                  log_by: this.loginUserId,
-                  action_type: 'UPDATE MEMBER'
-              }; 
-              console.log(LogArray);
-              this.add_system_log([LogArray]);
-          ///////////////////// Log entry end ///////////////////// 
-
-                this.isLoading = false;
-                window.location.reload();
-              },
-              error: (err) => {
-                console.error('❌ Update API Error:', err);
-                this.isLoading = false;
-              }
-            });      
-    }
+      const payload = {
+        updateData: updateData,
+        table_name: 'MEM_MEMBERS',
+        id_field_name: 'RECIP_NO',
+        id_field_value: this.medicaid_id
+      };
+      //console.log('Updating record:', payload);
+      this.apiService.post('prismMultiplefieldupdate', payload).subscribe({
+        next: (res) => {
+          //console.log('Update Response:', res);
+            ////////////////// Log entry start //////////////////////
+        const LogArray = {
+            medicaid_id: this.medicaid_id,
+            log_name: 'UPDATE MEMBER',
+            log_details: 'Mark as No Longer Patient - '+ this.medicaid_id,
+            log_status: 'Success',
+            log_by: this.loginUserId,
+            action_type: 'UPDATE MEMBER'
+        }; 
+        //console.log(LogArray);
+        this.add_system_log([LogArray]);
+        ///////////////////// Log entry end ///////////////////// 
+          this.isLoading = false;
+          window.location.reload();
+        },
+        error: (err) => {
+          console.error('❌ Update API Error:', err);
+          this.isLoading = false;
+        }
+      });      
+  
 }
 /////////////////////////////////////////////////////////////////
 //////// Show Call List ///////////
@@ -1484,7 +1494,6 @@ loadDashboard(user_id: number) {
     .subscribe({
       next: (res) => {
         this.apiRes = res;
-
         if (res.data) {
           //this.members = res.data.members || [];
           this.overallSummary = res.data.overallRiskQualitySummary || [];
@@ -1500,7 +1509,8 @@ loadDashboard(user_id: number) {
           this.ngZone.runOutsideAngular(() => {
             setTimeout(() => {
               this.initializeDataTable('#members', true);
-              //this.initializeDataTable('#transferList');
+              this.initializeDataTable('#transferList',true);
+              this.initializeDataTable('#no_longer_patient',true);
             }, 300);
           });
           
@@ -2514,6 +2524,10 @@ updateMemberAltPhone(medicaid_id: string, latest_alt_phone: string) {
       this.altLangFormGroup.patchValue({
         alt_language_name: selectedName
       });
+  }
+
+  closeConfirmModal(): void {
+    this.confirmModal?.hide();
   }
 
    

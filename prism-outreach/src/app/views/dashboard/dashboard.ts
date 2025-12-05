@@ -165,6 +165,7 @@ export class Dashboard implements OnInit {
   birth: any;
   fullName: any;
   phone: any;
+  altaddress:  Altaddress[] = [];
   
 
 
@@ -559,7 +560,7 @@ setQualityGapsData(qualityGapsdata: any) {
         next: (res) => {     
           if (res.data) { 
           //this.callList = res.data || [];  
-          this.alt_address = res.data || [];           
+          this.altaddress = res.data || [];           
           this.isLoading = false; // show loader 
           } else {
             console.warn('⚠️ No data found:', res);

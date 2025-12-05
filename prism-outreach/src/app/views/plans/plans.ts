@@ -19,7 +19,7 @@ interface Planlist {
   status: number;
   plan_document_id: '';
 }
-
+declare var $: any;
 @Component({
   selector: 'app-plans',
   standalone: true,
@@ -29,6 +29,7 @@ interface Planlist {
 
 })
 export class Plans implements AfterViewInit, OnInit {
+  
   commonApiRes: ApiResponse = {
     statusCode: 0,
     data: [],
@@ -49,6 +50,12 @@ export class Plans implements AfterViewInit, OnInit {
   constructor(private http: HttpClient, private apiService: ApiService, private auth: AuthService) { }
 
   ngAfterViewInit() {
+    $('.datepicker')
+    .datepicker({
+      format: 'mm/dd/yyyy',
+      autoclose: true,
+      todayHighlight: true
+    })
     const modalEl = document.getElementById('addUserModal');
     if (modalEl) {
       this.addUserModal = new bootstrap.Modal(modalEl, { backdrop: 'static', keyboard: false });
@@ -97,6 +104,8 @@ export class Plans implements AfterViewInit, OnInit {
     };
     this.addUserModal?.show();
   }
+
+  
 
   isHidden = false;
   // ✅ Open Edit User Modal - Fetch full user details from API

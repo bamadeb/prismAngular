@@ -1958,7 +1958,7 @@
             <div class="modal-header">
                 <h5 class="modal-title">
                     <i class="fa fa-plus me-2"></i>
-                    <span class="text-uppercase">ALTERNATE ADDRESS</span>
+                    <span class="text-uppercase">ALTERNATE ADDRESS :: #{{ altaddress[0]?.medicaid_id }}</span>
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                     (click)="closeAltAddressModal()"></button>
@@ -1992,7 +1992,7 @@
                                 </form>
                             </div>
                             <div class="col-lg-7">
-                                <div class="tbl_scorll">
+                                <div class="tbl_scorll"> 
                                     <table class="table table-sm" style="font-size:14px;">
                                         <thead>
                                         <tr>
@@ -2001,15 +2001,16 @@
                                             <th width="22%">ADDED BY</th>
                                         </tr>
                                         </thead>
-                                        <tbody>                                                            
-                                            <tr *ngIf="alt_address.length == 0">
-                                                <td colspan="3" align="center">No record found.</td>
+                                        <tbody> 
+                                                                                                   
+                                            <tr *ngIf="altaddress.length == 0">
+                                                <td colspan="2" align="center">No record found.</td>
                                             </tr>   
                                             
-                                            <tr *ngFor="let alt of alt_address; let i = index">
-                                                <td class="text-uppercase">{{ alt.alt_address }}, {{ alt.alt_city }}, {{ alt.alt_state }}, {{ alt.alt_zip }}</td>
-                                                <td class="text-uppercase">{{ alt.add_date }}</td>
-                                                <td class="text-uppercase">{{ alt.initial }}</td>
+                                            <tr *ngFor="let alter of altaddress; let i = index">
+                                                <td class="text-uppercase">{{ alter.alt_address }}, {{ alter.alt_city }}, {{ alter.alt_state }}, {{ alter.alt_zip }}</td>
+                                                <td class="text-uppercase">{{ alter.add_date }}</td>
+                                                <td class="text-uppercase">{{ alter.initial }}</td>
                                             </tr>
 
                                         </tbody>
@@ -2028,17 +2029,16 @@
 </div>
 <!-- ALT PHONE MODAL START -->
 <div class="modal fade" id="alt_phone_Modal" tabindex="-1" aria-labelledby="alt_phone_Modal" aria-hidden="true">
-    <div class="modal-dialog modal-xl"> <!-- Use modal-xl for ~90% width -->
+    <div class="modal-dialog modal-lg"> <!-- Use modal-xl for ~90% width -->
         <div class="modal-content">
 
             <!-- Header -->
             <div class="modal-header">
                 <h5 class="modal-title">
                     <i class="fa fa-plus me-2"></i>
-                    <span class="text-uppercase">ALTERNATE PHONE NUMBER</span>
+                    <span class="text-uppercase">ALTERNATE PHONE NUMBER :: #{{ member_alt_phone_details[0]?.medicaid_id }}</span>
                 </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                    (click)="closeAltPhoneModal()"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"  (click)="closeAltPhoneModal()"></button>
             </div>
             <!-- Body -->
             <div class="modal-body" id="assign_form">
@@ -2073,12 +2073,13 @@
                                                         </thead>
                                                         <tbody>                                                        
                                                              <tr *ngIf="member_alt_phone_details.length == 0">
-                                                                    <td colspan="3" align="center">No record found.</td>
-                                                                </tr>   
+                                                                    <td colspan="2" align="center">No record found.</td>
+                                                                </tr>  
+                                                                 
                                                                 
                                                                 <tr *ngFor="let alt_phone of member_alt_phone_details; let i = index">
-                                                                    <td class="text-uppercase">{{ alt_phone.alt_phone_no }}</td>
-                                                                    <td class="text-uppercase">{{ alt_phone.FistName }}</td>
+                                                                    <td class="text-uppercase">{{ alt_phone.alt_phone_no | phoneFormat }}</td>
+                                                                    <td class="text-uppercase">{{ alt_phone.FistName }} {{ alt_phone.LastName }}</td>
                                                                     <td class="text-uppercase">{{ alt_phone.add_date }}</td>
                                                                 </tr>
                                                         </tbody>
@@ -2364,7 +2365,7 @@
                     <div class="col-lg-6" *ngIf="addrVisible">
                         <div class="card">
                             <div class="card-body">
-                                <h4 align="center">ALT ADDRESS</h4>
+                                <h4 align="center">ALTERNATE ADDRESS</h4>
                                 <div class="box_height">
                                     <div class="tbl_scorll">
                                         <div class="row">
@@ -2437,7 +2438,7 @@
                     <div class="col-lg-6" *ngIf="mobisVisible">
                         <div class="card">
                             <div class="card-body">
-                                <h4 align="center">ALT PHONE</h4>
+                                <h4 align="center">ALTERNATE PHONE NUMBER</h4>
                                 <div class="box_height">
                                     <div class="tbl_scorll">
                                         <div class="row">
@@ -2464,9 +2465,9 @@
                                                     <table class="table table-sm" style="font-size:14px;">
                                                         <thead>
                                                         <tr>
-                                                            <th class="text-uppercase;">Alt Phone No</th>
-                                                            <th class="text-uppercase;">Added By (INITIAL)</th>
-                                                            <th class="text-uppercase;">Added Date</th>
+                                                            <th class="text-uppercase">Alt Phone No</th>
+                                                            <th class="text-uppercase">Added By (INITIAL)</th>
+                                                            <th class="text-uppercase">Added Date</th>
                                                         </tr>
                                                         </thead>
                                                         <tbody>                                                        
@@ -2475,7 +2476,7 @@
                                                                 </tr>   
                                                                 
                                                                 <tr *ngFor="let alt_phone of member_alt_phone_details; let i = index">
-                                                                    <td class="text-uppercase">{{ alt_phone.alt_phone_no }}</td>
+                                                                    <td class="text-uppercase">{{ alt_phone.alt_phone_no | phoneFormat }}</td>
                                                                     <td class="text-uppercase">{{ alt_phone.FistName }}</td>
                                                                     <td class="text-uppercase">{{ alt_phone.add_date }}</td>
                                                                 </tr>

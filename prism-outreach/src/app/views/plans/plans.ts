@@ -1,6 +1,6 @@
 import { Component, AfterViewInit, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, NgForm } from '@angular/forms';
+import { FormsModule, NgForm,FormGroup } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import * as bootstrap from 'bootstrap';
 import { ApiService } from '../../services/api.service';
@@ -8,6 +8,8 @@ import { ApiResponse } from '../../models/api-response';
 import { AuthService } from '../../services/auth.service';
 import { UploadService } from '../../services/upload.service';
 import { HttpEventType, HttpEvent } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
+
 
 interface Planlist {
   id: number;
@@ -17,6 +19,7 @@ interface Planlist {
   file_name: '';
   file_type: '';
   status: number;
+  docstatus: number;
   plan_document_id: '';
 }
 declare var $: any;
@@ -46,23 +49,38 @@ export class Plans implements AfterViewInit, OnInit {
   toastType: 'success' | 'danger' | 'warning' = 'success';
   private addUserModal: bootstrap.Modal | null = null;
   isAddMode = true; // or false
+ 
+   addPlanFormGroup!:FormGroup;
 
   constructor(private http: HttpClient, private apiService: ApiService, private auth: AuthService) { }
 
   ngAfterViewInit() {
-    $('.datepicker')
-    .datepicker({
-      format: 'mm/dd/yyyy',
-      autoclose: true,
-      todayHighlight: true
-    })
+   setTimeout(() => {
+      $('.datepicker').datepicker({
+        format: 'mm/dd/yyyy',
+        autoclose: true,
+        todayHighlight: true
+      }).on('changeDate', (e: any) => {   // ← ARROW FUNCTION (no "this" issue)
+
+          const selectedDate = e.format('mm/dd/yyyy');   // selected date
+          const inputName = e.target.getAttribute('name'); // get field name
+
+          if (inputName && this.planArray.hasOwnProperty(inputName)) {
+            this.planArray[inputName] = selectedDate;     // dynamic patching!
+          }
+
+      });
+    }, 200);
+
+
+
     const modalEl = document.getElementById('addUserModal');
     if (modalEl) {
       this.addUserModal = new bootstrap.Modal(modalEl, { backdrop: 'static', keyboard: false });
     }
   }
 
-  ngOnInit() {
+  ngOnInit() { 
     this.loadPlans();
   }
 
@@ -75,7 +93,7 @@ export class Plans implements AfterViewInit, OnInit {
         next: (res) => {
           if (res.data) {
             //console.log(res.data);
-            this.planlist = (res?.data as any)?.planlist || [];
+            this.planlist = (res?.data as any)?.plist || [];
             this.plandetailslist = (res?.data as any)?.plandetailslist || [];
             this.loading = false;
           } else {
@@ -93,6 +111,9 @@ export class Plans implements AfterViewInit, OnInit {
     this.isEditing = false;
     this.isHidden = false;
     this.isplanHidden = false;
+    this.isAddMode = false;
+    
+    $('#file_name').val('');
 
     this.planArray = {
       plan_name: '',
@@ -100,8 +121,9 @@ export class Plans implements AfterViewInit, OnInit {
       end_date: '',
       plan_id: '',
       file_name: '',
-      status: '0', plan_document_id: '',
+      status: '',docstatus: '', plan_document_id: '',
     };
+    
     this.addUserModal?.show();
   }
 
@@ -110,9 +132,11 @@ export class Plans implements AfterViewInit, OnInit {
   isHidden = false;
   // ✅ Open Edit User Modal - Fetch full user details from API
   openEditUserModal(userData: any) {
+    $('#file_name').val('');
     this.isEditing = true;
-    this.loading = true;
-    //console.log(userData);
+    this.isAddMode = true;
+    //this.loading = true;
+    console.log(userData);
     this.isHidden = true;
     this.isplanHidden = false;
     // ✅ Fill form with API response
@@ -122,7 +146,9 @@ export class Plans implements AfterViewInit, OnInit {
       plan_name: userData.plan_name || '',
       start_date: userData.start_date || '',
       end_date: userData.end_date || '',
-      status: userData.status,
+      status: userData.status, 
+      filename: userData.file_name, 
+      docstatus: userData.docstatus,
       plan_document_id: userData.plan_document_id
     };
     this.addUserModal?.show();
@@ -141,29 +167,65 @@ export class Plans implements AfterViewInit, OnInit {
     // ✅ Close Modal
   closeAddUserModal() {
     this.addUserModal?.hide();
-    this.loadPlans();
+    //this.loadPlans();
   }
 
   selectedFile: File | null = null;
   uploadedFileName: string = '';
-  onFileSelect(event: any) {
+  onFileSelect(event: any) { 
     const file = event.target.files[0];
+    console.log(file);
+    
+    
     if (file) {
       this.selectedFile = file;
     }
+     if (file == undefined) {
+      this.selectedFile = null;
+    }   
+    
   }
 
+checkDates(startDate: any, endDate: any) {
+  if (!startDate || !endDate)
+  return alert("Start date and end date are required.");
+
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+
+  if (start > end) {
+    alert("Start date cannot be greater than end date.");
+    return false;
+  }
+  return true;
+}
 
   // ✅ Add User Flow
-  async  addPlan(form: NgForm) {
-    if (!form.valid) return;
-
+  async  addPlan(form: NgForm) { 
+    //if (!form.valid) return; 
     const file = this.selectedFile;
-    if (!file) return alert("No file selected");
-    //console.log(this.planArray.status);
-    this.loading = true;
-    const filestatus = this.planArray.status;
+    console.log(this.selectedFile);  
+    if (!this.planArray.plan_id){
+      if (!this.planArray.plan_name) return alert("Plan name should not be blank.");
+      if (!this.checkDates(this.planArray.start_date, this.planArray.end_date)) {
+        return; 
+      }        
+    }    
+   if (!file || file == null) 
+  return alert("No file selected");
 
+    if (!this.planArray.plan_id){
+      if (this.planArray.status === "" || this.planArray.status == null) {
+        return alert("Select plan status.");
+      }
+    }
+
+    if (this.planArray.docstatus === "" || this.planArray.docstatus == null) {
+      return alert("Select plan document status.");
+    } 
+    //console.log(this.planArray);    
+    this.loading = true;
+    const filestatus = this.planArray.docstatus; 
     if (this.planArray.plan_id) {          
       // upload file to s3 sever       
         await this.fileupload(this.planArray.plan_id,filestatus);
@@ -173,7 +235,8 @@ export class Plans implements AfterViewInit, OnInit {
       const insertData = {
         plan_name: this.planArray.plan_name,
         start_date: this.planArray.start_date,
-        end_date: this.planArray.end_date
+        end_date: this.planArray.end_date,
+        status: this.planArray.status
       };
       const payload = {
         table_name: "MEM_PLAN_MASTER",
@@ -185,7 +248,8 @@ export class Plans implements AfterViewInit, OnInit {
           next: (res) => {            
             // S3 file upload function
             this.fileupload(res.insertedIds,filestatus); 
-             form.resetForm();            
+            this.loading = false;
+            form.resetForm();            
           },
           error: (err) => {
             this.loading = false;
@@ -199,16 +263,31 @@ export class Plans implements AfterViewInit, OnInit {
 
   // ✅ Update User Flow 
   async updatePlan(form: NgForm) {
-    if (!form.valid) return;
-    this.loading = true;
-    this.isAddMode = false; 
-    console.log(this.planArray);
+    $('#file_name').val('');
+    //if (!form.valid) return;
+    //console.log(this.planArray);
 
+    if (!this.planArray.plan_name) return alert("Plan name should not be blank.");
+
+    if (!this.checkDates(this.planArray.start_date, this.planArray.end_date)) {
+      return; // stop function
+    }
+
+    if (this.planArray.status === "" || this.planArray.status == null) {
+      return alert("Select plan status.");
+    }
+
+    if (this.planArray.docstatus === "" || this.planArray.docstatus == null) {
+      return alert("Select plan document status.");
+    } 
+
+    this.loading = true; 
 
     const updateData = {
       plan_name: this.planArray.plan_name,
       start_date: this.planArray.start_date,
-      end_date: this.planArray.end_date
+      end_date: this.planArray.end_date,
+      status: this.planArray.status
     };
 
     const payload = {
@@ -241,8 +320,9 @@ export class Plans implements AfterViewInit, OnInit {
   }
 
   updateplanstatus(){
+    
     const updateplandetailsData = {
-      status: this.planArray.status 
+      status: this.planArray.docstatus
     };
 
     const payload1 = {
@@ -256,10 +336,10 @@ export class Plans implements AfterViewInit, OnInit {
       .subscribe({
         next: (res: any) => {
           if (this.selectedFile) {
-              this.fileupload(this.planArray.plan_id,this.planArray.status);                
+              this.fileupload(this.planArray.id,this.planArray.status);                
           }
           
-          //this.loadPlans();
+          this.loadPlans();
           this.loading = false;
           this.closeAddUserModal(); 
           this.showToast('Plan updated successfully.', 'success');
@@ -273,6 +353,8 @@ export class Plans implements AfterViewInit, OnInit {
   }
 
   fileupload(plan_id: number,documentstatus:number) {
+     
+    //alert(plan_id);
    
     const file = this.selectedFile;
     if (!file) return alert("No file selected");
@@ -280,7 +362,8 @@ export class Plans implements AfterViewInit, OnInit {
     const payload = {
       fileName: file.name,
       fileType: file.type,
-      plan_id: plan_id
+      plan_id: plan_id,
+      env: environment.env
     }; 
     //console.log('filestatus: '+documentstatus);
     this.apiService.post<any>('prismUploadplandocument', payload)
@@ -298,11 +381,13 @@ export class Plans implements AfterViewInit, OnInit {
 
           if (upload.ok) {
             console.log("File uploaded successfully!"); 
-            if(this.isAddMode){
+            //alert(this.isAddMode);
+            if(!this.isAddMode){
               this.saveFileUrlToDB(plan_id, parsed.fileUrl,documentstatus);
             }else{
               this.updateFileUrlToDB(this.planArray.plan_document_id, parsed.fileUrl,documentstatus);
             }
+            this.selectedFile = null;
             
           } else {
             console.error("S3 Upload Error:", upload);
@@ -332,7 +417,7 @@ export class Plans implements AfterViewInit, OnInit {
       .subscribe({
         next: (res: any) => { 
           this.loadPlans();
-          //this.closeAddUserModal();     
+          this.closeAddUserModal();     
         },
         error: (err) => {
           console.error('❌ Update failed:', err);

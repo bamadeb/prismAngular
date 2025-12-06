@@ -29,9 +29,9 @@
                     <th>PLAN NAME</th>
                     <th>START DATE</th>
                     <th>END DATE</th>
-                    <th width="40%">FILE NAME</th>
-                    <!-- <th>FILE TYPE</th>  -->
-                    <th>STATUS</th>
+                    <th width="40%">FILE LINK</th>
+                    <th>PLAN STATUS</th> 
+                    <th>DOCUMENT STATUS</th>
                     <th>ACTION</th>
                   </tr>
                 </thead>
@@ -40,11 +40,15 @@
                     <td>{{ p.plan_name }}</td>
                     <td>{{ p.start_date }}</td>
                     <td>{{ p.end_date }}</td>
-                    <td>{{ p.file_name }}</td>
-                    <!-- <td>{{ p.file_type }}</td> -->
+                    <td>{{ p.file_name }}</td> 
                     <td>
                          <span [ngClass]="p.status == 0 ? 'text-success' : 'text-danger'">
                                 {{ p.status == 0 ? 'Active' : 'Inactive' }}
+                            </span>
+                    </td>
+                    <td>
+                         <span [ngClass]="p.docstatus == 0 ? 'text-success' : 'text-danger'">
+                                {{ p.docstatus == 0 ? 'Active' : 'Inactive' }}
                             </span>
                     </td>
                     <td class="text-center">
@@ -107,16 +111,35 @@
             </div> 
 
             <div class="col-md-6">
-              <input type="file" class="form-control" #fileInput (change)="onFileSelect($event)"  name="file_name" [required]="isAddMode">
-            </div>            
+              <input type="file" class="form-control" #fileInput (change)="onFileSelect($event)"  id="file_name" name="file_name" [required]="isAddMode">
+              <div *ngIf="isAddMode">
+                  <a href="{{planArray.filename}}" target="_blank">VIEW</a>
+              </div>
+            </div>      
+                       
              
             <!-- Status Dropdown -->
-            <div class="col-md-6">
+            <div class="col-md-6" *ngIf="!isplanHidden">
+              <div *ngIf="isAddMode">PLAN STATUS</div>
               <select 
                 class="form-select text-uppercase" 
                 [(ngModel)]="planArray.status" 
                 name="status" 
                 required>
+                <option value="">SELECT PLAN STATUS</option>
+                <option value="0">ACTIVE</option>
+                <option value="1">INACTIVE</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <div *ngIf="isAddMode">PLAN DOCUMENT STATUS</div>
+              <select 
+                class="form-select text-uppercase" 
+                [(ngModel)]="planArray.docstatus" 
+                name="docstatus" 
+                required>
+                <option value="">SELECT DOCUMENT STATUS</option>
                 <option value="0">ACTIVE</option>
                 <option value="1">INACTIVE</option>
               </select>

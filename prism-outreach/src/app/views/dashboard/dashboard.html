@@ -681,7 +681,7 @@
 
                                                         <!-- EDIT ICON ON HOVER -->
                                                         <span class="hover-edit"
-                                                                (click)="openEditAddress(member.medicaid_id)">
+                                                                (click)="openEditAddress(member.medicaid_id,member.FIRST_NAME + ' ' + member.LAST_NAME)">
                                                             <i class="fa fa-pencil"></i>
                                                         </span>
 
@@ -700,7 +700,7 @@
 
                                                         <!-- EDIT ICON ON HOVER -->
                                                         <span class="hover-edit"
-                                                                (click)="openEditPhone(member.medicaid_id)">
+                                                                (click)="openEditPhone(member.medicaid_id,member.FIRST_NAME + ' ' + member.LAST_NAME)">
                                                             <i class="fa fa-pencil"></i>
                                                         </span>
 
@@ -1958,7 +1958,7 @@
             <div class="modal-header">
                 <h5 class="modal-title">
                     <i class="fa fa-plus me-2"></i>
-                    <span class="text-uppercase">ALTERNATE ADDRESS :: #{{ altaddress[0]?.medicaid_id }}</span>
+                    <span class="text-uppercase">ALTERNATE ADDRESS :: ({{ fullName }})</span>
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                     (click)="closeAltAddressModal()"></button>
@@ -2008,7 +2008,12 @@
                                             </tr>   
                                             
                                             <tr *ngFor="let alter of altaddress; let i = index">
-                                                <td class="text-uppercase">{{ alter.alt_address }}, {{ alter.alt_city }}, {{ alter.alt_state }}, {{ alter.alt_zip }}</td>
+                                                <td class="text-uppercase">
+                                                    <span *ngIf="alter?.alt_address">{{ alter.alt_address }}</span>
+                                                    <span *ngIf="alter?.alt_city">, {{ alter.alt_city }}</span>
+                                                    <span *ngIf="alter?.alt_state">, {{ alter.alt_state }}</span>
+                                                    <span *ngIf="alter?.alt_zip">, {{ alter.alt_zip }}</span> 
+                                                </td>
                                                 <td class="text-uppercase">{{ alter.add_date }}</td>
                                                 <td class="text-uppercase">{{ alter.initial }}</td>
                                             </tr>
@@ -2036,7 +2041,7 @@
             <div class="modal-header">
                 <h5 class="modal-title">
                     <i class="fa fa-plus me-2"></i>
-                    <span class="text-uppercase">ALTERNATE PHONE NUMBER :: #{{ member_alt_phone_details[0]?.medicaid_id }}</span>
+                    <span class="text-uppercase">ALTERNATE PHONE NUMBER :: ({{ fullName }})</span>
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"  (click)="closeAltPhoneModal()"></button>
             </div>
@@ -2409,7 +2414,12 @@
                                                                 </tr>   
                                                                 
                                                                 <tr *ngFor="let alt of alt_address; let i = index">
-                                                                    <td class="text-uppercase">{{ alt.alt_address }}, {{ alt.alt_city }}, {{ alt.alt_state }}, {{ alt.alt_zip }}</td>
+                                                                    <td class="text-uppercase">
+                                                                        <span *ngIf="alt?.alt_address">{{ alt.alt_address }}</span>
+                                                                        <span *ngIf="alt?.alt_city">, {{ alt.alt_city }}</span>
+                                                                        <span *ngIf="alt?.alt_state">, {{ alt.alt_state }}</span>
+                                                                        <span *ngIf="alt?.alt_zip">, {{ alt.alt_zip }}</span>
+                                                                    </td>
                                                                     <td class="text-uppercase">{{ alt.add_date }}</td>
                                                                     <td class="text-uppercase">{{ alt.initial }}</td>
                                                                 </tr>

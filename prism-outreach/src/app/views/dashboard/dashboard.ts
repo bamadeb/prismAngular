@@ -550,9 +550,10 @@ setQualityGapsData(qualityGapsdata: any) {
     const yyyy = date.getFullYear();
     return `${mm}/${dd}/${yyyy}`;
   }
-  openEditAddress(medicaid_id: string){
-    //alert(medicaid_id);
+  openEditAddress(medicaid_id: string,fullName: string){
+    //alert(fullName);
     this.isLoading = true; // show loader
+    this.fullName = fullName;
     const payload = { medicaid_id: medicaid_id };
 
     this.apiService.post<ApiResponse>('prismMemberAltAddressList', payload)
@@ -574,15 +575,16 @@ setQualityGapsData(qualityGapsdata: any) {
       const todaymdy= this.formatDateToYMD(new Date().toISOString());
       this.altAddressFormGroup.patchValue({
         medicaid_id: medicaid_id,
-        created_date: todaymdy 
+        created_date: todaymdy  
       });
 
     this.altAddressModal?.show();
   }
-  openEditPhone(medicaid_id: string){
+  openEditPhone(medicaid_id: string,fullName: string){
     //alert(medicaid_id);
     this.isLoading = true; // show loader
     const payload = { medicaid_id: medicaid_id };
+    this.fullName = fullName;
 
     this.apiService.post<ApiResponse>('prismMemberAltPhoneList', payload)
       .subscribe({
@@ -2360,12 +2362,13 @@ pcpVisible: Boolean | undefined;
       });    
   }
 
-  add_alt_address_submit() { 
-      this.isLoading = true;  
+  add_alt_address_submit() {          
       const formValues = this.altAddressFormGroup.value; 
       const user = this.auth.getUser();
       const added_by = user?.ID || 0; 
       //console.log(formValues);
+      if (!formValues.alt_address) return alert("Alternate address should not be blank");
+      this.isLoading = true;
       const Payload = {
         table_name: 'MEM_ALT_ADDRESS',
         insertDataArray: [
@@ -2483,10 +2486,12 @@ updateMemberAltPhone(medicaid_id: string, latest_alt_phone: string) {
 
 
   add_alt_phone_submit(){
-      this.isLoading = true;  
+        
       const formValues = this.altPhoneFormGroup.value; 
       const user = this.auth.getUser();
       const added_by = user?.ID || 0; 
+      if (!formValues.alt_phone_no) return alert("Alternate phone should not be blank");
+      this.isLoading = true;
       //console.log(formValues);
       const Payload = {
         table_name: 'MEM_ALT_PHONE',

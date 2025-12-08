@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.css']
 })
-export class MenuComponent implements OnInit {
+export class MenuComponent implements OnInit {   
   userRole: number | null = null;
     constructor(
       private auth: AuthService,private router: Router,

@@ -227,7 +227,7 @@ font-family: 'Roboto'!important;font-weight: 200!important;}
   box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1);
   font-family: 'Roboto'!important;}
 
-}
+
 
 .card-header,
 .card-footer {
@@ -237,7 +237,7 @@ font-family: 'Roboto'!important;font-weight: 200!important;}
   padding: 15px;
   font-family: 'Roboto'!important;}
 
-}
+
 
 .card-title {
   padding: 20px 0 15px 0;
@@ -252,13 +252,13 @@ font-family: 'Roboto'!important;}
   font-weight: 400;
   font-family: 'Roboto'!important;}
 
-}
+
 
 .card-body {
   padding: 0 20px 20px 20px;
   font-family: 'Roboto'!important;}
 
-}
+
 
 .card-img-overlay {
   background-color: rgba(255, 255, 255, 0.6);
@@ -1352,7 +1352,7 @@ display:none!important;
         border-radius: 20px;
         border: 3px solid var(--scroll-bar-bg-color);
     }
-/ //////////////////////////////custom css by Bamadeb///////////////////// /
+ 
 
     .alert_bg
 { background-color: #0095ff !important;
@@ -1419,7 +1419,7 @@ width: 180px;
   width: 100%;
 }
 
-/ CSS Triangles - see Trevor's post /
+
 .wrapper .tooltip:after {
   border-top: solid transparent 10px;
   border-bottom: solid transparent 10px;
@@ -1498,4 +1498,19 @@ font-family:'Roboto'!important;
     background-clip: padding-box;
     border: var(--bs-dropdown-border-width) solid var(--bs-dropdown-border-color);
     border-radius: var(--bs-dropdown-border-radius);
+}
+
+.modal-open .modal {
+  transform: none !important;
+  
+}
+
+.modal-content {
+  position: relative!important;
+}
+
+.datepicker-dropdown {
+  z-index: 999999 !important;
+  transform: translateY(60px) !important;
+  
 }

@@ -508,3 +508,13 @@ select:focus {
 background-position: right 6px center !important;
 
 }
+
+.modal,
+.modal-dialog,
+.modal-content {
+  overflow: visible !important;
+}
+
+.datepicker-dropdown {
+  z-index: 99999 !important;
+}

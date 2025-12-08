@@ -59,7 +59,8 @@ export class Plans implements AfterViewInit, OnInit {
       $('.datepicker').datepicker({
         format: 'mm/dd/yyyy',
         autoclose: true,
-        todayHighlight: true
+        todayHighlight: true, 
+        container: 'body'
       }).on('changeDate', (e: any) => {   // ← ARROW FUNCTION (no "this" issue)
 
           const selectedDate = e.format('mm/dd/yyyy');   // selected date

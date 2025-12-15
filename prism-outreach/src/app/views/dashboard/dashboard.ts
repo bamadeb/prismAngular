@@ -249,7 +249,7 @@ export class Dashboard implements OnInit {
           action_date: ['',Validators.required],
           action_status: ['Success',Validators.required],
           action_result_id: ['',Validators.required],
-          action_note: ['',Validators.required],
+          action_note: [''],
           next_panel_id: [''],
           next_action_date: [''],
           next_action_note: [''],

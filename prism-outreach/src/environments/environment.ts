@@ -9,7 +9,7 @@ export const environment = {
     apiBaseUrl: 'https://e9vakopr4c.execute-api.us-east-1.amazonaws.com/dev',
     env: 'dev'
 
-    //apiBaseUrl: 'https://yeuovejy1b.execute-api.us-east-2.amazonaws.com/prod',
-    //env: 'prod'
+    // apiBaseUrl: 'https://yeuovejy1b.execute-api.us-east-2.amazonaws.com/prod',
+    // env: 'prod'
 };
  

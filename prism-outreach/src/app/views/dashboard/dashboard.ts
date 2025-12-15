@@ -1578,6 +1578,7 @@ loadDashboard(user_id: number) {
       next: (res) => {
         this.apiRes = res;
         if (res.data) {
+          //console.log(res.data);
           //this.members = res.data.members || [];
           this.overallSummary = res.data.overallRiskQualitySummary || [];
           this.ownSummary = res.data.ownRiskQualitySummary || [];

@@ -14,7 +14,7 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-   @Input() pageTitle: string = '';
+  @Input() pageTitle: string = '';
   userName = '';
   Name = '';
  

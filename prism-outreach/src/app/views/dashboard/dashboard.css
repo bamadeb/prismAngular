@@ -105,3 +105,7 @@
 .hover-edit:hover {
   opacity: 1;
 }
+.table-scroll-x {
+  width: 100%;
+  overflow-x: auto;     /* horizontal scroll */
+}

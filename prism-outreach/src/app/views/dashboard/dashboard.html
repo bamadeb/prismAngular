@@ -965,7 +965,7 @@
                                     (ngSubmit)="add_update_action_submit()">
                                     <div class="row mx-0">
                                         <!-- (content omitted for brevity) -->
-                                        <div class="col-sm-6  p-2 border-end">
+                                        <div class="col-lg-6 col-md-12 sm-12 p-2 border-end">
                                             <div class=" p-3">
                                                 <div class="mb-2 text-uppercase text-center text-decoration-underline" style="cursor:pointer"
                                                     (click)="toggleActionView()">
@@ -1063,7 +1063,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-sm-6 p-2  ">
+                                        <div class="col-lg-6 col-md-12 sm-12 p-2  ">
                                             <div class=" p-3">
                                                 <div class="mb-2 text-uppercase text-center text-decoration-underline" style="cursor:pointer"
                                                     (click)="toggleNextActivityView()">
@@ -1138,9 +1138,9 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-sm-12">
-                                             <div class=" p-3">
+                                             <div class=" p-3 ">
                                                 <h4><b>PCR DATA</b></h4>
-                                                
+                                                <div class="table-scroll-x">
                                                 <table class="table table-bordered">
                                                     <thead style="font-size: 12px;">
                                                         <tr>
@@ -1181,13 +1181,14 @@
                                                         </tr>
                                                     </tbody>                                       
                                                 </table>
+                                                </div>
                                                 </div>    
                                              </div> 
                                         </div>
                                     </div>
                                     
                                     <div class="row">
-                                        <div class="col-lg-6 col-md-6 col-sm-12 p-2 mt-3">
+                                        <div class="col-lg-6 col-md-12 col-sm-12 p-2 mt-3">
                                             <div class=" p-3">
                                                 <div class=" ">
                                                     <div class="mb-2 text-uppercase fw-bold" style="cursor:pointer"
@@ -1339,7 +1340,7 @@
 
                                             </div>
                                         </div>
-                                        <div class="col-lg-6 col-md-6 col-sm-12 p-2 ">
+                                        <div class="col-lg-6 col-md-12 col-sm-12 p-2 ">
                                             <div class=" p-3">
                                                 <div class=" mt-4">
                                                     <div class="mb-2 text-uppercase fw-bold" style="cursor:pointer"
@@ -1404,10 +1405,20 @@
                                                                     </div>
 
                                                                     <div class="col-lg-3 col-md-12 col-sm-12 mb-2">
-                                                                        <input placeholder="Observation Result"
+                                                                        <!-- <input placeholder="Observation Result"
                                                                             title="Observation Result" type="text"
                                                                             formControlName="Observation_Result"
-                                                                            class="form-control" />
+                                                                            class="form-control" /> -->
+                                                                        <select class="form-control form-select  darrow"
+                                                                            formControlName="Observation_Result" id="Observation_Result"
+                                                                            >
+                                                                            <option value="">-- Observation Result --</option>
+                                                                            
+                                                                            <option [value]="'Rejected'">Rejected</option>
+                                                                            <option [value]="'Addressed'">Addressed</option>
+                                                                            <option [value]="'Trumped'">Trumped</option>
+                                                                            
+                                                                        </select>    
                                                                     </div>
 
                                                                     <div class="col-lg-3 col-md-12 col-sm-12 mb-2">

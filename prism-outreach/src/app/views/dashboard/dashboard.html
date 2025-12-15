@@ -639,7 +639,7 @@
                                                             (click)="showDetails(member.medicaid_id)"
                                                             title="Member Details" style="text-decoration:none;">D</a><br>
                                                             <a href="javascript:void(0);"
-                                                            (click)="openModal(member.medicaid_id, member.FIRST_NAME + ' ' + member.LAST_NAME)">
+                                                            (click)="openModal(member.medicaid_id, member.FIRST_NAME + ' ' + member.LAST_NAME,member.BIRTH)">
                                                             <i title="Add Action" class="fa fa-plus"></i>
                                                         </a>
                                                     </th>
@@ -921,9 +921,6 @@
     </div>
 </main>
 
-
-
-
 <div class="modal fade" id="addActionModal" tabindex="-1" aria-labelledby="addActionModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl" style="width:90%;">
         <div class="modal-content">
@@ -933,7 +930,7 @@
                     <i class="fa fa-plus" aria-hidden="true"></i>
                     ADD/UPDATE ACTION |
                     <span class="text-uppercase">{{ member_name }}</span> -
-                    #{{ medicaid_id }}
+                    #{{ medicaid_id }} - {{ dbirth }}
                 </h5>
                 <button type="button" class="btn-close" (click)="closeModal()"></button>
             </div>
@@ -1051,12 +1048,12 @@
 
                                                     <div class="col-sm-12 mt-2">
                                                         <textarea class="form-control" formControlName="action_note"
-                                                            id="action_note" required
+                                                            id="action_note"
                                                             placeholder="Type your text..."></textarea>
-                                                        <div class="text-danger small"
+                                                        <!-- <div class="text-danger small"
                                                                 *ngIf="addActionFormGroup.get('action_note')?.touched && addActionFormGroup.get('action_note')?.invalid">
                                                                 This field is required.
-                                                        </div>
+                                                        </div> -->
                                                     </div>
                                                     <div class="col-sm-12 mt-2">
                                                         <input class="form-control" disabled type="file"

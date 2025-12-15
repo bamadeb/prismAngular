@@ -95,6 +95,7 @@ export class Dashboard implements OnInit {
   appointmentFormGroup!: FormGroup;
   medicaid_id: string = '';
   member_name: string = '';
+  dbirth: string = '';
   isObsFieldVisible: boolean[] = [];
   isRiskFieldVisible: boolean[] = [];
   showRiskGaps = true;
@@ -611,7 +612,7 @@ setQualityGapsData(qualityGapsdata: any) {
     this.altPhoneModal?.show();
 
   }
-  openModal(medicaid_id: string, member_name: string): void {
+  openModal(medicaid_id: string, member_name: string,dbitrh: string): void {
     this.modalInstance?.show();
     // this.isActionVisible = true;
     // this.isNextActivityVisible = true;
@@ -634,6 +635,7 @@ setQualityGapsData(qualityGapsdata: any) {
     this.isObsFieldVisible = [];
     this.medicaid_id = medicaid_id;
     this.member_name = member_name;
+    this.dbirth = dbitrh;
       if (this.addActionFormGroup) {
         this.addActionFormGroup.patchValue({ medicaid_id: medicaid_id });
       }
@@ -2166,7 +2168,7 @@ calculatePerformance(data: any) {
                                         this.showFlash('Saved Successfully!');
                                         this.modalInstance?.hide(); 
                                         setTimeout(() => {
-                                            this.openModal(medicaid_id,this.member_name);
+                                            this.openModal(medicaid_id,this.member_name,this.dbirth);
                                         }, 300);
                                             
                                       },
@@ -2184,7 +2186,7 @@ calculatePerformance(data: any) {
                                         this.isLoading = false;
                                         this.modalInstance?.hide(); 
                                         setTimeout(() => {
-                                            this.openModal(medicaid_id,this.member_name);
+                                            this.openModal(medicaid_id,this.member_name,this.dbirth);
                                         }, 300);                                      }
                                     });
                                 }else{
@@ -2200,7 +2202,7 @@ calculatePerformance(data: any) {
                                         this.isLoading = false;
                                         this.modalInstance?.hide();
                                         setTimeout(() => {
-                                            this.openModal(medicaid_id,this.member_name);
+                                            this.openModal(medicaid_id,this.member_name,this.dbirth);
                                         }, 300);
                                       }
                   },

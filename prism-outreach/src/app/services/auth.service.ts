@@ -104,26 +104,59 @@ private calculateSecretHash(username: string): string {
   // LOGIN
   // ------------------------
   async login(username: string, password: string) {
+      const secretHash = this.calculateSecretHash(username);
+
+      const command = new InitiateAuthCommand({
+        AuthFlow: "USER_PASSWORD_AUTH",
+        ClientId: environment.cognito.clientId,
+        AuthParameters: {
+          USERNAME: username,
+          PASSWORD: password,
+          SECRET_HASH: secretHash
+        }
+      });
+
+      const result: any = await this.client.send(command);
+
+      // ➤ Case 1: Auth success (no MFA)
+      if (result.AuthenticationResult) {
+        this.storeTokens(result.AuthenticationResult, username);
+        return { status: "SUCCESS", tokens: result.AuthenticationResult };
+      }
+
+      // ➤ Case 2: MFA Required (SMS sent)
+      if (result.ChallengeName === "SMS_MFA") {
+        return {
+          status: "MFA_REQUIRED",
+          session: result.Session,
+          challengeName: result.ChallengeName
+        };
+      }
+
+      throw new Error("Unknown authentication challenge.");
+  }
+  async confirmMfaCode(username: string, code: string, session: string) {
     const secretHash = this.calculateSecretHash(username);
 
-    const command = new InitiateAuthCommand({
-      AuthFlow: "USER_PASSWORD_AUTH",
+    const command = new RespondToAuthChallengeCommand({
       ClientId: environment.cognito.clientId,
-      AuthParameters: {
+      ChallengeName: "SMS_MFA",
+      Session: session,
+      ChallengeResponses: {
         USERNAME: username,
-        PASSWORD: password,
+        SMS_MFA_CODE: code,
         SECRET_HASH: secretHash
       }
     });
 
-    const result: any = await this.client.send(command);
+    const response: any = await this.client.send(command);
 
-    const tokens = result.AuthenticationResult;
-    if (tokens) {
-      this.storeTokens(tokens, username);
+    if (response.AuthenticationResult) {
+      this.storeTokens(response.AuthenticationResult, username);
+      return response.AuthenticationResult;
     }
 
-    return tokens;
+    throw new Error("MFA validation failed");
   }
 
   // ------------------------

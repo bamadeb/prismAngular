@@ -74,7 +74,7 @@
                                                                     style="background-color:#f5f5f5;border-top: 1px solid #cfcfcf;vertical-align: middle;">
                                                                     <div valign="center">
                                                                         <h6 class="text-uppercase  mb-0">
-                                                                            Completed</h6>
+                                                                            Closed</h6>
                                                                     </div>
                                                                 </th>
                                                                 <th
@@ -85,7 +85,7 @@
                                                                     </div>
                                                                 </th>
                                                             </tr>
-
+                                                            @if(userRole!=9){
                                                             <!-- Overall (PRIORITY) -->
                                                             <tr>
                                                                 <td>Overall (PRIORITY)</td>
@@ -103,7 +103,7 @@
                                                                     }}%
                                                                 </td>
                                                             </tr>
-
+                                                        
                                                             <!-- Overall (OTHERS) -->
                                                             <tr style="border-bottom: 2px solid;">
                                                                 <td>Overall (OTHERS)</td>
@@ -116,7 +116,7 @@
                                                                 </td>
                                                             </tr>
 
-
+                                                                }
                                                             <!-- My Own (PRIORITY) -->
                                                             <tr>
                                                                 <td>My Own (PRIORITY)</td>
@@ -163,7 +163,7 @@
                                                                     style="background-color:#f5f5f5;border-top: 1px solid #cfcfcf;vertical-align: middle;">
                                                                     <div valign="center">
                                                                         <h6 class="text-uppercase mb-0">
-                                                                            Completed</h6>
+                                                                            Closed</h6>
                                                                     </div>
                                                                 </th>
                                                                 <th
@@ -174,7 +174,7 @@
                                                                     </div>
                                                                 </th>
                                                             </tr>
-
+                                                             @if(userRole!=9){
                                                             <!-- Overall (PRIORITY) -->
                                                             <tr>
                                                                 <td>Overall (PRIORITY)</td>
@@ -203,7 +203,7 @@
                                                                 </td>
                                                             </tr>
 
-
+                                                        }
 
                                                             <!-- My Own (PRIORITY) -->
                                                             <tr>
@@ -620,10 +620,10 @@
                                                     <th class="text-center">#TASK</th>
                                                     <th class="text-center">#CALL</th>
                                                     <th class="text-center group-performance-td">COUNT</th>
-                                                    <th class="text-center">COMPLETED</th>
+                                                    <th class="text-center">CLOSED</th>
                                                     <th class="text-center">%</th>
                                                     <th class="text-center group-performance-td">COUNT</th>
-                                                    <th class="text-center">COMPLETED</th>
+                                                    <th class="text-center">CLOSED</th>
                                                     <th class="text-center">%</th>
                                                     <th class="group-performance-td text-center">ACTION</th>
                                                 </tr>
@@ -1200,8 +1200,7 @@
                                                         <div *ngFor="let riskGap of riskGapsList.controls; let i = index"
                                                             [formGroupName]="i" class="text-uppercase mb-2">
                                                             <input type="checkbox" class="form-check-input me-2"
-                                                                [id]="'gap_id_' + i" formControlName="PROCESS_STATUS"
-                                                                (change)="onGapChecked(i)" />
+                                                                [id]="'gap_id_' + i" formControlName="PROCESS_STATUS" title="Automatically set based on Observation Result" />
                                                             <span (click)="toggleriskObsField(i)"
                                                                 style="cursor: pointer;">
                                                                 {{ riskGap.get('DIAG_DESC')?.value }}
